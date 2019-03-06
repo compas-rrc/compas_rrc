@@ -2,24 +2,15 @@
 
 Intro to project ...
 
+Motion instructions
+===================
 
-Setup
-=====
-
-In order to use this library, ...
-
-
-Main concepts
-=============
-
-Describe typical classes found in project
-
-.. autoclass:: SampleClassName
+.. autoclass:: MoveAbsJ
    :members:
 
 
 """
 
-from .sample_module import SampleClassName
+from .motion import MoveAbsJ
 
-__all__ = ['SampleClassName']
+__all__ = ['MoveAbsJ']

@@ -16,7 +16,7 @@ abb_a042_base_lib: Base Library ABB Driver
 
 .. Write project description
 
-**Base Library for ABB A042 Driver (MoveAbsJ etc.) ** ...
+Base Library for ABB A042 Driver (MoveAbsJ etc.)
 
 
 Main features
