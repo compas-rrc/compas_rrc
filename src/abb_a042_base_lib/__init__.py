@@ -2,15 +2,23 @@
 
 Intro to project ...
 
+ABB Client
+===================
+
+.. autoclass:: AbbClient
+   :members:
+
 Motion instructions
 ===================
 
 .. autoclass:: MoveAbsJ
    :members:
 
-
 """
 
-from .motion import MoveAbsJ
+from __future__ import absolute_import
 
-__all__ = ['MoveAbsJ']
+from .client import *
+from .motion import *
+
+__all__ = [name for name in dir() if not name.startswith('_')]

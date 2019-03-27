@@ -30,6 +30,7 @@ class Zone(object):
 
 
 class MotionFeedback(object):
+    """Represents valid feedback levels for motion instructions."""
     NONE = 0
     DONE = 1
 
@@ -38,24 +39,60 @@ class MoveAbsJ(ROSmsg):
     """Represents a move absolute joint instruction.
 
     Attributes:
-        joints (:obj:`list` of :obj:`float`): Joint positions in degrees.
-        ext_axes (:obj:`list` of :obj:`float`): External axes positions, depending
-            on the robotic system, it can be millimeters for prismatic external axes, or
-            degrees for revolute external axes.
-        speed (:obj:`int`): Integer specifying translational speed in mm/s. Min=``0.01``.
-        zone (:class:`Zone`): Zone data.
+
+        joints (:obj:`list` of :obj:`float`):
+            Joint positions in degrees.
+
+        ext_axes (:obj:`list` of :obj:`float`):
+            External axes positions, depending on the robotic system,
+            it can be millimeters for prismatic external axes,
+            or degrees for revolute external axes.
+
+        speed (:obj:`int`):
+            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
+
+        zone (:class:`Zone`):
+            Zone data. Predefined in the robot contrller,
+            only Zone ``fine`` will to a stop point all others are fly by points
+
+        feedback_level (:obj:`int`):
+            Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
+            Feedback level is instruction-specific but the value ``1`` always represents
+            completion of the instruction.
+
+
+    ABB Documentation - Usage:
+
+        MoveAbsJ (Move Absolute Joint) is used to move the robot and external axes to
+        an absolute position defined in axes positions.
+
+        The final position of the robot during a movement with MoveAbsJ is neither affected
+        by the given tool and work object nor by active program displacement. The robot
+        uses this data to calculate the load, TCP velocity, and the corner path. The same
+        tools can be used in adjacent movement instructions.
+        The robot and external axes move to the destination position along a non-linear
+        path. All axes reach the destination position at the same time.
+        This instruction can only be used in the main task T_ROB1 or, if in a MultiMove
+        system, in Motion tasks.
     """
 
     def __init__(self, joints, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
-        if len(joints) != 6:
-            raise ValueError('Only 6 joints are supported')
-
         self.instruction = INSTRUCTION_PREFIX + 'MoveAbsJ'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
+        joints = joints or []
+        if len(joints) > 6:
+            raise ValueError('Only up to 6 joints are supported')
+        joints_pad = [0.0] * (6 - len(joints))
+
+        ext_axes = ext_axes or []
+        if len(ext_axes) > 6:
+            raise ValueError('Only up to 6 external axes are supported')
+
+        ext_axes_pad = [0.0] * (6 - len(ext_axes))
         self.string_values = []
-        self.float_values = joints + ext_axes + [speed, zone]
+        self.float_values = joints + joints_pad + ext_axes + ext_axes_pad + [speed, zone]
 
 
 if __name__ == '__main__':
