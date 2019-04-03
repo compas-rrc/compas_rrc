@@ -20,5 +20,6 @@ from __future__ import absolute_import
 
 from .client import *
 from .motion import *
+from .project import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
