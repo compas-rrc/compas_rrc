@@ -19,6 +19,7 @@ Motion instructions
 from __future__ import absolute_import
 
 from .client import *
+from .common import *
 from .motion import *
 from .project import *
 

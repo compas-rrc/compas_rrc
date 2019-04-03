@@ -1,14 +1,8 @@
 
 from compas_fab.backends.ros.messages import ROSmsg
+from abb_a042_base_lib.common import ExecutionLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
-
-
-class ExecutionLevel(object):
-    ROBOT = 0
-    RECEIVER = 1
-    SENDER = 2
-    MASTER = 10
 
 
 class Zone(object):

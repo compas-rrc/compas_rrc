@@ -1,8 +1,14 @@
 from compas_fab.backends.ros.messages import ROSmsg
 
+from abb_a042_base_lib.common import ExecutionLevel
+
+class ProjectFeedback(object):
+    """Represents valid feedback levels for project instructions."""
+    NONE = 0
+    DONE = 1
 
 class ProjectInstruction(ROSmsg):
-    def __init__(self, name, string_values=[], float_values=[], feedback_level=MotionFeedback.NONE):
+    def __init__(self, name, string_values=[], float_values=[], feedback_level=ProjectFeedback.NONE):
         self.instruction = name
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
