@@ -55,6 +55,13 @@ class AbbClient(object):
     def run_forever(self):
         self.ros.run_forever()
 
+    def close(self):
+        self.topic.unadvertise()
+        self.feedback.unsubscribe()
+        time.sleep(1)
+
+        self.ros.close()
+
     def terminate(self):
         self.ros.terminate()
 
