@@ -88,17 +88,29 @@ class MoveAbsJ(ROSmsg):
         self.string_values = []
         self.float_values = joints + joints_pad + ext_axes + ext_axes_pad + [speed, zone]
 
+class MoveGeneric(ROSmsg):
+    def __init__(self, frame, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
 
-class MoveJ(ROSmsg):
+        pos = list(frame.point)
+        rot = frame.quaternion
+
+        ext_axes = ext_axes or []
+        if len(ext_axes) > 6:
+            raise ValueError('Only up to 6 external axes are supported')
+        ext_axes_pad = [0.0] * (6 - len(ext_axes))
+
+        self.string_values = []
+        self.float_values = pos + rot + ext_axes + ext_axes_pad + [speed, zone]
+
+class MoveJ(MoveGeneric):
     """Represents a move joint instruction.
 
     Attributes:
 
-        pos (:obj:`list` of :obj:`float`):
-            Translation X, Y and Z positions in milimeters.
-
-        rot (:obj:`list` of :obj:`float`):
-            Rotation Q1, Q2, Q3 and Q4 in quatarnions.
+        frame (:class:`compas.geometry.Frame`):
+            Target frame.
 
         ext_axes (:obj:`list` of :obj:`float`):
             External axes positions, depending on the robotic system,
@@ -128,28 +140,48 @@ class MoveJ(ROSmsg):
         system, in Motion tasks.
 
     """
-
-    def __init__(self, pos, rot, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
+    def __init__(self, frame, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
+        super(MoveJ, self).__init__(frame, ext_axes, speed, zone, feedback_level)
         self.instruction = INSTRUCTION_PREFIX + 'MoveJ'
-        self.feedback_level = feedback_level
-        self.exec_level = ExecutionLevel.ROBOT
 
-        pos = pos or []
-        if len(pos) != 3:
-            raise ValueError('X, Y, Z, values are needed')
 
-        rot = rot or []
-        if len(rot) != 4:
-            raise ValueError('Q1, Q2, Q3, Q4 values are needed')
-        # maybe check the quartinions sum ?
+class MoveL(MoveGeneric):
+    """Represents a move linear instruction.
 
-        ext_axes = ext_axes or []
-        if len(ext_axes) > 6:
-            raise ValueError('Only up to 6 external axes are supported')
-        ext_axes_pad = [0.0] * (6 - len(ext_axes))
+    Attributes:
 
-        self.string_values = []
-        self.float_values = pos + rot + ext_axes + ext_axes_pad + [speed, zone]
+        frame (:class:`compas.geometry.Frame`):
+            Target frame.
+
+        ext_axes (:obj:`list` of :obj:`float`):
+            External axes positions, depending on the robotic system,
+            it can be millimeters for prismatic external axes,
+            or degrees for revolute external axes.
+
+        speed (:obj:`int`):
+            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
+
+        zone (:class:`Zone`):
+            Zone data. Predefined in the robot contrller,
+            only Zone ``fine`` will do a stop point all others are fly by points
+
+        feedback_level (:obj:`int`):
+            Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
+            Feedback level is instruction-specific but the value ``1`` always represents
+            completion of the instruction.
+
+
+    ABB Documentation - Usage:
+
+        MoveL is used to move the tool center point (TCP) linearly to a given
+        destination. When the TCP is to remain stationary then this instruction
+        can also be used to reorientate the tool.
+        This instruction can only be used in the main task T_ROB1 or, if in a
+        MultiMove System, in Motion tasks.
+    """
+    def __init__(self, frame, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
+        super(MoveL, self).__init__(frame, ext_axes, speed, zone, feedback_level)
+        self.instruction = INSTRUCTION_PREFIX + 'MoveL'
 
 
 if __name__ == '__main__':
