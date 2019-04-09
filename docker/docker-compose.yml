@@ -37,4 +37,4 @@ services:
       - --wait
       - abb_042_driver
       - bringup.launch
-      - robot_ip:=host.docker.internal
+      - robot_ip:=192.168.0.21 # robot_ip:=host.docker.internal
