@@ -5,7 +5,7 @@ import re
 import time
 
 if __name__ == '__main__':
-    with open('code.txt', 'r') as f:
+    with open('tests/code.txt', 'r') as f:
         lines = f.readlines()
     regex = re.compile(r'\[(.+?)\],\[(.+?)\],\[(.+?)\],(\d+),(.+)')
 
