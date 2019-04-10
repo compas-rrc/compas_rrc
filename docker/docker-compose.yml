@@ -23,6 +23,7 @@ services:
       - --wait
       - rosbridge_server
       - rosbridge_websocket.launch
+      - unregister_timeout:=28800      # This horribly long timeout of 8 hours is to workaround this issue: https://github.com/RobotWebTools/rosbridge_suite/issues/138
 
   abb-driver:
     image: gramaziokohler/abb-a042-driver
