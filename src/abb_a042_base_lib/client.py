@@ -51,6 +51,7 @@ class AbbClient(object):
 
     def run(self):
         self.ros.run()
+        time.sleep(2)
 
     def run_forever(self):
         self.ros.run_forever()
@@ -66,7 +67,6 @@ class AbbClient(object):
         self.ros.terminate()
 
     def send(self, instruction):
-        # if not hasattr(instruction, 'sequence_id') or not instruction.sequence_id:
         instruction.sequence_id = AbbClient.counter.increment()
         self.topic.publish(roslibpy.Message(instruction.msg))
 
