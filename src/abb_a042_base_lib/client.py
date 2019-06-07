@@ -1,10 +1,11 @@
 import json
-import time
 import threading
+import time
+
 import roslibpy
+from .common import FutureResult
 
 __all__ = ['AbbClient']
-
 
 def _get_key(message):
     return 'msg:{}'.format(message.sequence_id)
@@ -51,29 +52,69 @@ class AbbClient(object):
         self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'abb_042_driver/RobotMessage')
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
-        self.wait_events = {}
+        self.futures = {}
 
     def run(self, timeout=None):
+        """Starts the event loop in a thread."""
         self.ros.run(timeout)
 
     def run_forever(self):
+        """Starts the event loop and blocks."""
         self.ros.run_forever()
 
     def close(self):
+        """Close the connection to the robot."""
         self.topic.unadvertise()
         self.feedback.unsubscribe()
+
+        # Give it a bit of time to unsubscribe
         time.sleep(1)
 
         self.ros.close()
 
     def terminate(self):
+        """Terminate the event loop that controls the connection.
+
+        Once terminated, the program must exit, as the underlying event-loop
+        cannot be restarted."""
         self.ros.terminate()
 
     def send(self, instruction):
+        """Sends an instruction to the robot without waiting.
+
+        Instructions can indicate that feedback is required or not. If
+        the instruction sent does not require feedback, this method
+        returns ``None``. However, if the instruction needs
+        feedback (i.e. ``feedback_level`` is greater than zero), the method
+        returns a future result object that can be used to wait for completion.
+
+        Returns: :class:`FutureResult`
+            Represent the future value of the feedback request. This method
+            will return immediately, and this object can be used to wait or
+            react to the feedback whenever it becomes available.
+
+        Args:
+            instruction: ROS Message representing the instruction to send.
+
+        Returns:
+            :class:`FutureResult`: If ``feedback_level`` is greater than zero,
+                the return is a future object that allows to defer waiting for
+                results.
+        """
         instruction.sequence_id = AbbClient.counter.increment()
+
+        key = _get_key(instruction)
+        result = None
+
+        if instruction.feedback_level > 0:
+            result = FutureResult()
+            self.futures[key] = result
+
         self.topic.publish(roslibpy.Message(instruction.msg))
 
-    def send_and_wait(self, instruction):
+        return result
+
+    def send_and_wait(self, instruction, timeout=None):
         """Send instruction and wait for feedback.
 
         This is a blocking call, it will only return once the client
@@ -81,28 +122,18 @@ class AbbClient(object):
         of the ``instruction`` parameter needs to be greater than zero.
 
         Args:
-            instruction:
-                ROS Message representing the instruction to send.
-
+            instruction: ROS Message representing the instruction to send.
+            timeout (int): Timeout in seconds to wait before raising an exception. Optional.
         """
         if instruction.feedback_level == 0:
             raise ValueError('Feedback level needs to be greater than zero')
 
-        instruction.sequence_id = AbbClient.counter.increment()
-
-        event = threading.Event()
-        self.wait_events[_get_key(instruction)] = event
-
-        # def instruction_response(result):
-        #     print(result)
-        #     context['response'] = json.loads(result['response'])
-        #     event.set()
-
-        self.topic.publish(roslibpy.Message(instruction.msg))
-        event.wait()
+        future = self.send(instruction)
+        return future.result(timeout)
 
     def feedback_callback(self, message):
         response_key = _get_response_key(message)
-        event = self.wait_events.get(response_key)
-        if event:
-            event.set()
+        future = self.futures.pop(response_key, None)
+
+        if future:
+            future._set_result(message)
