@@ -47,11 +47,9 @@ class AbbClient(object):
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
         self.wait_events = {}
-        time.sleep(0.5)
 
-    def run(self):
-        self.ros.run()
-        time.sleep(2)
+    def run(self, timeout=None):
+        self.ros.run(timeout)
 
     def run_forever(self):
         self.ros.run_forever()
@@ -73,7 +71,7 @@ class AbbClient(object):
     def send_and_wait(self, instruction):
         """Send instruction and wait for feedback.
 
-        This is a blocking call, it will only return once the ABB client
+        This is a blocking call, it will only return once the client
         send the requested feedback. For this reason, the ``feedback_level``
         of the ``instruction`` parameter needs to be greater than zero.
 
