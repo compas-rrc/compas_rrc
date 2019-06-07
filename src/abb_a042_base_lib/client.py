@@ -37,13 +37,18 @@ class SequenceCounter(object):
 
 
 class AbbClient(object):
+    """ROS ABB Client.
+
+    This client handles all communication over ROS topics, and implements
+    blocking behaviors as an application-level construct."""
     counter = SequenceCounter()
 
-    """ROS-based ABB Client."""
-    def __init__(self, ros):
+    def __init__(self, ros, namespace='/'):
         self.ros = ros
-        self.topic = roslibpy.Topic(ros, '/abb_command', 'abb_042_driver/AbbMessage')
-        self.feedback = roslibpy.Topic(ros, '/abb_response', 'abb_042_driver/AbbMessage')
+        if not namespace.endswith('/'):
+            namespace += '/'
+        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'abb_042_driver/RobotMessage')
+        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'abb_042_driver/RobotMessage')
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
         self.wait_events = {}
