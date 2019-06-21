@@ -36,7 +36,9 @@ if __name__ == '__main__':
     abb = AbbClient(ros)
     abb.run()
     print('Connected.')
-    instructions = instructions[0:10000]
+    #instructions = instructions[0:1000]
+    #instructions = instructions[0:70000]
+    instructions = instructions[0:10]
 
     for instruction in instructions:
         print(instruction)
@@ -47,7 +49,9 @@ if __name__ == '__main__':
     print('Waiting for last instruction to complete...')
     abb.send_and_wait(last)
 
-    # abb.send_and_wait(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6500, -4500], 2000, Zone.FINE, feedback_level=1))
+    # abb.send(ProjectInstruction('r_A032_AP1_SpeedUpdate', ['First test'], [3.3]))
+
+    abb.send_and_wait(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6500, -4500], 2000, Zone.FINE, feedback_level=1))
 
     # abb.send(ProjectInstruction('r_A032_AP1_SpeedUpdate', ['First test'], [10.5]))
 

@@ -3,6 +3,9 @@ services:
   ros-master:
     image: gramaziokohler/abb-a042-driver
     container_name: ros-master
+    environment:
+      - ROS_HOSTNAME=ros-master
+      - ROS_MASTER_URI=http://ros-master:11311
     ports:
       - "11311:11311"
     command:
@@ -38,6 +41,6 @@ services:
       - --wait
       - abb_042_driver
       - bringup.launch
-      - robot_ip:=192.168.0.21 # robot_ip:=host.docker.internal
+      - robot_ip:=192.168.125.1
       - robot_streaming_port:=30101
       - robot_state_port:=30201

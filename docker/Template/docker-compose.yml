@@ -1,0 +1,51 @@
+version: '3'
+services:
+  ros-master:
+    image: gramaziokohler/abb-a042-driver
+    container_name: ros-master
+    environment:
+      - ROS_HOSTNAME=ros-master
+      - ROS_MASTER_URI=http://ros-master:11311
+    ports:
+      - "11311:11311"
+    command:
+      - roscore
+
+  ros-bridge:
+    image: gramaziokohler/abb-a042-driver
+    container_name: ros-bridge
+    environment:
+      - ROS_HOSTNAME=ros-bridge
+      - ROS_MASTER_URI=http://ros-master:11311
+    ports:
+      - "9090:9090"
+    depends_on:
+      - ros-master
+    command:
+      - roslaunch
+      - --wait
+      - rosbridge_server
+      - rosbridge_websocket.launch
+      - unregister_timeout:=28800      # This horribly long timeout of 8 hours is to workaround this issue: https://github.com/RobotWebTools/rosbridge_suite/issues/138
+
+  abb-driver:
+    image: gramaziokohler/abb-a042-driver
+    container_name: abb-driver
+    environment:
+      - ROS_HOSTNAME=abb-driver
+      - ROS_MASTER_URI=http://ros-master:11311
+    depends_on:
+      - ros-master
+    command:
+      - roslaunch
+      - --wait
+      - abb_042_driver
+      - bringup.launch
+      #- bringup-1_2.launch
+      #- bringup-1_2_3_4.launch
+      # - robot_ip:=192.168.0.21
+      - robot_ip:=host.docker.internal
+      - robot_streaming_port:=30101
+      - robot_state_port:=30201
+      #- robot_streaming_port:=30102
+      #- robot_state_port:=30202
