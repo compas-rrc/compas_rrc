@@ -16,35 +16,58 @@ if __name__ == '__main__':
     speed = 500
 
     # set tool
-    result = abb.send_and_wait(ProjectInstruction('r_A042_SetTool', ['t_A014_T1LaserSensor'],feedback_level=1))
-    print("Set Tool:",result['instruction'])
+    result = abb.send_and_wait(ProjectInstruction('r_A042_SetTool', ['t_A014_T1LaserSensor'], feedback_level=1))
+    print("Set Tool:", result['instruction'])
 
     # set workobject
-    result = abb.send_and_wait(ProjectInstruction('r_A042_SetWorkobject', ['ob_A014_TestBase'],feedback_level=1))
-    print("Set Workobject:",result['instruction'])
+    result = abb.send_and_wait(ProjectInstruction('r_A042_SetWorkobject', ['ob_A014_TestBase'], feedback_level=1))
+    print("Set Workobject:", result['instruction'])
 
-    # get robtarget
-    current_pos = abb.send_and_wait(ProjectInstruction('r_A042_GetRobT',feedback_level=1))
-    print("Current position:",current_pos)
+    x = 250
+    y = 340
+    z = 120
+    q1 = 0
+    q2 = -0.707
+    q3 = 0.707
+    q4 = 0
+    ex = 28000
+    ey = -3700
+    ez = -2800
 
-    Current position: {'float_values': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 496.5726013183594, 340.8928527832031, 343.11944580078125, 2.5251551960536744e-06, -0.7071056365966797, 0.7071079611778259, -1.1295470869754354e-07, 28000.01171875, -3700.000244140625, -2800.000244140625], 'feedback_level': 0, 'feedback': 'Done FError 1', 'instruction': 'r_A042_GetRobT', 'feedback_id': 3, 'sequence_id': 3, 'exec_level': 0, 'string_values': []}
+    # initalizie counter
 
-    # move to scan position
-    # abb.send(MoveAbsJ([90, -55, 45, 180, -10, 45], [28000, -5200, -2500], speed, Zone.FINE))
+    step = 10
+    start = 250
+    end = 300
+    searchposition = start
 
+    # measure loop
+    while searchposition <= end:
 
-    # scan
-    # future = abb.send(ProjectInstruction('r_A014_Scan',feedback_level=1))
+        # create ropot data
+        x = searchposition
+        rob_point = Frame.from_quaternion([q1, q2, q3, q4], [x, y, z])
+        ext_axis = [ex, ey, ez]
 
-    # move from scan position away
-    # abb.send(MoveAbsJ([90, -55, 45, 180, -10, 45], [28000, -5300, -2500], speed, Zone.FINE))
+        # move to scan position
+        abb.send(MoveL(rob_point, ext_axis, speed, Zone.FINE))
 
-    # catch feedback future from scan and print important parameters
-    # result = future.result()
-    # print("Distance:", result['float_values'][0])
-    # print("Measure feedback:", result['string_values'][0])
+        # scan
+        result = abb.send_and_wait(ProjectInstruction('r_A014_Scan', feedback_level=1))
+        distance = result['float_values'][0]
+        feedback_info = result['string_values'][0]
+
+        # print robot feedback
+        print("")
+        print("Distance:", distance)
+        print("Measure feedback:", feedback_info)
+        print("Searchpoint:",searchposition)
+
+        # update searchpostion
+        searchposition += step
 
     # end of code
+    print("")
     print('Finished')
 
     abb.close()

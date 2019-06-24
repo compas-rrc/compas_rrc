@@ -12,6 +12,11 @@ if __name__ == '__main__':
     abb.run()
     print('Connected.')
 
+
+    # get robtarget
+    # current_pos = abb.send_and_wait(ProjectInstruction('r_A042_GetRobT',feedback_level=1))
+    # print("Current position:",current_pos)
+
     # set speed
     speed = 500
 
