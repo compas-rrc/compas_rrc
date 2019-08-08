@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     x = 250
     y = 340
-    z = 120
+    z = 10
     q1 = 0
     q2 = -0.707
     q3 = 0.707
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     step = 10
     start = 250
-    end = 300
+    end = 350
     searchposition = start
 
     # measure loop
