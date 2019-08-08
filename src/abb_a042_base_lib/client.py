@@ -48,7 +48,7 @@ class AbbClient(object):
         self.ros = ros
         if not namespace.endswith('/'):
             namespace += '/'
-        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'abb_042_driver/RobotMessage')
+        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'abb_042_driver/RobotMessage', queue_size=None)
         self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'abb_042_driver/RobotMessage')
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
