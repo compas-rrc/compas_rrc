@@ -42,10 +42,9 @@ class AbbClient(object):
 
     This client handles all communication over ROS topics, and implements
     blocking behaviors as an application-level construct."""
-    counter = SequenceCounter()
-
     def __init__(self, ros, namespace='/'):
         self.ros = ros
+        self.counter = SequenceCounter()
         if not namespace.endswith('/'):
             namespace += '/'
         self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'abb_042_driver/RobotMessage', queue_size=None)
@@ -101,7 +100,7 @@ class AbbClient(object):
                 the return is a future object that allows to defer waiting for
                 results.
         """
-        instruction.sequence_id = AbbClient.counter.increment()
+        instruction.sequence_id = self.counter.increment()
 
         key = _get_key(instruction)
         result = None
