@@ -39,8 +39,6 @@ html_theme = 'alabaster'
 html_theme_options = {
     'logo': 'logo.png',
     'description': 'COMPAS RRC',
-    'bitbucket_user': 'ethrfl',
-    'bitbucket_repo': project,
     'fixed_sidebar': True,
 }
 

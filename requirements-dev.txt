@@ -1,11 +1,12 @@
-sphinx>=1.5
-invoke>=0.14
+autopep8
 bumpversion>=0.5
 check-manifest>=0.36
 flake8
-autopep8
+invoke>=0.14
+isort
 pylint
 pytest
-isort
+sphinx-autobuild
+sphinx>=1.5
 twine
 -e .
