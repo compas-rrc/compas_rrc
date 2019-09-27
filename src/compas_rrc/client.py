@@ -38,17 +38,31 @@ class SequenceCounter(object):
 
 
 class AbbClient(object):
-    """ROS ABB Client.
+    """Client used to communicate with ABB robots via ROS.
 
     This client handles all communication over ROS topics, and implements
-    blocking behaviors as an application-level construct."""
+    blocking behaviors as an application-level construct.
+
+    Examples
+    --------
+
+    >>> from compas_fab.backends import RosClient
+    >>> from compas_rrc import *
+    >>> ros = RosClient()
+    >>> abb = AbbClient(ros)
+    >>> abb.run()
+    >>> abb.ros.is_connected
+    True
+    >>> abb.close()
+
+    """
     def __init__(self, ros, namespace='/'):
         self.ros = ros
         self.counter = SequenceCounter()
         if not namespace.endswith('/'):
             namespace += '/'
-        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'abb_042_driver/RobotMessage', queue_size=None)
-        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'abb_042_driver/RobotMessage')
+        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc/RobotMessage', queue_size=None)
+        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc/RobotMessage')
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
         self.futures = {}
@@ -97,8 +111,8 @@ class AbbClient(object):
 
         Returns:
             :class:`FutureResult`: If ``feedback_level`` is greater than zero,
-                the return is a future object that allows to defer waiting for
-                results.
+            the return is a future object that allows to defer waiting for
+            results.
         """
         instruction.sequence_id = self.counter.increment()
 

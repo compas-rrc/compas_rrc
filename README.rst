@@ -1,6 +1,6 @@
-============================================================
-COMPAS RRC: Library for ABB Robots
-============================================================
+==========
+COMPAS RRC
+==========
 
 .. start-badges
 
@@ -23,21 +23,13 @@ Main features
 * Supports futures and blocking calls
 * Builds on top of COMPAS FAB.
 
-**compas_rrc** runs on Python x.x and x.x.
-
-
-Documentation
--------------
-
-.. Explain how to access documentation: API, examples, etc.
-
-..
-.. optional sections:
+**COMPAS RRC** runs on Python x.x and x.x.
 
 Requirements
 ------------
 
-.. Write requirements instructions here
+``COMPAS RRC`` is part of the ``COMPAS`` framework and it requires
+the core library and the robotic fabrication package ``COMPAS FAB``.
 
 
 Installation

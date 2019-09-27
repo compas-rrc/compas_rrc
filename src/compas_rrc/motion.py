@@ -6,6 +6,7 @@ INSTRUCTION_PREFIX = 'r_A042_'
 
 
 class Zone(object):
+    """Describes the valid zone data definitions."""
     FINE = -1
     Z0 = 0
     Z1 = 1
@@ -54,8 +55,10 @@ class MoveAbsJ(ROSmsg):
             Feedback level is instruction-specific but the value ``1`` always represents
             completion of the instruction.
 
+    Note
+    ----
 
-    ABB Documentation - Usage:
+        ABB Documentation - Usage:
 
         MoveAbsJ (Move Absolute Joint) is used to move the robot and external axes to
         an absolute position defined in axes positions.
@@ -129,8 +132,10 @@ class MoveJ(MoveGeneric):
             Feedback level is instruction-specific but the value ``1`` always represents
             completion of the instruction.
 
+    Note
+    ----
 
-    ABB Documentation - Usage:
+        ABB Documentation - Usage:
 
         MoveJ is used to move the robot quickly from one point to another when that
         movement does not have to be in a straight line.
@@ -170,8 +175,10 @@ class MoveL(MoveGeneric):
             Feedback level is instruction-specific but the value ``1`` always represents
             completion of the instruction.
 
+    Note
+    ----
 
-    ABB Documentation - Usage:
+        ABB Documentation - Usage:
 
         MoveL is used to move the tool center point (TCP) linearly to a given
         destination. When the TCP is to remain stationary then this instruction

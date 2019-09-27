@@ -2,6 +2,7 @@ import threading
 
 
 class ExecutionLevel(object):
+    """Defines the execution level of an instruction."""
     ROBOT = 0
     RECEIVER = 1
     SENDER = 2

@@ -1,6 +1,6 @@
-==================================
-COMPAS RRC: Library for ABB Robots
-==================================
+==========
+COMPAS RRC
+==========
 
 .. start-badges
 
@@ -14,15 +14,16 @@ COMPAS RRC: Library for ABB Robots
 
 .. end-badges
 
-Library of instructions for ABB Robots using COMPAS RRC Driver.
+.. image:: ../images/compas_rrc.png
 
+Library of instructions for ABB Robots using COMPAS RRC Driver.
 
 ========
 Contents
 ========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    readme
    reference/index
