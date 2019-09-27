@@ -122,11 +122,11 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
         folders.append('dist/')
 
     if bytecode:
-        folders.append('src/abb_a042_base_lib/__pycache__')
+        folders.append('src/compas_rrc/__pycache__')
 
     if builds:
         folders.append('build/')
-        folders.append('src/abb_a042_base_lib.egg-info/')
+        folders.append('src/compas_rrc.egg-info/')
 
     for folder in folders:
         rmtree(os.path.join(BASE_FOLDER, folder), ignore_errors=True)

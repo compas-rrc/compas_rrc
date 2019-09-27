@@ -1,32 +1,29 @@
 ============================================================
-abb_a042_base_lib: Base Library ABB Driver
+COMPAS RRC: Library for ABB Robots
 ============================================================
 
 .. start-badges
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
-    :target: https://github.com/ethrfl/abb_a042_base_lib/blob/master/LICENSE
+    :target: https://bitbucket.org/ethrfl/compas_rrc/blob/master/LICENSE
     :alt: License MIT
 
-.. image:: https://travis-ci.org/ethrfl/abb_a042_base_lib.svg?branch=master
-    :target: https://travis-ci.org/ethrfl/abb_a042_base_lib
+.. image:: https://travis-ci.org/ethrfl/compas_rrc.svg?branch=master
+    :target: https://travis-ci.org/ethrfl/compas_rrc
     :alt: Travis CI
 
 .. end-badges
 
-.. Write project description
-
-Base Library for ABB A042 Driver (MoveAbsJ etc.)
-
+Library of instructions for ABB Robots using COMPAS RRC Driver.
 
 Main features
 -------------
 
-* feature
-* feature
-* more features
+* Provides a simple way to interact with ABB robots
+* Supports futures and blocking calls
+* Builds on top of COMPAS FAB.
 
-**abb_a042_base_lib** runs on Python x.x and x.x.
+**compas_rrc** runs on Python x.x and x.x.
 
 
 Documentation
@@ -54,7 +51,7 @@ Contributing
 
 Make sure you setup your local development environment correctly:
 
-* Clone the `abb_a042_base_lib <https://github.com/ethrfl/abb_a042_base_lib>`_ repository.
+* Clone the `compas_rrc <https://bitbucket.org/ethrfl/compas_rrc>`_ repository.
 * Install development dependencies and make the project accessible from Rhino:
 
 ::
@@ -89,4 +86,4 @@ Releasing this project
 Credits
 -------------
 
-This package was created by Philippe Fleischmann <fleischmann@arch.ethz.ch> `@fleischp <https://github.com/fleischp>`_ at `@ethrfl <https://github.com/ethrfl>`_
+This package was created by Philippe Fleischmann <fleischmann@arch.ethz.ch> `@fleischp <https://github.com/fleischp>`_ at `@ethrfl <https://bitbucket.org/ethrfl>`_

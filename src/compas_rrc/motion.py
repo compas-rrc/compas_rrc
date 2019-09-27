@@ -1,6 +1,6 @@
 
 from compas_fab.backends.ros.messages import ROSmsg
-from abb_a042_base_lib.common import ExecutionLevel
+from compas_rrc.common import ExecutionLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -182,30 +182,3 @@ class MoveL(MoveGeneric):
     def __init__(self, frame, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
         super(MoveL, self).__init__(frame, ext_axes, speed, zone, feedback_level)
         self.instruction = INSTRUCTION_PREFIX + 'MoveL'
-
-
-if __name__ == '__main__':
-    import time
-    import roslibpy
-
-    print('Start test')
-
-    ros = roslibpy.Ros('127.0.0.1', 9090)
-    topic = roslibpy.Topic(ros, '/abb_command', 'abb_042_driver/AbbMessage')
-    topic.advertise()
-    time.sleep(0.5)
-
-    def send_test_instruction():
-        # robjoints = [90, 45, 30, 0, 10, 20]
-        # gantry_axis_x = 10000
-        # gantry_axis_y = -5000
-        # gantry_axis_z = -2000
-        # speed = 200
-        # zone = fine
-
-        instruction = MoveAbsJ([90, 45, 34, 1, 10, 20], [10000, -5000, -2000], 200, Zone.FINE)
-        print(instruction)
-        topic.publish(roslibpy.Message(instruction.msg))
-
-    ros.on_ready(send_test_instruction)
-    ros.run_forever()

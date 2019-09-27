@@ -21,26 +21,26 @@ if os.getenv('SPELLCHECK'):
 
 source_suffix = '.rst'
 master_doc = 'index'
-project = 'abb_a042_base_lib'
+project = 'compas_rrc'
 year = '2018'
-author = 'Gramazio Kohler Research'
+author = 'ETH Zurich'
 copyright = '{0}, {1}'.format(year, author)
 version = release = '0.1.0'
 
 pygments_style = 'trac'  # Perhaps change to sphinx
 templates_path = ['.']
 extlinks = {
-    'issue': ('https://github.com/ethrfl/abb_a042_base_lib/issues/%s', '#'),
-    'pr': ('https://github.com/ethrfl/abb_a042_base_lib/pull/%s', 'PR #'),
+    'issue': ('https://bitbucket.org/ethrfl/compas_rrc/issues/%s', '#'),
+    'pr': ('https://bitbucket.org/ethrfl/compas_rrc/pull/%s', 'PR #'),
 }
 # on_rtd is whether we are on readthedocs.org
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 html_theme = 'alabaster'
 html_theme_options = {
     'logo': 'logo.png',
-    'description': 'Base Library ABB Driver',
-    'github_user': 'ethrfl',
-    'github_repo': project,
+    'description': 'COMPAS RRC',
+    'bitbucket_user': 'ethrfl',
+    'bitbucket_repo': project,
     'fixed_sidebar': True,
 }
 

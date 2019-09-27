@@ -9,9 +9,7 @@ from os.path import abspath, basename, dirname, join, splitext
 
 from setuptools import find_packages, setup
 
-# NOTE: Write dependencies (i.e. http://python-packaging.readthedocs.io/en/latest/dependencies.html)
 requirements = ['compas_fab', 'roslibpy>=0.6']
-# NOTE: Write a list of keywords (i.e. ['ros', 'ros-bridge', 'robotics', 'websockets'])
 keywords_list = []
 
 here = abspath(dirname(__file__))
@@ -25,7 +23,7 @@ def read(*names, **kwargs):
 
 
 about = {}
-exec(read('src', 'abb_a042_base_lib', '__version__.py'), about)
+exec(read('src', 'compas_rrc', '__version__.py'), about)
 
 setup(
     name=about['__title__'],
@@ -46,7 +44,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: MIT License',

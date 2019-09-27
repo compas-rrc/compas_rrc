@@ -1,4 +1,4 @@
-from abb_a042_base_lib import *
+from compas_rrc import *
 from compas.geometry import Frame
 from compas_fab.backends.ros import RosClient
 import re
@@ -8,7 +8,7 @@ if __name__ == '__main__':
     with open('tests/code.txt', 'r') as f:
         lines = f.readlines()
     regex = re.compile(r'\[(.+?)\],\[(.+?)\],\[(.+?)\],(\d+),(.+)')
-
+    lines = lines[0:10]
     print('Read %d lines of code, ready to connect.' % len(lines))
 
     instructions = []
@@ -36,13 +36,18 @@ if __name__ == '__main__':
     abb = AbbClient(ros)
     abb.run()
     print('Connected.')
-    #instructions = instructions[0:1000]
+    # instructions = instructions[0:1000]
+    # instructions = instructions[0:3000]
     #instructions = instructions[0:70000]
-    instructions = instructions[0:10]
+    # instructions = instructions[0:10]
 
-    for instruction in instructions:
-        print(instruction)
+    # for instruction in instructions:
+    for i in range(100000):
+        # print(instruction)
+        instruction = ProjectInstruction('r_A042_Dummy', [], [])
         abb.send(instruction)
+        if instruction.sequence_id % 300 == 0:
+            print(instruction)
 
     last = instructions[-1]
     last.feedback_level = MotionFeedback.DONE
@@ -51,7 +56,7 @@ if __name__ == '__main__':
 
     # abb.send(ProjectInstruction('r_A032_AP1_SpeedUpdate', ['First test'], [3.3]))
 
-    abb.send_and_wait(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6500, -4500], 2000, Zone.FINE, feedback_level=1))
+    # abb.send_and_wait(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6500, -4500], 2000, Zone.FINE, feedback_level=1))
 
     # abb.send(ProjectInstruction('r_A032_AP1_SpeedUpdate', ['First test'], [10.5]))
 

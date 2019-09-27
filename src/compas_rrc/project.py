@@ -1,6 +1,6 @@
 from compas_fab.backends.ros.messages import ROSmsg
 
-from abb_a042_base_lib.common import ExecutionLevel
+from compas_rrc.common import ExecutionLevel
 
 class ProjectFeedback(object):
     """Represents valid feedback levels for project instructions."""

@@ -1,22 +1,20 @@
-============================
-abb_a042_base_lib: Base Library ABB Driver
-============================
+==================================
+COMPAS RRC: Library for ABB Robots
+==================================
 
 .. start-badges
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
-    :target: https://github.com/ethrfl/abb_a042_base_lib/blob/master/LICENSE
+    :target: https://bitbucket.org/ethrfl/compas_rrc/blob/master/LICENSE
     :alt: License MIT
 
-.. image:: https://travis-ci.org/ethrfl/abb_a042_base_lib.svg?branch=master
-    :target: https://travis-ci.org/ethrfl/abb_a042_base_lib
+.. image:: https://travis-ci.org/ethrfl/compas_rrc.svg?branch=master
+    :target: https://travis-ci.org/ethrfl/compas_rrc
     :alt: Travis CI
 
 .. end-badges
 
-.. Write project description
-
-**Base Library for ABB A042 Driver (MoveAbsJ etc.) ** ...
+Library of instructions for ABB Robots using COMPAS RRC Driver.
 
 
 ========

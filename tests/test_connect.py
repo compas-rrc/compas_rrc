@@ -1,4 +1,4 @@
-from abb_a042_base_lib import *
+from compas_rrc import *
 from compas.geometry import Frame
 from compas_fab.backends.ros import RosClient
 import time
