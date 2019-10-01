@@ -61,8 +61,8 @@ class AbbClient(object):
         self.counter = SequenceCounter()
         if not namespace.endswith('/'):
             namespace += '/'
-        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc/RobotMessage', queue_size=None)
-        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc/RobotMessage')
+        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc_driver/RobotMessage', queue_size=None)
+        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage')
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
         self.futures = {}
