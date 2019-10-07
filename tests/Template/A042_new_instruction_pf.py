@@ -13,7 +13,7 @@ if __name__ == '__main__':
     print('Connected.')
 
     # Stop
-    abb.send(Stop)
+    abb.send(Stop())
 
     # end of code
     print('Finished')
