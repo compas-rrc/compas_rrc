@@ -16,11 +16,11 @@ if __name__ == '__main__':
     speed = 500
 
     # set tool
-    result = abb.send_and_wait(ProjectInstruction('r_A042_SetTool', ['t_A014_T1LaserSensor'], feedback_level=1))
+    result = abb.send_and_wait(ProjectInstruction('r_A042_SetTool', ['t_A014_T1_vLaserSensor'], feedback_level=1))
     print("Set Tool:", result['instruction'])
 
     # set workobject
-    result = abb.send_and_wait(ProjectInstruction('r_A042_SetWorkobject', ['ob_A014_TestBase'], feedback_level=1))
+    result = abb.send_and_wait(ProjectInstruction('r_A042_SetWorkobject', ['ob_A014_TestBase_Virtual'], feedback_level=1))
     print("Set Workobject:", result['instruction'])
 
     # move to scan position

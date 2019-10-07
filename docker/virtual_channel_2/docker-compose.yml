@@ -39,7 +39,7 @@ services:
     command:
       - roslaunch
       - --wait
-      - compas_rrc
+      - compas_rrc_driver
       - bringup.launch
       - robot_ip:=host.docker.internal
       - robot_streaming_port:=30102

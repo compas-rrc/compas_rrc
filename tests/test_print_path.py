@@ -5,10 +5,11 @@ import re
 import time
 
 if __name__ == '__main__':
-    with open('tests/code.txt', 'r') as f:
+    # with open('tests/code.txt', 'r') as f:
+    with open('tests/20190925beam print.txt', 'r') as f:
         lines = f.readlines()
     regex = re.compile(r'\[(.+?)\],\[(.+?)\],\[(.+?)\],(\d+),(.+)')
-    lines = lines[0:10]
+    # lines = lines[0:10]
     print('Read %d lines of code, ready to connect.' % len(lines))
 
     instructions = []
@@ -36,35 +37,37 @@ if __name__ == '__main__':
     abb = AbbClient(ros)
     abb.run()
     print('Connected.')
+
+    # set tool
+    result = abb.send_and_wait(ProjectInstruction('r_A042_SetTool', ['t_A032_PrintNozzle2'], feedback_level=1))
+    print("Set Tool:", result['instruction'])
+
+    # set workobject
+    result = abb.send_and_wait(ProjectInstruction('r_A042_SetWorkobject', ['ob_A032_Pal1'], feedback_level=1))
+    print("Set Workobject:", result['instruction'])
+
     # instructions = instructions[0:1000]
     # instructions = instructions[0:3000]
-    #instructions = instructions[0:70000]
-    # instructions = instructions[0:10]
+    # instructions = instructions[0:70000]
+    instructions = instructions[0:-1]
 
-    # for instruction in instructions:
-    for i in range(100000):
-        # print(instruction)
-        instruction = ProjectInstruction('r_A042_Dummy', [], [])
+    for instruction in instructions:
+        print(instruction)
         abb.send(instruction)
-        if instruction.sequence_id % 300 == 0:
-            print(instruction)
+
+    # for i in range(100000):
+    #     print(instruction)
+    #     instruction = ProjectInstruction('r_A042_Dummy', [], [])
+    #     instruction = instructions
+    #     abb.send(instruction)
+    #     if instruction.sequence_id % 300 == 0:
+    #         print(instruction)
 
     last = instructions[-1]
     last.feedback_level = MotionFeedback.DONE
+
     print('Waiting for last instruction to complete...')
     abb.send_and_wait(last)
-
-    # abb.send(ProjectInstruction('r_A032_AP1_SpeedUpdate', ['First test'], [3.3]))
-
-    # abb.send_and_wait(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6500, -4500], 2000, Zone.FINE, feedback_level=1))
-
-    # abb.send(ProjectInstruction('r_A032_AP1_SpeedUpdate', ['First test'], [10.5]))
-
-    # abb.send(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6500, -3500], 2000, Zone.Z200))
-    # abb.send(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6000, -3500], 2000, Zone.Z200))
-    # abb.send(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -7000, -3500], 2000, Zone.Z200))
-    # abb.send(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6500, -3500], 2000, Zone.Z200))
-    # abb.send_and_wait(MoveAbsJ([90, 45, 0, 1, 10, 20], [28000, -6500, -4500], 2000, Zone.FINE, feedback_level=1))
 
     print('Finished')
 
