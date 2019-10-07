@@ -1,5 +1,4 @@
 from compas_fab.backends.ros.messages import ROSmsg
-
 from compas_rrc.common import ExecutionLevel
 
 class ProjectFeedback(object):
