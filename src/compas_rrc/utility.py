@@ -32,3 +32,11 @@ class SetTool(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [tool_name]
         self.float_values = []
+
+class SetWobj(ROSmsg):
+    def __init__(self, wobj_name, feedback_level=UtilityFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'SetWobj'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = [wobj_name]
+        self.float_values = []

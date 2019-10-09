@@ -37,6 +37,12 @@ if __name__ == '__main__':
         abb.send(WaitTime(3))
         result = abb.send_and_wait(SetTool('tool0', feedback_level=1))
 
+    # SetWobj (Workobject)
+    if on:
+        result = abb.send_and_wait(SetWobj('ob_A032_Pal2', feedback_level=1))
+        abb.send(WaitTime(3))
+        result = abb.send_and_wait(SetWobj('wobj0', feedback_level=1))
+
     # end of code
     print('Finished')
 
