@@ -16,3 +16,11 @@ class Stop(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
+
+class WaitTime(ROSmsg):
+    def __init__(self, time, feedback_level=UtilityFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'WaitTime'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = []
+        self.float_values = [time]
