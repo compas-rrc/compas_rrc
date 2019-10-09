@@ -31,6 +31,12 @@ if __name__ == '__main__':
         abb.send(WaitTime(3))
         result = abb.send_and_wait(ResetDo('doA032_AP1On', feedback_level=1))
 
+    # SetTool
+    if off:
+        result = abb.send_and_wait(SetTool('t_A032_PrintNozzle', feedback_level=1))
+        abb.send(WaitTime(3))
+        result = abb.send_and_wait(SetTool('tool0', feedback_level=1))
+
     # end of code
     print('Finished')
 

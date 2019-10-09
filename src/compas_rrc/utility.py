@@ -24,3 +24,11 @@ class WaitTime(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = [time]
+
+class SetTool(ROSmsg):
+    def __init__(self, tool_name, feedback_level=UtilityFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'SetTool'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = [tool_name]
+        self.float_values = []
