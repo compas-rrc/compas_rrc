@@ -74,6 +74,6 @@ from .client import *
 from .common import *
 from .motion import *
 from .project import *
-from .new import *
+from .utility import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
