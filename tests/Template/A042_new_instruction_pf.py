@@ -22,8 +22,14 @@ if __name__ == '__main__':
 
     # WaitTime
     if off:
-        abb.send(WaitTime(5))
+        abb.send(WaitTime(3))
         result = abb.send_and_wait(WaitTime(1.22, feedback_level=1))
+
+    # SetDo and ResetDo
+    if off:
+        result = abb.send_and_wait(SetDo('doA032_AP1On', feedback_level=1))
+        abb.send(WaitTime(3))
+        result = abb.send_and_wait(ResetDo('doA032_AP1On', feedback_level=1))
 
     # end of code
     print('Finished')

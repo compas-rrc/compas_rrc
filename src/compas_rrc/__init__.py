@@ -75,5 +75,6 @@ from .common import *
 from .motion import *
 from .project import *
 from .utility import *
+from .io import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
