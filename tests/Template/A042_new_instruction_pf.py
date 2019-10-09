@@ -14,6 +14,7 @@ if __name__ == '__main__':
 
     # Stop
     abb.send(Stop())
+    result = abb.send_and_wait(Stop(feedback_level=1))
 
     # end of code
     print('Finished')
