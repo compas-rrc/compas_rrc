@@ -32,7 +32,7 @@ if __name__ == '__main__':
         result = abb.send_and_wait(ResetDo('doA032_AP1On', feedback_level=1))
 
     # PulseDo
-    if on:
+    if off:
         result = abb.send_and_wait(PulseDo('doA032_AP1On', 2.5, feedback_level=1))
 
     # SetTool
