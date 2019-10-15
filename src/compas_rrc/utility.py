@@ -16,6 +16,14 @@ class Dummy(ROSmsg):
         self.string_values = []
         self.float_values = []
 
+class GetJointT(ROSmsg):
+    def __init__(self, feedback_level=UtilityFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'GetJointT'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = []
+        self.float_values = []
+
 class SetAcc(ROSmsg):
     def __init__(self, acc, ramp, feedback_level=UtilityFeedback.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetAcc'
