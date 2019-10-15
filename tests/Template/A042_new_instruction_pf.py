@@ -55,6 +55,10 @@ if __name__ == '__main__':
         abb.send(WaitTime(3))
         result = abb.send_and_wait(SetWobj('wobj0', feedback_level=1))
 
+    # TPWrite
+    if off:
+        result = abb.send_and_wait(TPWrite('Compas RCC', feedback_level=1))
+
     # end of code
     print('Finished')
 
