@@ -24,6 +24,14 @@ class SetTool(ROSmsg):
         self.string_values = [tool_name]
         self.float_values = []
 
+class SetVel(ROSmsg):
+    def __init__(self, override, max_tcp, feedback_level=UtilityFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'SetVel'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = []
+        self.float_values = [override, max_tcp]
+
 class SetWobj(ROSmsg):
     def __init__(self, wobj_name, feedback_level=UtilityFeedback.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetWobj'
