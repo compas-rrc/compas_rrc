@@ -8,6 +8,14 @@ class UtilityFeedback(object):
     NONE = 0
     DONE = 1
 
+class Dummy(ROSmsg):
+    def __init__(self, feedback_level=UtilityFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'Dummy'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = []
+        self.float_values = []
+
 class SetAcc(ROSmsg):
     def __init__(self, acc, ramp, feedback_level=UtilityFeedback.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetAcc'

@@ -15,6 +15,10 @@ if __name__ == '__main__':
     on = True
     off = False
 
+    # Dummy
+    if on:
+        result = abb.send_and_wait(Dummy(feedback_level=1))
+
     # Stop
     if off:
         abb.send(Stop())
