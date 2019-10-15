@@ -35,6 +35,10 @@ if __name__ == '__main__':
     if off:
         result = abb.send_and_wait(PulseDo('doA032_AP1On', 2.5, feedback_level=1))
 
+    # SetAcc
+    if on:
+        result = abb.send_and_wait(SetAcc(33, 44, feedback_level=1))
+
     # SetTool
     if off:
         result = abb.send_and_wait(SetTool('t_A032_PrintNozzle', feedback_level=1))
