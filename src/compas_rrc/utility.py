@@ -8,6 +8,22 @@ class UtilityFeedback(object):
     NONE = 0
     DONE = 1
 
+class SetTool(ROSmsg):
+    def __init__(self, tool_name, feedback_level=UtilityFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'SetTool'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = [tool_name]
+        self.float_values = []
+
+class SetWobj(ROSmsg):
+    def __init__(self, wobj_name, feedback_level=UtilityFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'SetWobj'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = [wobj_name]
+        self.float_values = []
+
 class Stop(ROSmsg):
 
     def __init__(self, feedback_level=UtilityFeedback.NONE):
@@ -24,19 +40,3 @@ class WaitTime(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = [time]
-
-class SetTool(ROSmsg):
-    def __init__(self, tool_name, feedback_level=UtilityFeedback.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'SetTool'
-        self.feedback_level = feedback_level
-        self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = [tool_name]
-        self.float_values = []
-
-class SetWobj(ROSmsg):
-    def __init__(self, wobj_name, feedback_level=UtilityFeedback.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'SetWobj'
-        self.feedback_level = feedback_level
-        self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = [wobj_name]
-        self.float_values = []
