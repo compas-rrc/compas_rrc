@@ -121,7 +121,8 @@ class AbbClient(object):
 
         if instruction.feedback_level > 0:
             result = FutureResult()
-            self.futures[key] = result
+            parser = instruction.parse_feedback if hasattr(instruction, 'parse_feedback') else None
+            self.futures[key] = dict(result=result, parser=parser)
 
         self.topic.publish(roslibpy.Message(instruction.msg))
 
@@ -149,4 +150,8 @@ class AbbClient(object):
         future = self.futures.pop(response_key, None)
 
         if future:
-            future._set_result(message)
+            result = message
+            if future['parser']:
+                result = future['parser'](result)
+
+            future['result']._set_result(result)
