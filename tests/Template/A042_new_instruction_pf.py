@@ -25,21 +25,9 @@ if __name__ == '__main__':
         print(result)
 
     # GetRobT
-    if off:
+    if on:
         result = abb.send_and_wait(GetRobT(feedback_level=1))
-        print()
-        print('Pos X =', round(result['float_values'][17],2))
-        print('Pos y =', round(result['float_values'][18],2))
-        print('Pos z =', round(result['float_values'][19],2))
-        print('Orient q1 =', round(result['float_values'][20],2))
-        print('Orient q2 =', round(result['float_values'][21],2))
-        print('Orient q3 =', round(result['float_values'][22],2))
-        print('Orient q4 =', round(result['float_values'][23],2))
-        print()
-        print('Gantry Joint X =', round(result['float_values'][24],2))
-        print('Gantry Joint Y =', round(result['float_values'][25],2))
-        print('Gantry Joint Z =', round(result['float_values'][26],2))
-        print()
+        print(result)
 
     # Stop
     if off:
@@ -52,7 +40,7 @@ if __name__ == '__main__':
         result = abb.send_and_wait(WaitTime(1.22, feedback_level=1))
 
     # SetDo and ResetDo
-    if on:
+    if off:
         result = abb.send_and_wait(SetDo('doA032_AP1On', feedback_level=1))
         abb.send(WaitTime(3))
         result = abb.send_and_wait(ResetDo('doA032_AP1On', feedback_level=1))
@@ -91,4 +79,4 @@ if __name__ == '__main__':
     abb.close()
     abb.terminate()
 
-    time.sleep(3)
+    # time.sleep(3)

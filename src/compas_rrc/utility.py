@@ -1,4 +1,5 @@
 from compas_fab.backends.ros.messages import ROSmsg
+from compas.geometry import Frame
 from compas_rrc.common import ExecutionLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
@@ -53,6 +54,38 @@ class GetRobT(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
+
+    def parse_feedback(self, result):
+
+        # read pos
+        self.pos_x = round(result['float_values'][17],2)
+        self.pos_y = round(result['float_values'][18],2)
+        self.pos_z = round(result['float_values'][19],2)
+        self.pos = [self.pos_x, self.pos_y, self.pos_z]
+
+        # read orient
+        self.orient_q1 = round(result['float_values'][20],4)
+        self.orient_q2 = round(result['float_values'][21],4)
+        self.orient_q3 = round(result['float_values'][22],4)
+        self.orient_q4 = round(result['float_values'][23],4)
+        self.orient = [self.orient_q1, self.orient_q2, self.orient_q3, self.orient_q4]
+
+        # read gantry joints
+        self.ext_axes_1 = round(result['float_values'][24],2)
+        self.ext_axes_2 = round(result['float_values'][25],2)
+        self.ext_axes_3 = round(result['float_values'][26],2)
+        self.ext_axes = [self.ext_axes_1, self.ext_axes_2, self.ext_axes_3]
+
+        # write result
+
+        # As compas frame
+        result = Frame.from_quaternion([self.orient_q1, self.orient_q2, self.orient_q3, self.orient_q4], point=[self.pos_x, self.pos_y, self.pos_z])
+
+        # As pos, orient and external axes values
+        # result = [self.pos, self.orient, self.ext_axes]
+
+        # End
+        return result
 
 class SetAcc(ROSmsg):
     def __init__(self, acc, ramp, feedback_level=UtilityFeedback.NONE):
