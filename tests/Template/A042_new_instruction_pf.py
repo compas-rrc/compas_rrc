@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
     # Read digital input
     if on:
-        result = abb.send_and_wait(ReadDi('aiA032_CP1TubePr', feedback_level=1))
+        result = abb.send_and_wait(ReadDi('diA032_CP1Ready', feedback_level=1))
         print(result)
 
     # Read group input
