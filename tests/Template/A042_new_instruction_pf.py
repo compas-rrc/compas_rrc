@@ -69,13 +69,13 @@ if __name__ == '__main__':
         print(result)
 
     # Read digital input
-    if on:
+    if off:
         result = abb.send_and_wait(ReadDi('diA032_CP1Ready', feedback_level=1))
         print(result)
 
     # Read group input
-    if off:
-        result = abb.send_and_wait(ReadGi('aiA032_CP1TubePr', feedback_level=1))
+    if on:
+        result = abb.send_and_wait(ReadGi('giA014_T1AIn1Sta', feedback_level=1))
         print(result)
 
     # Reset digital output

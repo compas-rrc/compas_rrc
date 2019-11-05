@@ -48,7 +48,7 @@ class ReadAi(ROSmsg):
 
     def parse_feedback(self, result):
 
-        # read analog input value
+        # read input value
         result = round(result['float_values'][0],2)
         return result
 
@@ -62,7 +62,20 @@ class ReadDi(ROSmsg):
 
     def parse_feedback(self, result):
 
-        # read analog input value
+        # read input value
         result = int(result['float_values'][0])
         return result
 
+class ReadGi(ROSmsg):
+
+    def __init__(self, io_name, feedback_level=IOFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'ReadGi'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = [io_name]
+
+    def parse_feedback(self, result):
+
+        # read input value
+        result = int(result['float_values'][0])
+        return result
