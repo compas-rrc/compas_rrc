@@ -87,7 +87,7 @@ if __name__ == '__main__':
         result = abb.send_and_wait(SetAcc(33, 44, feedback_level=1))
 
     # Set analog output
-    if on:
+    if off:
         result = abb.send_and_wait(SetAo('aoA032_AP1Speed', 225.75 , feedback_level=1))
 
     # Set digital output
@@ -95,6 +95,8 @@ if __name__ == '__main__':
         result = abb.send_and_wait(SetDo('doA032_AP1On', feedback_level=1))
 
     # Set group output
+    if on:
+        result = abb.send_and_wait(SetGo('goA032_TestRRC', 255 , feedback_level=1))
 
     # Set tool
     if off:
