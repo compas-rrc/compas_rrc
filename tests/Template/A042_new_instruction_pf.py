@@ -42,7 +42,7 @@ if __name__ == '__main__':
         print(done)
 
     # Move joint
-    if on:
+    if off:
         current_robtarget = abb.send_and_wait(GetRobT(feedback_level=1))
         current_joints = abb.send_and_wait(GetJointT(feedback_level=1))
         ext_axes = current_joints[1]
@@ -51,6 +51,13 @@ if __name__ == '__main__':
         done = abb.send_and_wait(MoveJ(current_robtarget, ext_axes, 200, Zone.FINE,feedback_level=1))
 
     # Move linear
+    if off:
+        current_robtarget = abb.send_and_wait(GetRobT(feedback_level=1))
+        current_joints = abb.send_and_wait(GetJointT(feedback_level=1))
+        ext_axes = current_joints[1]
+        current_robtarget.point[2] = current_robtarget.point[2] + 50
+        print(current_robtarget.point)
+        done = abb.send_and_wait(MoveL(current_robtarget, ext_axes, 200, Zone.FINE,feedback_level=1))
 
     # PulseDo
     if off:
