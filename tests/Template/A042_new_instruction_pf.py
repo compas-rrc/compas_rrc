@@ -64,10 +64,19 @@ if __name__ == '__main__':
         result = abb.send_and_wait(PulseDo('doA032_AP1On', 2.5, feedback_level=1))
 
     # Read analog input
+    if off:
+        result = abb.send_and_wait(ReadAi('aiA032_CP1TubePr', feedback_level=1))
+        print(result)
 
     # Read digital input
+    if on:
+        result = abb.send_and_wait(ReadDi('aiA032_CP1TubePr', feedback_level=1))
+        print(result)
 
     # Read group input
+    if off:
+        result = abb.send_and_wait(ReadGi('aiA032_CP1TubePr', feedback_level=1))
+        print(result)
 
     # Reset digital output
 

@@ -37,3 +37,17 @@ class PulseDo(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
         self.float_values = [pulse_time]
+
+class ReadAi(ROSmsg):
+
+    def __init__(self, io_name, feedback_level=IOFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'ReadAi'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = [io_name]
+
+    def parse_feedback(self, result):
+
+        # read analog input value
+        result = round(result['float_values'][0],2)
+        return result
