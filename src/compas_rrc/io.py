@@ -19,6 +19,16 @@ class SetDo(ROSmsg):
         self.float_values = []
 
 
+class SetAo(ROSmsg):
+
+    def __init__(self, io_name, value, feedback_level=IOFeedback.NONE):
+        self.instruction = INSTRUCTION_PREFIX + 'SetAo'
+        self.feedback_level = feedback_level
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = [io_name]
+        self.float_values = [value]
+
+
 class ResetDo(ROSmsg):
 
     def __init__(self, io_name, feedback_level=IOFeedback.NONE):

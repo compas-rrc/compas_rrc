@@ -87,6 +87,8 @@ if __name__ == '__main__':
         result = abb.send_and_wait(SetAcc(33, 44, feedback_level=1))
 
     # Set analog output
+    if on:
+        result = abb.send_and_wait(SetAo('aoA032_AP1Speed', 225.75 , feedback_level=1))
 
     # Set digital output
     if off:
