@@ -74,11 +74,13 @@ if __name__ == '__main__':
         print(result)
 
     # Read group input
-    if on:
+    if off:
         result = abb.send_and_wait(ReadGi('giA014_T1AIn1Sta', feedback_level=1))
         print(result)
 
     # Reset digital output
+    if off:
+        result = abb.send_and_wait(ResetDo('doA032_AP1On', feedback_level=1))
 
     # SetAcc
     if off:
@@ -87,11 +89,8 @@ if __name__ == '__main__':
     # Set analog output
 
     # Set digital output
-    # SetDo and ResetDo
     if off:
         result = abb.send_and_wait(SetDo('doA032_AP1On', feedback_level=1))
-        abb.send(WaitTime(3))
-        result = abb.send_and_wait(ResetDo('doA032_AP1On', feedback_level=1))
 
     # Set group output
 
