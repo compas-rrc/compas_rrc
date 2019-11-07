@@ -95,7 +95,7 @@ if __name__ == '__main__':
         result = abb.send_and_wait(SetDo('doA032_AP1On', feedback_level=1))
 
     # Set group output
-    if on:
+    if off:
         result = abb.send_and_wait(SetGo('goA032_TestRRC', 255 , feedback_level=1))
 
     # Set tool
@@ -129,11 +129,17 @@ if __name__ == '__main__':
         result = abb.send_and_wait(WaitTime(1.22, feedback_level=1))
 
     # Watch read
+    if off:
+        result = abb.send_and_wait(WatchRead(feedback_level=1))
+        print(result)
 
     # Watch start
+    if off:
+        result = abb.send_and_wait(WatchStart(feedback_level=1))
 
     # watch stop
-
+    if off:
+        result = abb.send_and_wait(WatchStop(feedback_level=1))
 
     # end of code
     print('Finished')

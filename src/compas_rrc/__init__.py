@@ -77,5 +77,6 @@ from .project import *
 from .utility import *
 from .io import *
 from .msg import *
+from .watch import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
