@@ -1,6 +1,7 @@
 from compas_fab.backends.ros.messages import ROSmsg
 from compas.geometry import Frame
 from compas_rrc.common import ExecutionLevel
+from compas_fab.robots import Configuration
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -43,8 +44,7 @@ class GetJointT(ROSmsg):
         gantry_joint = [gantry_joint_x, gantry_joint_y, gantry_joint_z]
 
         # write result
-        result = [robot_joint, gantry_joint]
-        return result
+        return Configuration.from_prismatic_and_revolute_values(gantry_joint, robot_joint)
 
 
 class GetRobT(ROSmsg):

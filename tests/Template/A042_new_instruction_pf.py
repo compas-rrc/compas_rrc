@@ -129,16 +129,18 @@ if __name__ == '__main__':
         result = abb.send_and_wait(WaitTime(1.22, feedback_level=1))
 
     # Watch read
-    if off:
+    if on:
         result = abb.send_and_wait(WatchRead(feedback_level=1))
         print(result)
 
     # Watch start
-    if off:
+    if on:
         result = abb.send_and_wait(WatchStart(feedback_level=1))
+        #abb.send(WatchStart(feedback_level=0))
+
 
     # watch stop
-    if off:
+    if on:
         result = abb.send_and_wait(WatchStop(feedback_level=1))
 
     # end of code
