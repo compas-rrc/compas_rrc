@@ -5,7 +5,6 @@ import re
 import time
 
 if __name__ == '__main__':
-
     ros = RosClient()
 
     abb = AbbClient(ros)
@@ -20,9 +19,11 @@ if __name__ == '__main__':
         result = abb.send_and_wait(Dummy(feedback_level=1))
 
     # Get jointtarget
-    if off:
+    if on:
         result = abb.send_and_wait(GetJointT(feedback_level=1))
         print(result)
+        print(result.robot_joints)
+        print(result.external_axes)
 
     # Get robtarget
     if off:
@@ -30,14 +31,13 @@ if __name__ == '__main__':
         print(result)
 
     # Move absolut joint
-    if off:
-        current_joints = abb.send_and_wait(GetJointT(feedback_level=1))
-        rob_axes = current_joints[0]
-        ext_axes = current_joints[1]
-        rob_axes[0] = rob_axes[0] + 5
-        print(current_joints)
+    if on:
+        import math
+        result = abb.send_and_wait(GetJointT(feedback_level=1))
+        rob_axes = result.robot_joints
+        ext_axes = result.external_axes
+        rob_axes.values[0] += math.radians(5)
         print(rob_axes)
-        print(ext_axes)
         done = abb.send_and_wait(MoveAbsJ(rob_axes, ext_axes, 200, Zone.FINE,feedback_level=1))
         print(done)
 
@@ -129,18 +129,18 @@ if __name__ == '__main__':
         result = abb.send_and_wait(WaitTime(1.22, feedback_level=1))
 
     # Watch read
-    if on:
+    if off:
         result = abb.send_and_wait(WatchRead(feedback_level=1))
         print(result)
 
     # Watch start
-    if on:
+    if off:
         result = abb.send_and_wait(WatchStart(feedback_level=1))
         #abb.send(WatchStart(feedback_level=0))
 
 
     # watch stop
-    if on:
+    if off:
         result = abb.send_and_wait(WatchStop(feedback_level=1))
 
     # end of code

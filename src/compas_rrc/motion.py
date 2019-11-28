@@ -1,6 +1,12 @@
+import math
 
 from compas_fab.backends.ros.messages import ROSmsg
+from compas_fab.robots import Configuration
+
 from compas_rrc.common import ExecutionLevel
+from compas_rrc.common import ExternalAxes
+from compas_rrc.common import IndustrialConfiguration
+from compas_rrc.common import RobotJoints
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -78,10 +84,19 @@ class MoveAbsJ(ROSmsg):
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
+        # This is kept like this for backwards-compatibility
+        # Should be removed and change the input to Configuration
+        if isinstance(joints, Configuration):
+            joints = list(map(math.degrees, joints.values))
+
         joints = joints or []
         if len(joints) > 6:
             raise ValueError('Only up to 6 joints are supported')
         joints_pad = [0.0] * (6 - len(joints))
+
+        # This is kept like this for backwards-compatibility
+        if isinstance(ext_axes, Configuration):
+            ext_axes = ext_axes.values
 
         ext_axes = ext_axes or []
         if len(ext_axes) > 6:
