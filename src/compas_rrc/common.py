@@ -4,6 +4,20 @@ import threading
 from compas.robots import Joint
 from compas_fab.robots import Configuration
 
+__all__ = ['FeedbackLevel',
+           'ExecutionLevel',
+           'InstructionException',
+           'FutureResult',
+           'IndustrialConfiguration',
+           'ExternalAxes',
+           'RobotJoints']
+
+
+class FeedbackLevel(object):
+    """Represents default valid feedback levels."""
+    NONE = 0
+    DONE = 1
+
 
 class ExecutionLevel(object):
     """Defines the execution level of an instruction."""
@@ -12,12 +26,14 @@ class ExecutionLevel(object):
     SENDER = 2
     MASTER = 10
 
+
 class InstructionException(Exception):
     """Exception caused during/after the execution of an instruction."""
 
     def __init__(self, message, result):
         super(InstructionException, self).__init__('{}, RRC Reply={}'.format(message, result))
         self.result = result
+
 
 class FutureResult(object):
     """Represents a future result value.
@@ -57,9 +73,7 @@ class IndustrialConfiguration(Configuration):
     """Represents a robot configuration for industrial robots."""
 
     def __str__(self):
-        rj = self.robot_joints_in_degrees()
-        ea = self.external_axes_values()
-        return 'Robot Joints={}, External Axes={}'.format(str(rj), str(ea))
+        return '{}, {}'.format(str(self.robot_joints), str(self.external_axes))
 
     def robot_joints_in_radians(self):
         return self.revolute_values
@@ -86,7 +100,7 @@ class ExternalAxes(Configuration):
         super(ExternalAxes, self).__init__(positions_in_meters, len(positions_in_meters) * [Joint.PRISMATIC])
 
     def __str__(self):
-        return 'External Axes={}'.format(str(self.values))
+        return 'External Axes={}'.format([round(i, 2) for i in self.values])
 
     def __add__(self, other):
         return IndustrialConfiguration(self.values + other.values, self.types + other.types)
@@ -99,7 +113,7 @@ class RobotJoints(Configuration):
         super(RobotJoints, self).__init__(list(map(math.radians, positions_in_degrees)), len(positions_in_degrees) * [Joint.REVOLUTE])
 
     def __str__(self):
-        return 'Robot Joints={}'.format(str(list(map(math.degrees, self.values))))
+        return 'Robot Joints={}'.format([round(math.degrees(i), 2) for i in self.values])
 
     # TODO: Extend with other operations
     def __add__(self, other):

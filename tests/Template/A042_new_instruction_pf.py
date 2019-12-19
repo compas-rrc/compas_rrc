@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     # Get jointtarget
     if on:
-        result = abb.send_and_wait(GetJointT(feedback_level=1))
+        result = abb.send_and_wait(GetConfig())
         print(result)
         print(result.robot_joints)
         print(result.external_axes)
