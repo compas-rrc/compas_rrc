@@ -11,8 +11,10 @@ __all__ = ['AbbClient']
 
 FEEDBACK_ERROR_PREFIX = 'Done FError '
 
+
 def _get_key(message):
     return 'msg:{}'.format(message.sequence_id)
+
 
 def _get_response_key(message):
     return 'msg:{}'.format(message['feedback_id'])
@@ -69,6 +71,7 @@ class AbbClient(object):
     >>> abb.close()
 
     """
+
     def __init__(self, ros, namespace='/'):
         self.ros = ros
         self.counter = SequenceCounter()
