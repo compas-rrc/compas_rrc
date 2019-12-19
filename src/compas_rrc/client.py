@@ -140,7 +140,7 @@ class AbbClient(object):
             timeout (int): Timeout in seconds to wait before raising an exception. Optional.
         """
         if instruction.feedback_level == 0:
-            raise ValueError('Feedback level needs to be greater than zero')
+            instruction.feedback_level = 1
 
         future = self.send(instruction)
         return future.result(timeout)
