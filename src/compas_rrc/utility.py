@@ -10,7 +10,11 @@ class UtilityFeedback(object):
     NONE = 0
     DONE = 1
 
-class Dummy(ROSmsg):
+class Noop(ROSmsg):
+    """No-op is a call without any effect.
+
+    RAPID Instruction: Dummy
+    """
     def __init__(self, feedback_level=UtilityFeedback.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'Dummy'
         self.feedback_level = feedback_level

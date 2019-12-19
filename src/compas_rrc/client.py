@@ -4,8 +4,12 @@ import time
 
 import roslibpy
 from .common import FutureResult
+from .common import InstructionException
 
 __all__ = ['AbbClient']
+
+
+FEEDBACK_ERROR_PREFIX = 'Done FError '
 
 def _get_key(message):
     return 'msg:{}'.format(message.sequence_id)
@@ -35,6 +39,15 @@ class SequenceCounter(object):
         """Current sequence counter."""
         with self._lock:
             return self._value
+
+
+def default_feedback_parser(result):
+    feedback_value = result['feedback']
+
+    if feedback_value.startswith(FEEDBACK_ERROR_PREFIX):
+        return InstructionException(feedback_value, result)
+
+    return feedback_value
 
 
 class AbbClient(object):
@@ -153,5 +166,7 @@ class AbbClient(object):
             result = message
             if future['parser']:
                 result = future['parser'](result)
+            else:
+                result = default_feedback_parser(result)
 
             future['result']._set_result(result)

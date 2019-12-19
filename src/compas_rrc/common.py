@@ -12,6 +12,12 @@ class ExecutionLevel(object):
     SENDER = 2
     MASTER = 10
 
+class InstructionException(Exception):
+    """Exception caused during/after the execution of an instruction."""
+
+    def __init__(self, message, result):
+        super(InstructionException, self).__init__('{}, RRC Reply={}'.format(message, result))
+        self.result = result
 
 class FutureResult(object):
     """Represents a future result value.
@@ -35,6 +41,9 @@ class FutureResult(object):
         if not self.done:
             if not self.event.wait(timeout):
                 raise Exception('Timeout: future result not available')
+
+        if isinstance(self.value, Exception):
+            raise self.value
 
         return self.value
 

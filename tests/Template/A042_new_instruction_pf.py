@@ -14,9 +14,10 @@ if __name__ == '__main__':
     on = True
     off = False
 
-    # Dummy
+    # No-op call
     if off:
-        result = abb.send_and_wait(Dummy(feedback_level=1))
+        result = abb.send_and_wait(Noop())
+        print(result)
 
     # Get jointtarget
     if on:
