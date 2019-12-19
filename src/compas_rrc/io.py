@@ -1,27 +1,29 @@
 from compas_fab.backends.ros.messages import ROSmsg
+from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import ExecutionLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
-class IOFeedback(object):
-    """Represents valid feedback levels for project instructions."""
-    NONE = 0
-    DONE = 1
+class SetDigital(ROSmsg):
+    """Set Digital is a call that sets the value of an digital output signal (0 or 1).
 
-
-class SetDo(ROSmsg):
-
-    def __init__(self, io_name, feedback_level=IOFeedback.NONE):
+    RAPID Instruction: SetDo
+    """
+    def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetDo'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
-        self.float_values = []
+        self.float_values = [value]
 
 
-class SetAo(ROSmsg):
+class SetAnalog(ROSmsg):
+    """Set Analog is a call that sets the value of an analog output signal (float).
 
-    def __init__(self, io_name, value, feedback_level=IOFeedback.NONE):
+    RAPID Instruction: SetAo
+    """
+
+    def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetAo'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -30,37 +32,38 @@ class SetAo(ROSmsg):
 
 
 class SetGo(ROSmsg):
+    """Set Group is a call that sets the value of an digital group output signal (Integer Value, depending on the size of the group ).
 
-    def __init__(self, io_name, value, feedback_level=IOFeedback.NONE):
+    RAPID Instruction: SetGo
+    """
+
+    def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetGo'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
         self.float_values = [value]
 
+class PulseDigital(ROSmsg):
+    """Pulse Digital is a call that sets the value to high of an digital output signal for a certain time.
 
-class ResetDo(ROSmsg):
+    RAPID Instruction: PulseDo
+    """
 
-    def __init__(self, io_name, feedback_level=IOFeedback.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'ResetDo'
-        self.feedback_level = feedback_level
-        self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = [io_name]
-        self.float_values = []
-
-
-class PulseDo(ROSmsg):
-
-    def __init__(self, io_name, pulse_time, feedback_level=IOFeedback.NONE):
+    def __init__(self, io_name, pulse_time, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'PulseDo'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
         self.float_values = [pulse_time]
 
-class ReadAi(ROSmsg):
+class ReadAnalog(ROSmsg):
+    """Read Analog is a call that returns the value of an analog input signal.
 
-    def __init__(self, io_name, feedback_level=IOFeedback.NONE):
+    RAPID Instruction: ReadAi
+    """
+
+    def __init__(self, io_name, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'ReadAi'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -72,9 +75,12 @@ class ReadAi(ROSmsg):
         result = round(result['float_values'][0],2)
         return result
 
-class ReadDi(ROSmsg):
+class ReadDigital(ROSmsg):
+    """Read Digital is a call that returns the value of an digital input signal.
 
-    def __init__(self, io_name, feedback_level=IOFeedback.NONE):
+    RAPID Instruction: ReadDi
+    """
+    def __init__(self, io_name, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'ReadDi'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -86,9 +92,12 @@ class ReadDi(ROSmsg):
         result = int(result['float_values'][0])
         return result
 
-class ReadGi(ROSmsg):
+class ReadGroup(ROSmsg):
+    """Read Group is a call that returns the value of an digital group input signal.
 
-    def __init__(self, io_name, feedback_level=IOFeedback.NONE):
+    RAPID Instruction: ReadGi
+    """
+    def __init__(self, io_name, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'ReadGi'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
