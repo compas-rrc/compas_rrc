@@ -8,7 +8,6 @@ __all__ = ['FeedbackLevel',
            'ExecutionLevel',
            'InstructionException',
            'FutureResult',
-           'IndustrialConfiguration',
            'ExternalAxes',
            'RobotJoints']
 
@@ -69,52 +68,150 @@ class FutureResult(object):
         self.event.set()
 
 
-class IndustrialConfiguration(Configuration):
-    """Represents a robot configuration for industrial robots."""
-
-    def __str__(self):
-        return '{}, {}'.format(str(self.robot_joints), str(self.external_axes))
-
-    def robot_joints_in_radians(self):
-        return self.revolute_values
-
-    def robot_joints_in_degrees(self):
-        return [math.degrees(i) for i in self.robot_joints_in_radians()]
-
-    def external_axes_values(self):
-        return self.prismatic_values
-
-    @property
-    def robot_joints(self):
-        return RobotJoints(*self.robot_joints_in_degrees())
-
-    @property
-    def external_axes(self):
-        return ExternalAxes(*self.external_axes_values())
-
-
-class ExternalAxes(Configuration):
+class ExternalAxes(object):
     """Represents a configuration for external axes"""
 
-    def __init__(self, *positions_in_meters):
-        super(ExternalAxes, self).__init__(positions_in_meters, len(positions_in_meters) * [Joint.PRISMATIC])
+    def __init__(self, *values):
+        self.values = list(values)
 
-    def __str__(self):
-        return 'External Axes={}'.format([round(i, 2) for i in self.values])
+    # Properties
+    @property
+    def eax_a(self):
+        return self[0]
 
-    def __add__(self, other):
-        return IndustrialConfiguration(self.values + other.values, self.types + other.types)
+    @eax_a.setter
+    def eax_a(self, value):
+        self[0] = value
 
+    @property
+    def eax_b(self):
+        return self[1]
 
-class RobotJoints(Configuration):
+    @eax_b.setter
+    def eax_b(self, value):
+        self[1] = value
+
+    @property
+    def eax_c(self):
+        return self[2]
+
+    @eax_c.setter
+    def eax_c(self, value):
+        self[2] = value
+
+    @property
+    def eax_d(self):
+        return self[3]
+
+    @eax_d.setter
+    def eax_d(self, value):
+        self[3] = value
+
+    @property
+    def eax_e(self):
+        return self[4]
+
+    @eax_e.setter
+    def eax_e(self, value):
+        self[4] = value
+
+    @property
+    def eax_f(self):
+        return self[5]
+
+    @eax_f.setter
+    def eax_f(self, value):
+        self[5] = value
+
+    # List accessors
+    def __repr__(self):
+        return 'ExternalAxes({})'.format([round(i, 2) for i in self.values])
+
+    def __len__(self):
+        return len(self.values)
+
+    def __getitem__(self, item):
+        if item >= len(self.values):
+            return None
+
+        return self.values[item]
+
+    def __setitem__(self, item, value):
+        self.values[item] = value
+
+    def __iter__(self):
+        return iter(self.values)
+
+class RobotJoints(object):
     """Represents a configuration for robot joints"""
 
-    def __init__(self, *positions_in_degrees):
-        super(RobotJoints, self).__init__(list(map(math.radians, positions_in_degrees)), len(positions_in_degrees) * [Joint.REVOLUTE])
+    def __init__(self, *values):
+        self.values = list(values)
 
-    def __str__(self):
-        return 'Robot Joints={}'.format([round(math.degrees(i), 2) for i in self.values])
+    # Properties
+    @property
+    def rax_1(self):
+        return self[0]
 
-    # TODO: Extend with other operations
-    def __add__(self, other):
-        return IndustrialConfiguration(self.values + other.values, self.types + other.types)
+    @rax_1.setter
+    def rax_1(self, value):
+        self[0] = value
+
+    @property
+    def rax_2(self):
+        return self[1]
+
+    @rax_2.setter
+    def rax_2(self, value):
+        self[1] = value
+
+    @property
+    def rax_3(self):
+        return self[2]
+
+    @rax_3.setter
+    def rax_3(self, value):
+        self[2] = value
+
+    @property
+    def rax_4(self):
+        return self[3]
+
+    @rax_4.setter
+    def rax_4(self, value):
+        self[3] = value
+
+    @property
+    def rax_5(self):
+        return self[4]
+
+    @rax_5.setter
+    def rax_5(self, value):
+        self[4] = value
+
+    @property
+    def rax_6(self):
+        return self[5]
+
+    @rax_6.setter
+    def rax_6(self, value):
+        self[5] = value
+
+    # List accessors
+    def __repr__(self):
+        return 'RobotJoints({})'.format([round(i, 2) for i in self.values])
+
+    def __len__(self):
+        return len(self.values)
+
+    def __getitem__(self, item):
+        if item >= len(self.values):
+            return None
+
+        return self.values[item]
+
+    def __setitem__(self, item, value):
+        self.values[item] = value
+
+    def __iter__(self):
+        return iter(self.values)

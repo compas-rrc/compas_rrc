@@ -4,11 +4,10 @@ from compas_fab.backends.ros.messages import ROSmsg
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import ExternalAxes
 from compas_rrc.common import FeedbackLevel
-from compas_rrc.common import IndustrialConfiguration
 from compas_rrc.common import RobotJoints
 
 __all__ = ['Noop',
-           'GetConfig']
+           'GetJoints']
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -27,8 +26,8 @@ class Noop(ROSmsg):
         self.float_values = []
 
 
-class GetConfig(ROSmsg):
-    """Get configuration is a call that queries the axis values of the robot.
+class GetJoints(ROSmsg):
+    """Get joints is a call that queries the axis values of the robot.
 
     RAPID Instruction: GetJointT
     """
@@ -48,7 +47,7 @@ class GetConfig(ROSmsg):
         external_axes = [result['float_values'][i] for i in range(24, 27) if not self.is_rapid_none(result['float_values'][i])]
 
         # write result
-        return ExternalAxes(*external_axes) + RobotJoints(*robot_joints)
+        return RobotJoints(*robot_joints), ExternalAxes(*external_axes)
 
     def is_rapid_none(self, val):
         """In RAPID, None values are expressed as 9E+9, they end up as 8999999488 in Python"""
