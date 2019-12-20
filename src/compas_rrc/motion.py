@@ -9,6 +9,14 @@ from compas_rrc.common import ExecutionLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
+__all__ = [
+    'Zone',
+    'Motion',
+    'MoveToJoints',
+    'MoveToFrame',
+    'MoveToRobtarget',
+]
+
 
 class Zone(object):
     """Describes the valid zone data definitions."""
@@ -27,6 +35,12 @@ class Zone(object):
     Z100 = 100
     Z150 = 150
     Z200 = 200
+
+
+class Motion(object):
+    """Describes the valid motion types."""
+    LINEAR = 'L'
+    JOINT = 'J'
 
 
 class MoveToJoints(ROSmsg):
@@ -88,7 +102,7 @@ class MoveGeneric(ROSmsg):
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
 
         self.string_values = []
-        self.float_values = pos + rot + ext_axes + ext_axes_pad + [speed, zone]
+        self.float_values = pos + rot + list(ext_axes) + ext_axes_pad + [speed, zone]
 
 
 class MoveToFrame(MoveGeneric):
@@ -138,3 +152,41 @@ class MoveToFrame(MoveGeneric):
     def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         super(MoveJ, self).__init__(frame, ext_axes, speed, zone, feedback_level)
         self.instruction = INSTRUCTION_PREFIX + 'MoveJ'
+
+
+class MoveToRobtarget(MoveGeneric):
+    """Move to frame is a call that moves the robot in the cartisian space.
+
+    RAPID Instruction: ``MoveJ`` or ``MoveL``
+
+    Attributes:
+
+        frame (:class:`compas.geometry.Frame`):
+            Target frame.
+
+        ext_axes (:class:`compas_rrc.common.ExternalAxes` or :obj:`list` of :obj:`float`):
+            External axes positions.
+
+        speed (:obj:`int`):
+            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
+
+        zone (:class:`Zone`):
+            Zone data. Predefined in the robot controller,
+            only Zone ``fine`` will do a stop point all others are fly by points
+
+        motion_type (:class:`Motion`):
+            Motion type. Defaults to
+            only Zone ``fine`` will do a stop point all others are fly by points
+
+        feedback_level (:obj:`int`):
+            Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
+            Feedback level is instruction-specific but the value ``1`` always represents
+            completion of the instruction.
+
+    """
+
+    def __init__(self, frame, ext_axes, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
+        super(MoveToRobtarget, self).__init__(frame, ext_axes, speed, zone, feedback_level)
+        instruction = 'MoveJ' if motion_type == Motion.JOINT else 'MoveL'
+        self.instruction = INSTRUCTION_PREFIX + instruction
+
