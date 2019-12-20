@@ -1,17 +1,16 @@
 from compas_fab.backends.ros.messages import ROSmsg
+from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import ExecutionLevel
 
-class ProjectFeedback(object):
-    """Represents valid feedback levels for project instructions."""
-    NONE = 0
-    DONE = 1
 
-class ProjectInstruction(ROSmsg):
-    """Represents a non-standard, project-specific instructions.
+class CustomInstruction(ROSmsg):
+    """Custom instruction is a call that calls a custom RAPID instruction. The name has to match to a ``RAPID`` procedure.
 
-    The name has to match to a ``RAPID`` procedure, which will be called once
-    the message arrives to the controller."""
-    def __init__(self, name, string_values=[], float_values=[], feedback_level=ProjectFeedback.NONE):
+
+    RAPID Instruction: CustomInstruction
+    """
+
+    def __init__(self, name, string_values=[], float_values=[], feedback_level=FeedbackLevel.NONE):
         self.instruction = name
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT

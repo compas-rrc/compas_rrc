@@ -28,6 +28,11 @@ class Noop(ROSmsg):
 
 
 class GetConfig(ROSmsg):
+    """Get configuration is a call that queries the axis values of the robot.
+
+    RAPID Instruction: GetJointT
+    """
+
     def __init__(self, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'GetJointT'
         self.feedback_level = feedback_level
@@ -49,7 +54,13 @@ class GetConfig(ROSmsg):
         """In RAPID, None values are expressed as 9E+9, they end up as 8999999488 in Python"""
         return int(val) == 8999999488
 
-class GetRobT(ROSmsg):
+
+class GetFrame(ROSmsg):
+    """Get frame is a call that queries the position of the robot in the cartisian space.
+
+    RAPID Instruction: GetRobT
+    """
+
     def __init__(self, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'GetRobT'
         self.feedback_level = feedback_level
@@ -90,7 +101,12 @@ class GetRobT(ROSmsg):
         return result, ExternalAxes(*self.ext_axes)
 
 
-class SetAcc(ROSmsg):
+class SetAcceleration(ROSmsg):
+    """Set acceleration is a call that sets the acc- and deceleration from the robot.
+
+    RAPID Instruction: SetAcc
+    """
+
     def __init__(self, acc, ramp, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetAcc'
         self.feedback_level = feedback_level
@@ -100,6 +116,11 @@ class SetAcc(ROSmsg):
 
 
 class SetTool(ROSmsg):
+    """Set tool is a call that sets a pre defined tool in the robot as active.
+
+    RAPID Instruction: SetTool
+    """
+
     def __init__(self, tool_name, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetTool'
         self.feedback_level = feedback_level
@@ -108,7 +129,12 @@ class SetTool(ROSmsg):
         self.float_values = []
 
 
-class SetVel(ROSmsg):
+class SetMaxSpeed(ROSmsg):
+    """Set max spedd is a call that limits the maximum TCP speed.
+
+    RAPID Instruction: SetVel
+    """
+
     def __init__(self, override, max_tcp, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetVel'
         self.feedback_level = feedback_level
@@ -118,6 +144,11 @@ class SetVel(ROSmsg):
 
 
 class SetWobj(ROSmsg):
+    """Set work object is a call that sets a pre defined work object in the robot as active.
+
+    RAPID Instruction: SetWobj
+    """
+
     def __init__(self, wobj_name, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetWobj'
         self.feedback_level = feedback_level
@@ -127,6 +158,11 @@ class SetWobj(ROSmsg):
 
 
 class Stop(ROSmsg):
+    """Stop is a call that stops the motion task from the robot.
+
+    RAPID Instruction: Stop
+    """
+
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'Stop'
@@ -137,6 +173,10 @@ class Stop(ROSmsg):
 
 
 class WaitTime(ROSmsg):
+    """Wait time is a call that calls a wait instruction on the robot.
+
+    RAPID Instruction: WaitTime
+    """
     def __init__(self, time, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'WaitTime'
         self.feedback_level = feedback_level

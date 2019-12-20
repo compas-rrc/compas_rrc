@@ -3,10 +3,12 @@ import math
 from compas_fab.backends.ros.messages import ROSmsg
 from compas_fab.robots import Configuration
 
+from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import ExternalAxes
 from compas_rrc.common import IndustrialConfiguration
 from compas_rrc.common import RobotJoints
+
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -30,14 +32,14 @@ class Zone(object):
     Z200 = 200
 
 
-class MotionFeedback(object):
-    """Represents valid feedback levels for motion instructions."""
-    NONE = 0
-    DONE = 1
+class MoveToConfig(ROSmsg):
+    """Move to configuration is a call that moves the robot with axis values.
 
+    RAPID Instruction: MoveAbsJ
 
-class MoveAbsJ(ROSmsg):
-    """Represents a move absolute joint instruction.
+    -- old Text --
+
+    Represents a move absolute joint instruction.
 
     Attributes:
 
@@ -79,7 +81,7 @@ class MoveAbsJ(ROSmsg):
         system, in Motion tasks.
     """
 
-    def __init__(self, joints, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
+    def __init__(self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'MoveAbsJ'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -106,8 +108,9 @@ class MoveAbsJ(ROSmsg):
         self.string_values = []
         self.float_values = joints + joints_pad + ext_axes + ext_axes_pad + [speed, zone]
 
+
 class MoveGeneric(ROSmsg):
-    def __init__(self, frame, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
+    def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
@@ -122,8 +125,14 @@ class MoveGeneric(ROSmsg):
         self.string_values = []
         self.float_values = pos + rot + ext_axes + ext_axes_pad + [speed, zone]
 
-class MoveJ(MoveGeneric):
-    """Represents a move joint instruction.
+
+class MoveToFrame(MoveGeneric):
+    """Move to frame is a call that moves the robot in the cartisian space.
+
+    RAPID Instruction: MoveJ or MoveL
+
+    -- old Text --
+    Represents a move joint instruction.
 
     Attributes:
 
@@ -160,47 +169,7 @@ class MoveJ(MoveGeneric):
         system, in Motion tasks.
 
     """
-    def __init__(self, frame, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
+
+    def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         super(MoveJ, self).__init__(frame, ext_axes, speed, zone, feedback_level)
         self.instruction = INSTRUCTION_PREFIX + 'MoveJ'
-
-
-class MoveL(MoveGeneric):
-    """Represents a move linear instruction.
-
-    Attributes:
-
-        frame (:class:`compas.geometry.Frame`):
-            Target frame.
-
-        ext_axes (:obj:`list` of :obj:`float`):
-            External axes positions, depending on the robotic system,
-            it can be millimeters for prismatic external axes,
-            or degrees for revolute external axes.
-
-        speed (:obj:`int`):
-            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
-
-        zone (:class:`Zone`):
-            Zone data. Predefined in the robot contrller,
-            only Zone ``fine`` will do a stop point all others are fly by points
-
-        feedback_level (:obj:`int`):
-            Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
-            Feedback level is instruction-specific but the value ``1`` always represents
-            completion of the instruction.
-
-    Note
-    ----
-
-        ABB Documentation - Usage:
-
-        MoveL is used to move the tool center point (TCP) linearly to a given
-        destination. When the TCP is to remain stationary then this instruction
-        can also be used to reorientate the tool.
-        This instruction can only be used in the main task T_ROB1 or, if in a
-        MultiMove System, in Motion tasks.
-    """
-    def __init__(self, frame, ext_axes, speed, zone, feedback_level=MotionFeedback.NONE):
-        super(MoveL, self).__init__(frame, ext_axes, speed, zone, feedback_level)
-        self.instruction = INSTRUCTION_PREFIX + 'MoveL'

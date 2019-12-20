@@ -4,11 +4,13 @@ from compas_rrc.common import ExecutionLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
+
 class SetDigital(ROSmsg):
-    """Set Digital is a call that sets the value of an digital output signal (0 or 1).
+    """Set digital is a call that sets the value of an digital output signal (0 or 1).
 
     RAPID Instruction: SetDo
     """
+
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'SetDo'
         self.feedback_level = feedback_level
@@ -18,7 +20,7 @@ class SetDigital(ROSmsg):
 
 
 class SetAnalog(ROSmsg):
-    """Set Analog is a call that sets the value of an analog output signal (float).
+    """Set analog is a call that sets the value of an analog output signal (float).
 
     RAPID Instruction: SetAo
     """
@@ -32,7 +34,7 @@ class SetAnalog(ROSmsg):
 
 
 class SetGo(ROSmsg):
-    """Set Group is a call that sets the value of an digital group output signal (Integer Value, depending on the size of the group ).
+    """Set group is a call that sets the value of an digital group output signal (Integer Value, depending on the size of the group ).
 
     RAPID Instruction: SetGo
     """
@@ -44,8 +46,9 @@ class SetGo(ROSmsg):
         self.string_values = [io_name]
         self.float_values = [value]
 
+
 class PulseDigital(ROSmsg):
-    """Pulse Digital is a call that sets the value to high of an digital output signal for a certain time.
+    """Pulse digital is a call that sets the value to high of an digital output signal for a certain time.
 
     RAPID Instruction: PulseDo
     """
@@ -57,8 +60,9 @@ class PulseDigital(ROSmsg):
         self.string_values = [io_name]
         self.float_values = [pulse_time]
 
+
 class ReadAnalog(ROSmsg):
-    """Read Analog is a call that returns the value of an analog input signal.
+    """Read analog is a call that returns the value of an analog input signal.
 
     RAPID Instruction: ReadAi
     """
@@ -72,14 +76,16 @@ class ReadAnalog(ROSmsg):
     def parse_feedback(self, result):
 
         # read input value
-        result = round(result['float_values'][0],2)
+        result = round(result['float_values'][0], 2)
         return result
 
+
 class ReadDigital(ROSmsg):
-    """Read Digital is a call that returns the value of an digital input signal.
+    """Read digital is a call that returns the value of an digital input signal.
 
     RAPID Instruction: ReadDi
     """
+
     def __init__(self, io_name, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'ReadDi'
         self.feedback_level = feedback_level
@@ -92,11 +98,13 @@ class ReadDigital(ROSmsg):
         result = int(result['float_values'][0])
         return result
 
+
 class ReadGroup(ROSmsg):
-    """Read Group is a call that returns the value of an digital group input signal.
+    """Read group is a call that returns the value of an digital group input signal.
 
     RAPID Instruction: ReadGi
     """
+
     def __init__(self, io_name, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'ReadGi'
         self.feedback_level = feedback_level
