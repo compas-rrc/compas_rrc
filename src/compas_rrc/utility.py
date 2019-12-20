@@ -7,9 +7,16 @@ from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import RobotJoints
 
 __all__ = ['Noop',
-           'GetJoints']
+           'GetFrame',
+           'GetJoints',
+           'GetRobtarget']
 
 INSTRUCTION_PREFIX = 'r_A042_'
+
+
+def is_rapid_none(val):
+    """In RAPID, None values are expressed as 9E+9, they end up as 8999999488 in Python"""
+    return int(val) == 8999999488
 
 
 class Noop(ROSmsg):
@@ -44,20 +51,16 @@ class GetJoints(ROSmsg):
         robot_joints = [result['float_values'][i] for i in range(18, 24)]
 
         # read external axes
-        external_axes = [result['float_values'][i] for i in range(24, 27) if not self.is_rapid_none(result['float_values'][i])]
+        external_axes = [result['float_values'][i] for i in range(24, 27) if not is_rapid_none(result['float_values'][i])]
 
         # write result
         return RobotJoints(*robot_joints), ExternalAxes(*external_axes)
 
-    def is_rapid_none(self, val):
-        """In RAPID, None values are expressed as 9E+9, they end up as 8999999488 in Python"""
-        return int(val) == 8999999488
 
+class GetRobtarget(ROSmsg):
+    """Query the current robtarget (defined as frame + external axes) of the robot.
 
-class GetFrame(ROSmsg):
-    """Get frame is a call that queries the position of the robot in the cartisian space.
-
-    RAPID Instruction: GetRobT
+    RAPID Instruction: ``GetRobT``
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
@@ -70,34 +73,37 @@ class GetFrame(ROSmsg):
     def parse_feedback(self, result):
 
         # read pos
-        self.pos_x = round(result['float_values'][17], 2)
-        self.pos_y = round(result['float_values'][18], 2)
-        self.pos_z = round(result['float_values'][19], 2)
-        self.pos = [self.pos_x, self.pos_y, self.pos_z]
+        x = result['float_values'][17]
+        y = result['float_values'][18]
+        z = result['float_values'][19]
+        pos = [x, y, z]
 
         # read orient
-        self.orient_q1 = round(result['float_values'][20], 4)
-        self.orient_q2 = round(result['float_values'][21], 4)
-        self.orient_q3 = round(result['float_values'][22], 4)
-        self.orient_q4 = round(result['float_values'][23], 4)
-        self.orient = [self.orient_q1, self.orient_q2, self.orient_q3, self.orient_q4]
+        orient_q1 = result['float_values'][20]
+        orient_q2 = result['float_values'][21]
+        orient_q3 = result['float_values'][22]
+        orient_q4 = result['float_values'][23]
+        orientation = [orient_q1, orient_q2, orient_q3, orient_q4]
 
         # read gantry joints
-        self.ext_axes_1 = round(result['float_values'][24], 2)
-        self.ext_axes_2 = round(result['float_values'][25], 2)
-        self.ext_axes_3 = round(result['float_values'][26], 2)
-        self.ext_axes = [self.ext_axes_1, self.ext_axes_2, self.ext_axes_3]
+        external_axes = [result['float_values'][i] for i in range(24, 27) if not is_rapid_none(result['float_values'][i])]
 
         # write result
 
         # As compas frame
-        result = Frame.from_quaternion([self.orient_q1, self.orient_q2, self.orient_q3, self.orient_q4], point=[self.pos_x, self.pos_y, self.pos_z])
-
-        # As pos, orient and external axes values
-        # result = [self.pos, self.orient, self.ext_axes]
+        result = Frame.from_quaternion(orientation, point=pos)
 
         # End
-        return result, ExternalAxes(*self.ext_axes)
+        return result, ExternalAxes(*external_axes)
+
+class GetFrame(GetRobtarget):
+    """Query the current frame of the robot.
+
+    RAPID Instruction: ``GetRobT``
+    """
+    def parse_feedback(self, result):
+        frame, _ext_axes = super(GetFrame, self).parse_feedback(result)
+        return frame
 
 
 class SetAcceleration(ROSmsg):
@@ -162,7 +168,6 @@ class Stop(ROSmsg):
     RAPID Instruction: Stop
     """
 
-
     def __init__(self, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'Stop'
         self.feedback_level = feedback_level
@@ -176,6 +181,7 @@ class WaitTime(ROSmsg):
 
     RAPID Instruction: WaitTime
     """
+
     def __init__(self, time, feedback_level=FeedbackLevel.NONE):
         self.instruction = INSTRUCTION_PREFIX + 'WaitTime'
         self.feedback_level = feedback_level

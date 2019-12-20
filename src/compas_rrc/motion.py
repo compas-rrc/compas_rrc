@@ -5,8 +5,6 @@ from compas_fab.robots import Configuration
 
 from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import ExecutionLevel
-from compas_rrc.common import ExternalAxes
-from compas_rrc.common import RobotJoints
 
 
 INSTRUCTION_PREFIX = 'r_A042_'
@@ -38,10 +36,10 @@ class MoveToJoints(ROSmsg):
 
     Attributes:
 
-        joints (:class:`RobotJoints` or :obj:`list` of :obj:`float`):
+        joints (:class:`compas_rrc.common.RobotJoints` or :obj:`list` of :obj:`float`):
             Robot joint positions.
 
-        ext_axes (:class:`ExternalAxes` or :obj:`list` of :obj:`float`):
+        ext_axes (:class:`compas_rrc.common.ExternalAxes` or :obj:`list` of :obj:`float`):
             External axes positions.
 
         speed (:obj:`int`):
