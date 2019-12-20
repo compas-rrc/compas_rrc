@@ -5,149 +5,145 @@ import re
 import time
 
 if __name__ == '__main__':
+
+    # Create Ros Client
     ros = RosClient()
 
+    # Create ABB Client
     abb = AbbClient(ros)
     abb.run()
     print('Connected.')
 
+    # Switches for Code
     on = True
     off = False
 
-    # No-op call
+    # No-op
     if off:
         result = abb.send_and_wait(Noop())
         print(result)
 
-    # Get jointtarget
-    if on:
-        result = abb.send_and_wait(GetConfig())
-        print(result)
-        print(result.robot_joints)
-        print(result.external_axes)
-
-    # Get robtarget
+    # Get Joints
     if off:
-        result = abb.send_and_wait(GetRobT(feedback_level=1))
+        result = abb.send_and_wait(GetJoints())
+        robot_joints, external_axes = result
+        print(result)
+        print(robot_joints)
+        print(robot_joints.rax_1)
+        print(external_axes)
+        print(external_axes.eax_a)
+
+
+    # Get Frame
+    if off:
+        result = abb.send_and_wait(GetRobtarget())
+        print(result)
+        result = abb.send_and_wait(GetFrame())
         print(result)
 
-    # Move absolut joint
-    if on:
-        import math
-        result = abb.send_and_wait(GetJointT(feedback_level=1))
-        rob_axes = result.robot_joints
-        ext_axes = result.external_axes
-        rob_axes.values[0] += math.radians(5)
-        print(rob_axes)
-        done = abb.send_and_wait(MoveAbsJ(rob_axes, ext_axes, 200, Zone.FINE,feedback_level=1))
+    # Move to Joints
+    if off:
+        robot_joints, external_axes = abb.send_and_wait(GetJoints())
+        print(robot_joints)
+        robot_joints.rax_3 += -100
+        print(robot_joints)
+        done = abb.send_and_wait(MoveToJoints(robot_joints, external_axes, 500, Zone.FINE))
         print(done)
 
-    # Move joint
-    if off:
-        current_robtarget = abb.send_and_wait(GetRobT(feedback_level=1))
-        current_joints = abb.send_and_wait(GetJointT(feedback_level=1))
-        ext_axes = current_joints[1]
-        current_robtarget.point[2] = current_robtarget.point[2] + 50
-        print(current_robtarget.point)
-        done = abb.send_and_wait(MoveJ(current_robtarget, ext_axes, 200, Zone.FINE,feedback_level=1))
+    # Move to Robtarget (Joint, Linear)
+    if on:
+        frame, ext_axes = abb.send_and_wait(GetRobtarget())
+        # current_joints = abb.send_and_wait(GetJointT(feedback_level=1))
+        # ext_axes = current_joints[1]
+        frame.point[2] += 50
+        # print(current_robtarget.point)
+        done = abb.send_and_wait(MoveToRobtarget(frame, ext_axes, 200, Zone.FINE))
+        # done = abb.send_and_wait(MoveToRobtarget(frame, ext_axes, 200, Zone.FINE, Move.LINEAR))
 
-    # Move linear
+    # Pulse Digital
     if off:
-        current_robtarget = abb.send_and_wait(GetRobT(feedback_level=1))
-        current_joints = abb.send_and_wait(GetJointT(feedback_level=1))
-        ext_axes = current_joints[1]
-        current_robtarget.point[2] = current_robtarget.point[2] + 50
-        print(current_robtarget.point)
-        done = abb.send_and_wait(MoveL(current_robtarget, ext_axes, 200, Zone.FINE,feedback_level=1))
+        result = abb.send_and_wait(PulseDitital('doA032_AP1On', 2.5, feedback_level=1))
 
-    # PulseDo
+    # Read Analog
     if off:
-        result = abb.send_and_wait(PulseDo('doA032_AP1On', 2.5, feedback_level=1))
-
-    # Read analog input
-    if off:
-        result = abb.send_and_wait(ReadAi('aiA032_CP1TubePr', feedback_level=1))
+        result = abb.send_and_wait(ReadAnalog('aiA032_CP1TubePr'))
         print(result)
 
-    # Read digital input
+    # Read Digital
     if off:
-        result = abb.send_and_wait(ReadDi('diA032_CP1Ready', feedback_level=1))
+        result = abb.send_and_wait(ReadDigital('diA032_CP1Ready'))
         print(result)
 
-    # Read group input
+    # Read Group
     if off:
-        result = abb.send_and_wait(ReadGi('giA014_T1AIn1Sta', feedback_level=1))
+        result = abb.send_and_wait(ReadGroup('giA014_T1AIn1Sta'))
         print(result)
 
-    # Reset digital output
+    # Set Accleration
     if off:
-        result = abb.send_and_wait(ResetDo('doA032_AP1On', feedback_level=1))
+        result = abb.send_and_wait(SetAccleration(33, 44))
 
-    # SetAcc
+    # Set Analog
     if off:
-        result = abb.send_and_wait(SetAcc(33, 44, feedback_level=1))
+        result = abb.send_and_wait(SetAnalog('aoA032_AP1Speed', 225.75))
 
-    # Set analog output
+    # Set Digital
     if off:
-        result = abb.send_and_wait(SetAo('aoA032_AP1Speed', 225.75 , feedback_level=1))
+        result = abb.send_and_wait(SetDigital('doA032_AP1On', 1))
 
-    # Set digital output
+    # Set Group
     if off:
-        result = abb.send_and_wait(SetDo('doA032_AP1On', feedback_level=1))
+        result = abb.send_and_wait(SetGroup('goA032_TestRRC', 255))
 
-    # Set group output
+    # Set Tool
     if off:
-        result = abb.send_and_wait(SetGo('goA032_TestRRC', 255 , feedback_level=1))
-
-    # Set tool
-    if off:
-        result = abb.send_and_wait(SetTool('t_A032_PrintNozzle', feedback_level=1))
+        result = abb.send_and_wait(SetTool('t_A032_PrintNozzle'))
         abb.send(WaitTime(3))
-        result = abb.send_and_wait(SetTool('tool0', feedback_level=1))
+        result = abb.send_and_wait(SetTool('tool0'))
 
-    # SetVel
+    # Set Max Speed
     if off:
-        result = abb.send_and_wait(SetVel(99, 2500, feedback_level=1))
+        result = abb.send_and_wait(SetMaxSpeed(2500))
 
-    # Set workobject
+    # Set Work Object
     if off:
-        result = abb.send_and_wait(SetWobj('ob_A032_Pal2', feedback_level=1))
+        result = abb.send_and_wait(SetWobj('ob_A032_Pal2'))
         abb.send(WaitTime(3))
-        result = abb.send_and_wait(SetWobj('wobj0', feedback_level=1))
+        result = abb.send_and_wait(SetWobj('wobj0'))
 
-    # Stop
+    # Stop Task
     if off:
-        abb.send(Stop())
-        result = abb.send_and_wait(Stop(feedback_level=1))
+        result = abb.send_and_wait(Stop())
 
-    # TPWrite
+    # Print Text
     if off:
-        result = abb.send_and_wait(TPWrite('Compas RCC', feedback_level=1))
+        result = abb.send_and_wait(PrintText('Compas RCC'))
 
-    # Wait time
+    # Wait Time
     if off:
-        abb.send(WaitTime(3))
-        result = abb.send_and_wait(WaitTime(1.22, feedback_level=1))
+        result = abb.send_and_wait(WaitTime(3))
 
-    # Watch read
+    # Read Watch
     if off:
-        result = abb.send_and_wait(WatchRead(feedback_level=1))
+        result = abb.send_and_wait(ReadWatch())
         print(result)
 
-    # Watch start
+    # Start Watch
     if off:
-        result = abb.send_and_wait(WatchStart(feedback_level=1))
-        #abb.send(WatchStart(feedback_level=0))
+        result = abb.send_and_wait(StartWatch())
 
-
-    # watch stop
+    # Stop watch
     if off:
-        result = abb.send_and_wait(WatchStop(feedback_level=1))
+        result = abb.send_and_wait(StopWatch())
 
-    # end of code
+    # CustomInstruction
+    if off:
+        pass
+        #result = abb.send_and_wait(WatchStop(feedback_level=1))
+
+    # End of Code
     print('Finished')
 
+    # Close client
     abb.close()
     abb.terminate()
-
-    # time.sleep(3)
