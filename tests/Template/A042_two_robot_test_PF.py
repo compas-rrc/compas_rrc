@@ -15,12 +15,12 @@ if __name__ == '__main__':
     print('Connected.')
 
     # move robot one
-    abb_r1.send_and_wait(MoveAbsJ([90, -55, 45, 180, -10, 45], [8000, -3200, -2500], 500, Zone.FINE, feedback_level=1))
-    abb_r1.send_and_wait(MoveAbsJ([90, -55, 45, 180, -10, 45], [8000, -4200, -2500], 500, Zone.FINE, feedback_level=1))
+    abb_r1.send_and_wait(MoveAbsJ([90, -55, 45, 180, -10, 45], [8000, -3200, -2500], 2000, Zone.FINE, feedback_level=1))
+    abb_r1.send_and_wait(MoveAbsJ([90, -55, 45, 180, -10, 45], [8000, -4200, -2500], 2000, Zone.FINE, feedback_level=1))
     print('Finished 1')
 
-    abb_r2.send_and_wait(MoveAbsJ([90, -55, 45, 180, -10, 45], [8000, -6200, -2500], 500, Zone.FINE, feedback_level=1))
-    abb_r2.send_and_wait(MoveAbsJ([90, -55, 45, 180, -10, 45], [8000, -7200, -2500], 500, Zone.FINE, feedback_level=1))
+    abb_r2.send_and_wait(MoveAbsJ([90, -55, 45, 180, -10, 45], [8000, -6200, -2500], 2000, Zone.FINE, feedback_level=1))
+    abb_r2.send_and_wait(MoveAbsJ([90, -55, 45, 180, -10, 45], [8000, -7200, -2500], 2000, Zone.FINE, feedback_level=1))
     print('Finished 2')
 
     # end of code
