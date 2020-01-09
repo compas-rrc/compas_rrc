@@ -1,5 +1,5 @@
 autopep8
-bumpversion>=0.5
+bump2version>=0.5.11
 check-manifest>=0.36
 flake8
 invoke>=0.14
