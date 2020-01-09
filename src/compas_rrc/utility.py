@@ -148,7 +148,7 @@ class SetMaxSpeed(ROSmsg):
         self.float_values = [override, max_tcp]
 
 
-class SetWobj(ROSmsg):
+class SetWorkObject(ROSmsg):
     """Set work object is a call that sets a pre defined work object in the robot as active.
 
     RAPID Instruction: SetWobj

@@ -29,36 +29,47 @@ if __name__ == '__main__':
         robot_joints, external_axes = result
         print(result)
         print(robot_joints)
-        print(robot_joints.rax_1)
+        print(round(robot_joints.rax_1, 2))
         print(external_axes)
         print(external_axes.eax_a)
 
 
     # Get Frame
     if off:
-        result = abb.send_and_wait(GetRobtarget())
-        print(result)
         result = abb.send_and_wait(GetFrame())
         print(result)
+        print(result.point)
+        print(result.point.x)
+        print(result.xaxis)
+        print(result.xaxis.x)
+
+
+    # Get Robtarget
+    if off:
+        frame, external_axes = abb.send_and_wait(GetRobtarget())
+        print(frame)
+        print(external_axes)
+
 
     # Move to Joints
     if off:
         robot_joints, external_axes = abb.send_and_wait(GetJoints())
-        print(robot_joints)
-        robot_joints.rax_3 += -100
-        print(robot_joints)
+        print(robot_joints.rax_3)
+        robot_joints.rax_3 += 5
+        print(robot_joints.rax_3)
         done = abb.send_and_wait(MoveToJoints(robot_joints, external_axes, 500, Zone.FINE))
         print(done)
 
     # Move to Robtarget (Joint, Linear)
     if on:
         frame, ext_axes = abb.send_and_wait(GetRobtarget())
-        # current_joints = abb.send_and_wait(GetJointT(feedback_level=1))
-        # ext_axes = current_joints[1]
-        frame.point[2] += 50
-        # print(current_robtarget.point)
+        print(frame.point.z)
+        frame.point.z += 50
+        print(frame.point.z)
         done = abb.send_and_wait(MoveToRobtarget(frame, ext_axes, 200, Zone.FINE))
-        # done = abb.send_and_wait(MoveToRobtarget(frame, ext_axes, 200, Zone.FINE, Move.LINEAR))
+        # done = abb.send_and_wait(MoveToRobtarget(frame, ext_axes, 200, Zone.FINE, Motion.JOINT))
+        # done = abb.send_and_wait(MoveToRobtarget(frame, ext_axes, 200, Zone.FINE, Motion.LINEAR))
+
 
     # Pulse Digital
     if off:

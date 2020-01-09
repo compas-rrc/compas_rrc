@@ -12,6 +12,8 @@ class SetDigital(ROSmsg):
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
+        if value not in (0, 1):
+            raise ValueError("Value can only be 0 or 1")
         self.instruction = INSTRUCTION_PREFIX + 'SetDo'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -33,7 +35,7 @@ class SetAnalog(ROSmsg):
         self.float_values = [value]
 
 
-class SetGo(ROSmsg):
+class SetGroup(ROSmsg):
     """Set group is a call that sets the value of an digital group output signal (Integer Value, depending on the size of the group ).
 
     RAPID Instruction: SetGo
@@ -74,9 +76,8 @@ class ReadAnalog(ROSmsg):
         self.string_values = [io_name]
 
     def parse_feedback(self, result):
-
         # read input value
-        result = round(result['float_values'][0], 2)
+        result = result['float_values'][0]
         return result
 
 
