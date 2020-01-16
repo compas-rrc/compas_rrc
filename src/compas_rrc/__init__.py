@@ -29,42 +29,88 @@ when to wait for feedback, the ``send`` methods returns an object of type
 but when the ``result()`` method of the future result is invoked, it will block
 until the result is eventually available.
 
+.. autoclass:: FeedbackLevel
+   :members:
+   :undoc-members:
+   :member-order: bysource
 .. autoclass:: FutureResult
    :members:
+
+Robot joints and External axes
+==============================
+
+.. autoclass:: RobotJoints
+   :members:
+   :undoc-members:
+   :member-order: bysource
+.. autoclass:: ExternalAxes
+   :members:
+   :undoc-members:
+   :member-order: bysource
 
 Motion instructions
 ===================
 
-.. autoclass:: MoveAbsJ
+.. autoclass:: MoveToJoints
    :members:
-.. autoclass:: MoveJ
+.. autoclass:: MoveToFrame
    :members:
-.. autoclass:: MoveL
+.. autoclass:: MoveToRobtarget
    :members:
+.. autoclass:: Motion
+   :members:
+   :undoc-members:
+   :member-order: bysource
 .. autoclass:: Zone
    :members:
    :undoc-members:
    :member-order: bysource
-.. autoclass:: MotionFeedback
-   :members:
-   :undoc-members:
-   :member-order: bysource
 
-Project-specific instructions
-=============================
+Get Current Status
+==================
+
+.. autoclass:: GetFrame
+   :members:
+.. autoclass:: GetJoints
+   :members:
+.. autoclass:: GetRobtarget
+   :members:
+
+Input/Output
+============
+
+.. autoclass:: ReadAnalog
+   :members:
+.. autoclass:: ReadDigital
+   :members:
+.. autoclass:: ReadGroup
+   :members:
+.. autoclass:: SetAnalog
+   :members:
+.. autoclass:: SetDigital
+   :members:
+.. autoclass:: SetGroup
+   :members:
+.. autoclass:: PulseDigital
+   :members:
+
+Custom instructions
+===================
 
 This library has support for non-standard instructions. Simply pass
-an instance of :class:`ProjectInstruction` specifying an instruction
+an instance of :class:`CustomInstruction` specifying an instruction
 name, and this will be evaluated and executed on the robot's side,
 if a RAPID procedure with that name exists on the controller.
 
-.. autoclass:: ProjectInstruction
+.. autoclass:: CustomInstruction
    :members:
-.. autoclass:: ProjectFeedback
-   :members:
-   :undoc-members:
-   :member-order: bysource
 
+
+Utility instructions
+====================
+
+.. autoclass:: Noop
+   :members:
 
 """
 
