@@ -118,17 +118,15 @@ class MoveToFrame(MoveGeneric):
         frame (:class:`compas.geometry.Frame`):
             Target frame.
 
-        ext_axes (:obj:`list` of :obj:`float`):
-            External axes positions, depending on the robotic system,
-            it can be millimeters for prismatic external axes,
-            or degrees for revolute external axes.
-
         speed (:obj:`int`):
             Integer specifying TCP translational speed in mm/s. Min=``0.01``.
 
         zone (:class:`Zone`):
             Zone data. Predefined in the robot contrller,
             only Zone ``fine`` will do a stop point all others are fly by points
+
+        motion_type (:class:`Motion`):
+            Motion type. Defaults to Joint.
 
         feedback_level (:obj:`int`):
             Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
@@ -149,9 +147,10 @@ class MoveToFrame(MoveGeneric):
 
     """
 
-    def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
-        super(MoveJ, self).__init__(frame, ext_axes, speed, zone, feedback_level)
-        self.instruction = INSTRUCTION_PREFIX + 'MoveJ'
+    def __init__(self, frame, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
+        super(MoveToFrame, self).__init__(frame, [], speed, zone, feedback_level)
+        instruction = 'MoveToFrameJ' if motion_type == Motion.JOINT else 'MoveToFrameL'
+        self.instruction = INSTRUCTION_PREFIX + instruction
 
 
 class MoveToRobtarget(MoveGeneric):
@@ -175,8 +174,7 @@ class MoveToRobtarget(MoveGeneric):
             only Zone ``fine`` will do a stop point all others are fly by points
 
         motion_type (:class:`Motion`):
-            Motion type. Defaults to
-            only Zone ``fine`` will do a stop point all others are fly by points
+            Motion type. Defaults to Joint.
 
         feedback_level (:obj:`int`):
             Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
