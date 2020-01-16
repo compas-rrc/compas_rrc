@@ -169,6 +169,19 @@ def test(ctx, checks=True):
 
     ctx.run('pytest --doctest-module')
 
+
+@task(help={
+      'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch.',
+      'dry_run': 'Do not write any files, just pretend. Defaults to False.'})
+def bump_version(ctx, release_type, dry_run=False):
+    """Bumps version in one swift command!"""
+    if release_type not in ('patch', 'minor', 'major'):
+        raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch')
+
+    dry_run = '' if not dry_run else '--dry-run'
+    ctx.run('bump2version {} --verbose {}'.format(release_type, dry_run))
+
+
 @task(help={
       'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch.'})
 def release(ctx, release_type):
