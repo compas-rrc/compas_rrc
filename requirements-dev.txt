@@ -8,5 +8,6 @@ pylint
 pytest
 sphinx-autobuild
 sphinx>=1.5
+sphinx_compas_theme
 twine
 -e .

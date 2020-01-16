@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import os
+import sphinx_compas_theme
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -21,7 +22,7 @@ if os.getenv('SPELLCHECK'):
 
 source_suffix = '.rst'
 master_doc = 'index'
-project = 'compas_rrc'
+project = 'COMPAS RRC'
 year = '2018'
 author = 'ETH Zurich'
 copyright = '{0}, {1}'.format(year, author)
@@ -35,11 +36,13 @@ extlinks = {
 }
 # on_rtd is whether we are on readthedocs.org
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-html_theme = 'alabaster'
+html_theme = 'compaspkg'
+html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
-    'logo': 'logo.png',
-    'description': 'COMPAS RRC',
-    'fixed_sidebar': True,
+    "package_name": 'compas_rrc',
+    "package_title": project,
+    "package_version": release,
+    "package_repo": 'https://bitbucket.org/ethrfl/compas_rrc',
 }
 
 html_use_smartypants = True

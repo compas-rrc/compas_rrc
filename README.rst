@@ -2,18 +2,6 @@
 COMPAS RRC
 ==========
 
-.. start-badges
-
-.. image:: https://img.shields.io/badge/License-MIT-blue.svg
-    :target: https://bitbucket.org/ethrfl/compas_rrc/blob/master/LICENSE
-    :alt: License MIT
-
-.. image:: https://travis-ci.org/ethrfl/compas_rrc.svg?branch=master
-    :target: https://travis-ci.org/ethrfl/compas_rrc
-    :alt: Travis CI
-
-.. end-badges
-
 Library of instructions for ABB Robots using COMPAS RRC Driver.
 
 Main features
@@ -23,7 +11,7 @@ Main features
 * Supports futures and blocking calls
 * Builds on top of COMPAS FAB.
 
-**COMPAS RRC** runs on Python x.x and x.x.
+**COMPAS RRC** runs on Python 2.x and 3.x as well as IronPython.
 
 Requirements
 ------------
@@ -35,7 +23,22 @@ the core library and the robotic fabrication package ``COMPAS FAB``.
 Installation
 ------------
 
-.. Write installation instructions here
+First install the pre-requisites in a conda environment:
+
+.. note::
+
+    Make sure to change ``ENVIRONMENT_NAME`` to a name of your choice
+
+::
+
+    conda create -n ENVIRONMENT_NAME compas_fab python=3.7
+    conda activate ENVIRONMENT_NAME
+
+And then install ``COMPAS RRC``:
+
+::
+
+    pip install git+https://@bitbucket.org/ethrfl/compas_rrc.git
 
 
 Contributing
@@ -64,16 +67,6 @@ command line to ease recurring operations:
 * ``invoke``: Show available tasks.
 
 For more details, check the `Contributor's Guide <CONTRIBUTING.rst>`_.
-
-
-Releasing this project
-----------------------
-
-.. Write releasing instructions here
-
-
-.. end of optional sections
-..
 
 Credits
 -------------
