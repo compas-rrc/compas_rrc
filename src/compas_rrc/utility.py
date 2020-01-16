@@ -9,7 +9,13 @@ from compas_rrc.common import RobotJoints
 __all__ = ['Noop',
            'GetFrame',
            'GetJoints',
-           'GetRobtarget']
+           'GetRobtarget',
+           'SetAcceleration',
+           'SetTool',
+           'SetMaxSpeed',
+           'Stop',
+           'WaitTime',
+           'SetWorkObject']
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -39,7 +45,7 @@ class GetJoints(ROSmsg):
     RAPID Instruction: GetJointT
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, feedback_level=FeedbackLevel.DONE):
         self.instruction = INSTRUCTION_PREFIX + 'GetJointT'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -63,7 +69,7 @@ class GetRobtarget(ROSmsg):
     RAPID Instruction: ``GetRobT``
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, feedback_level=FeedbackLevel.DONE):
         self.instruction = INSTRUCTION_PREFIX + 'GetRobT'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT

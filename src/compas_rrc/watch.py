@@ -11,7 +11,7 @@ class ReadWatch(ROSmsg):
     RAPID Instruction: WatchRead
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, feedback_level=FeedbackLevel.DONE):
         self.instruction = INSTRUCTION_PREFIX + 'WatchRead'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT

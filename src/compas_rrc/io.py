@@ -4,6 +4,15 @@ from compas_rrc.common import ExecutionLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
+__all__ = [
+    'SetDigital',
+    'SetAnalog',
+    'SetGroup',
+    'PulseDigital',
+    'ReadAnalog',
+    'ReadDigital',
+    'ReadGroup',
+]
 
 class SetDigital(ROSmsg):
     """Set digital is a call that sets the value of an digital output signal (0 or 1).
@@ -69,7 +78,7 @@ class ReadAnalog(ROSmsg):
     RAPID Instruction: ReadAi
     """
 
-    def __init__(self, io_name, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
         self.instruction = INSTRUCTION_PREFIX + 'ReadAi'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -87,7 +96,7 @@ class ReadDigital(ROSmsg):
     RAPID Instruction: ReadDi
     """
 
-    def __init__(self, io_name, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
         self.instruction = INSTRUCTION_PREFIX + 'ReadDi'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -106,7 +115,7 @@ class ReadGroup(ROSmsg):
     RAPID Instruction: ReadGi
     """
 
-    def __init__(self, io_name, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
         self.instruction = INSTRUCTION_PREFIX + 'ReadGi'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
