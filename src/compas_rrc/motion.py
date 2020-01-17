@@ -94,7 +94,7 @@ class MoveGeneric(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
 
         pos = list(frame.point)
-        rot = frame.quaternion
+        rot = list(frame.quaternion)
 
         ext_axes = ext_axes or []
         if len(ext_axes) > 6:
