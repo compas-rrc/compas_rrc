@@ -28,7 +28,7 @@ if __name__ == '__main__':
         print(frame, external_axes)
 
         # Change any value and move to new position
-        frame.point[2] += 50
+        frame.point[2] -= 50
         done = abb_r1.send_and_wait(MoveToRobtarget(frame, external_axes, 100, Zone.FINE))
 
         # measage done
@@ -44,13 +44,13 @@ if __name__ == '__main__':
         abb_r1.send(CustomInstruction('r_A042_iGPS_Connect', string_values, float_values, feedback_level=feedback_level))
 
         # Set Tool
-        abb_r1.send(SetTool('tT11TimGr1'))
+        abb_r1.send(SetTool('igps_tool0'))
 
         # Set Work Object
         abb_r1.send(SetWorkObject('igps_wobj0'))
 
         # Set iGPS tool
-        string_values = ['tT11TimGr1']
+        string_values = ['tool0']
         float_values = []
         feedback_level = 0
         abb_r1.send(CustomInstruction('r_A042_iGPS_SetTool', string_values, float_values, feedback_level=feedback_level))
@@ -65,9 +65,22 @@ if __name__ == '__main__':
         frame, external_axes = abb_r1.send_and_wait(GetRobtarget())
         print('GetRobtarget Result = ', frame.point, frame.quaternion , external_axes)
 
+        # Get igps robtarget
+        string_values = []
+        float_values = []
+        igps_robtarget = abb_r1.send_and_wait(CustomInstruction('r_A042_iGPS_GetRobT', string_values, float_values))
+        print('Get igps Robtarget Result = ', igps_robtarget)
+
+        #change manual orient
+        #orient = [0, 0, -1, 0]
+
+        # User input to continue
+        input('Press enter to continue.')
+
         # iGPS move and correct
         string_values = []
         float_values = list(frame.point) + list(frame.quaternion) + list(external_axes) + [0.0, 0.0, 0.0] + [100.0] + [Zone.FINE]
+        #float_values = list(frame.point) + list(orient) + list(external_axes) + [0.0, 0.0, 0.0] + [100.0] + [Zone.FINE]
         feedback_level = 1
         done = abb_r1.send_and_wait(CustomInstruction('r_A042_iGPS_MoveLAndCorrect', string_values, float_values, feedback_level=feedback_level))
 
