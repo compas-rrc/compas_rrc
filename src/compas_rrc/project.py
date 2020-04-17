@@ -10,9 +10,10 @@ class CustomInstruction(ROSmsg):
     RAPID Instruction: CustomInstruction
     """
 
-    def __init__(self, name, string_values=[], float_values=[], feedback_level=FeedbackLevel.NONE):
+    def __init__(self, name, string_values=[], float_values=[], feedback_level=FeedbackLevel.NONE, exec_level=ExecutionLevel.ROBOT):
         self.instruction = name
         self.feedback_level = feedback_level
-        self.exec_level = ExecutionLevel.ROBOT
+        # self.exec_level = ExecutionLevel.ROBOT
+        self.exec_level = exec_level
         self.string_values = string_values
         self.float_values = float_values
