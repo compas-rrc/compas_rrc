@@ -161,9 +161,19 @@ class AbbClient(object):
         future = self.send(instruction)
         return future.result(timeout)
 
+    def send_and_subscribe(self, instruction, callback):
+        instruction.sequence_id = self.counter.increment()
+
+        key = _get_key(instruction)
+
+        parser = instruction.parse_feedback if hasattr(instruction, 'parse_feedback') else None
+        self.futures[key] = dict(callback=callback, parser=parser)
+
+        self.topic.publish(roslibpy.Message(instruction.msg))
+
     def feedback_callback(self, message):
         response_key = _get_response_key(message)
-        future = self.futures.pop(response_key, None)
+        future = self.futures.get(response_key, None)
 
         if future:
             result = message
@@ -171,5 +181,9 @@ class AbbClient(object):
                 result = future['parser'](result)
             else:
                 result = default_feedback_parser(result)
-
-            future['result']._set_result(result)
+            if 'result' in future:
+                future['result']._set_result(result)
+                self.futures.pop(response_key)
+            elif 'callback' in future:
+                future['callback'](result)
+                # TODO: Handle unsubscribes
