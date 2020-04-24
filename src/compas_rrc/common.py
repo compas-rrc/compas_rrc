@@ -66,8 +66,8 @@ class FutureResult(object):
 
         return self.value
 
-    def _set_result(self, message):
-        self.value = message
+    def _set_result(self, value):
+        self.value = value
         self.done = True
         self.event.set()
 
