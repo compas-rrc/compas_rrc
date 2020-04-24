@@ -15,7 +15,8 @@ __all__ = ['Noop',
            'SetMaxSpeed',
            'Stop',
            'WaitTime',
-           'SetWorkObject']
+           'SetWorkObject',
+           'Debug']
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -37,6 +38,60 @@ class Noop(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
+
+
+class Debug(ROSmsg):
+    """Activate debug mode on any instruction by wrapping it.
+
+    Examples
+    --------
+    >>> abb.send_and_wait(Debug(GetJoints()))
+    """
+
+    def __init__(self, instruction, debug_parser=None):
+        self._instruction = instruction
+        self.debug_parser = debug_parser
+
+    @property
+    def msg(self):
+        return self._instruction.msg
+
+    @property
+    def instruction(self):
+        return self._instruction.instruction
+
+    @property
+    def sequence_id(self):
+        return self._instruction.sequence_id
+
+    @sequence_id.setter
+    def sequence_id(self, value):
+        self._instruction.sequence_id = value
+
+    @property
+    def feedback_level(self):
+        return self._instruction.feedback_level
+
+    @feedback_level.setter
+    def feedback_level(self, value):
+        self._instruction.feedback_level = value
+
+    @property
+    def exec_level(self):
+        return self._instruction.exec_level
+
+    @property
+    def string_values(self):
+        return self._instruction.string_values
+
+    @property
+    def float_values(self):
+        return self._instruction.float_values
+
+    def parse_feedback(self, result):
+        if self.debug_parser:
+            return self.debug_parser(result)
+        return result
 
 
 class GetJoints(ROSmsg):
