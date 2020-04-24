@@ -7,6 +7,7 @@ from compas_fab.robots import Configuration
 __all__ = ['FeedbackLevel',
            'ExecutionLevel',
            'InstructionException',
+           'TimeoutException',
            'FutureResult',
            'ExternalAxes',
            'RobotJoints']
@@ -33,6 +34,9 @@ class InstructionException(Exception):
         super(InstructionException, self).__init__('{}, RRC Reply={}'.format(message, result))
         self.result = result
 
+class TimeoutException(Exception):
+    """Timeout exception caused during execution of an instruction."""
+    pass
 
 class FutureResult(object):
     """Represents a future result value.
@@ -55,7 +59,7 @@ class FutureResult(object):
         """
         if not self.done:
             if not self.event.wait(timeout):
-                raise Exception('Timeout: future result not available')
+                raise TimeoutException('Timeout: future result not available')
 
         if isinstance(self.value, Exception):
             raise self.value
