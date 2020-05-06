@@ -26,7 +26,7 @@ if __name__ == '__main__':
         done_vc51 = abb_vc51.send_and_wait(PrintText('vC51 Robot 1 '))
 
     # Read position from real robot and and move vitrual robot in the same position
-    if on:
+    if off:
 
         # read position from real robot
         robot_joints, external_axes = abb_c51.send_and_wait(GetJoints())
@@ -35,21 +35,30 @@ if __name__ == '__main__':
         virtual_robot_in_real_robot_positon = abb_vc51.send_and_wait(MoveToJoints(robot_joints, external_axes, 100, Zone.FINE))
 
     # Show case
-    if off:
+    if on:
 
-        # Deactivate soft servo on robot
-        # abb.send(CustomInstruction('r_X000_DeactSoftRobot'))
-        def get_joint_received(result):
-            print(result)
+        # activate soft move on real robot
+        abb_c51.send(CustomInstruction('r_X000_ActSoftRobot'))
 
-        abb.send_and_subscribe(Debug(CustomInstruction('r_A042_CyJobStart',['r_A042_GetJointT'],[0.01],exec_level=ExecutionLevel.MASTER)), get_joint_received)
+        # function to read the current position
+        def get_joint_real_robot(result):
+
+            robot_joints = result['float_values'][0:6]
+            external_axes = []
+            abb_vc51.send(MoveToJoints(robot_joints, external_axes, 200, Zone.Z10))
+
+
+        # subscribe real robot position
+        abb_c51.send_and_subscribe(Debug(CustomInstruction('r_A042_CyJobStart',['r_A042_GetJointT'],[0.5],exec_level=ExecutionLevel.MASTER)), get_joint_real_robot)
 
         # wait for user abort
         input('Press any key to finish!')
 
-        done = abb.send_and_wait(CustomInstruction('r_A042_CyJobEnd',[],[],exec_level=ExecutionLevel.MASTER))
+        done = abb_c51.send_and_wait(CustomInstruction('r_A042_CyJobEnd',[],[],exec_level=ExecutionLevel.MASTER))
         print('Cyclic job ended', done)
 
+        # deactivate soft move on real robot
+        abb_c51.send(CustomInstruction('r_X000_DeactSoftRobot'))
 
     # End of Code
     print('Finished')
