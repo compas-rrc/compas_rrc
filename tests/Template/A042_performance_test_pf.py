@@ -4,6 +4,13 @@ from compas_fab.backends.ros import RosClient
 
 import re
 import time
+import numpy
+
+# ==============================================================================
+# Temporary hot fix to speed up the feedback channel
+from twisted.internet import reactor
+reactor.timeout = lambda : 0.0001
+# ==============================================================================
 
 if __name__ == '__main__':
 
@@ -12,6 +19,9 @@ if __name__ == '__main__':
     abb = AbbClient(ros)
     abb.run()
     print('Connected.')
+
+    # Number of measurement cycles
+    REPEATS = 40
 
     # ==============================================================================
     # Performance test
@@ -37,20 +47,29 @@ if __name__ == '__main__':
     float_values = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0]
     float_values = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0]
 
+    # Max Data storage
+    tmax_data = []
+
     # Read start time
-    timer_start = time.perf_counter()
+    for i in range(REPEATS):
+        timer_start = time.perf_counter()
 
-    # Send and wait with maximal data custom instruction
-    result = abb.send_and_wait(CustomInstruction(instruction, string_values, float_values,feedback_level=FeedbackLevel.DONE, exec_level= ExecutionLevel.ROBOT))
+        # Send and wait with maximal data custom instruction
+        result = abb.send_and_wait(CustomInstruction(instruction, string_values, float_values,feedback_level=FeedbackLevel.DONE, exec_level= ExecutionLevel.ROBOT))
 
-    # Read end time
-    timer_end = time.perf_counter()
+        # Read end time
+        timer_end = time.perf_counter()
 
-    # calculate cycle time
-    send_and_wait_time = round(timer_end-timer_start,3)
+        # calculate cycle time
+        send_and_wait_time = round(timer_end-timer_start,3)
+        tmax_data.append(send_and_wait_time)
 
-    # Print cycletime
-    print('send_and_wait with max data time : ', send_and_wait_time)
+        # Print cycletime
+        print('send_and_wait with max data time : ', send_and_wait_time)
+
+    # Print cycletime results
+    tmax_data = numpy.array(tmax_data)
+    print('Mean={:.2f}, Min={:.2f}, Max={:.2f}'.format(tmax_data.mean(), tmax_data.min(), tmax_data.max()))
 
     # ==============================================================================
     # Performance test
@@ -66,20 +85,29 @@ if __name__ == '__main__':
     # Minimal values (Protocoll v1 and v2 1 floats)
     float_values = [1.0]
 
-    # Read start time
-    timer_start = time.perf_counter()
+    # Min Data storage
+    tmin_data = []
 
-    # Send and wait with maximal data custom instruction
-    result = abb.send_and_wait(CustomInstruction(instruction, string_values, float_values,feedback_level=FeedbackLevel.DONE, exec_level= ExecutionLevel.ROBOT))
+    for i in range(REPEATS):
+        # Read start time
+        timer_start = time.perf_counter()
 
-    # Read end time
-    timer_end = time.perf_counter()
+        # Send and wait with maximal data custom instruction
+        result = abb.send_and_wait(CustomInstruction(instruction, string_values, float_values,feedback_level=FeedbackLevel.DONE, exec_level= ExecutionLevel.ROBOT))
 
-    # calculate cycle time
-    send_and_wait_time = round(timer_end-timer_start,3)
+        # Read end time
+        timer_end = time.perf_counter()
 
-    # Print cycletime
-    print('send_and_wait with min data time : ', send_and_wait_time)
+        # calculate cycle time
+        send_and_wait_time = round(timer_end-timer_start,3)
+        tmin_data.append(send_and_wait_time)
+
+        # Print cycletime
+        print('send_and_wait with min data time : ', send_and_wait_time)
+
+    # Print cycletime results
+    tmin_data = numpy.array(tmin_data)
+    print('Mean={:.2f}, Min={:.2f}, Max={:.2f}'.format(tmin_data.mean(), tmin_data.min(), tmin_data.max()))
 
     # end of code
     print('Finished')
