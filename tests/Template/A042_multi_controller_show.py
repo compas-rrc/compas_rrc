@@ -1,6 +1,12 @@
 from compas_rrc import *
 from compas_fab.backends.ros import RosClient
 
+# ==============================================================================
+# Temporary hot fix to speed up the feedback channel
+from twisted.internet import reactor
+reactor.timeout = lambda : 0.0001
+# ==============================================================================
+
 if __name__ == '__main__':
 
     # Create Ros Client
@@ -22,7 +28,7 @@ if __name__ == '__main__':
     off = False
 
     # Simple function check
-    if on:
+    if off:
 
         # Print message on FlexPendant
         done_C51_R51 = abb_C51_R51.send_and_wait(PrintText('C51_R51 '))
@@ -30,17 +36,45 @@ if __name__ == '__main__':
         done_vC11_R11 = abb_vC11_R11.send_and_wait(PrintText('vC11_R11 '))
         done_vC11_R12 = abb_vC11_R12.send_and_wait(PrintText('vC11_R12 '))
 
-    # Read position from real robot and and move vitrual robot in the same position
-    if off:
+    # Show case step 1
+    if on:
 
-        # read position from real robot
-        robot_joints, external_axes = abb_C51_R51.send_and_wait(GetJoints())
+        # read position from real robot and gantry values from virtual robot
+        robot_joints_C51_R51, external_axes_C51_R51 = abb_C51_R51.send_and_wait(GetJoints())
+        print('Joints C51_R51', robot_joints_C51_R51, external_axes_C51_R51)
 
-        # move virtual robot
-        virtual_robot_in_real_robot_positon = abb_vC51_R51.send_and_wait(MoveToJoints(robot_joints, external_axes, 100, Zone.FINE))
+        robot_joints_vC11_R11, external_axes_vC11_R11 = abb_vC11_R11.send_and_wait(GetJoints())
+        print('Joints vC11_R11', robot_joints_vC11_R11, external_axes_vC11_R11)
 
-    # Show case
-    if off:
+        robot_joints_vC11_R12, external_axes_vC11_R12 = abb_vC11_R12.send_and_wait(GetJoints())
+        print('Joints vC11_R12', robot_joints_vC11_R12, external_axes_vC11_R12)
+
+        # move virtual robots to real robot position exept gantry axis
+        done_vC51_R51 = abb_vC51_R51.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_C51_R51, 100, Zone.FINE))
+        print('done_vC51_R51')
+
+        done_vC11_R11 = abb_vC11_R11.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_vC11_R11, 100, Zone.FINE))
+        print('done_vC11_R11')
+
+        done_vC11_R12 = abb_vC11_R12.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_vC11_R12, 100, Zone.FINE))
+        print('done_vC11_R12')
+
+    # Show case step 2
+    if on:
+
+        # Set multi move tasklist
+        string_values, float_values = ['T_ROB11', 'T_ROB12'], []
+        done_vC11_R11 = abb_vC11_R11.send_and_wait(CustomInstruction('r_A042_ABB_SetMultiMoveTasks', string_values, float_values))
+
+        # Activate multi move
+        string_values, float_values = [], []
+        future_done_vC11_R11 = abb_vC11_R11.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
+        future_done_vC11_R12 = abb_vC11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
+
+        # Wait for feedback
+        done_vC11_R11 = future_done_vC11_R11.result(timeout=5.0)
+        done_vC11_R12 = future_done_vC11_R12.result(timeout=5.0)
+        print('MultiMove On')
 
         # activate soft move on real robot
         abb_C51_R51.send(CustomInstruction('r_X000_ActSoftRobot'))
@@ -49,12 +83,22 @@ if __name__ == '__main__':
         def get_joint_real_robot(result):
 
             robot_joints = result['float_values'][0:6]
-            external_axes = []
-            abb_vC51_R51.send(MoveToJoints(robot_joints, external_axes, 200, Zone.Z10))
 
+            # send to vC51_R51
+            abb_vC51_R51.send(MoveToJoints(robot_joints, external_axes_C51_R51, 2000, Zone.Z100))
+
+            # send to vC11_R11 with multi move
+            string_values = []
+            float_values = list(robot_joints) + list(external_axes_vC11_R11) + [0, 0, 0] + [2000] + [Zone.Z100]
+            abb_vC11_R11.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
+
+            # send to vC11_R12 with multi move
+            string_values = []
+            float_values = list(robot_joints) + list(external_axes_vC11_R12) + [0, 0, 0] + [2000] + [Zone.Z100]
+            abb_vC11_R12.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
 
         # subscribe real robot position
-        abb_C51_R51.send_and_subscribe(Debug(CustomInstruction('r_A042_CyJobStart',['r_A042_GetJointT'],[0.5],exec_level=ExecutionLevel.MASTER)), get_joint_real_robot)
+        abb_C51_R51.send_and_subscribe(Debug(CustomInstruction('r_A042_CyJobStart',['r_A042_GetJointT'],[0.25],exec_level=ExecutionLevel.MASTER)), get_joint_real_robot)
 
         # wait for user abort
         input('Press any key to finish!')
@@ -64,6 +108,16 @@ if __name__ == '__main__':
 
         # deactivate soft move on real robot
         abb_C51_R51.send(CustomInstruction('r_X000_DeactSoftRobot'))
+
+        # Deactivate multi move
+        string_values, float_values = [], []
+        done_vC11_R11 = abb_vC11_R11.send(CustomInstruction('r_A042_ABB_MultiMoveOff', string_values, float_values, feedback_level=1))
+        done_vC11_R12 = abb_vC11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOff', string_values, float_values, feedback_level=1))
+
+        # Wait for feedback
+        done_vC11_R11 = done_vC11_R11.result(timeout=5.0)
+        done_vC11_R12 = done_vC11_R12.result(timeout=5.0)
+        print('MultiMove Off')
 
     # End of Code
     print('Finished')
