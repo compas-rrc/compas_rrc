@@ -107,7 +107,7 @@ if __name__ == '__main__':
         print('Cyclic job ended', done)
 
         # deactivate soft move on real robot
-        abb_C51_R51.send(CustomInstruction('r_X000_DeactSoftRobot'))
+        done = abb_C51_R51.send_and_wait(CustomInstruction('r_X000_DeactSoftRobot'))
 
         # Deactivate multi move
         string_values, float_values = [], []
