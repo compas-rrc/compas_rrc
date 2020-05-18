@@ -10,9 +10,9 @@ reactor.timeout = lambda : 0.0001
 if __name__ == '__main__':
 
     # Switches for locations
-    location_einsiedeln = True
-    location_forch = False
-    location_zurich = False
+    location_einsiedeln = False
+    location_forch = True
+    location_zurich = True
 
     # Switches for function
     connection_test = True
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     if location_forch:
 
         # Create Ros Client
-        ros_forch_gonzalo_casas = RosClient(host='serveo.net')
+        ros_forch_gonzalo_casas = RosClient(host='rrc-forch.serveo.net', port=9091)
 
         # Create ABB Client
         abb_vC11_R11 = AbbClient(ros_forch_gonzalo_casas, '/vC11_R11')
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     if location_zurich:
 
         # Create Ros Client
-        ros_zurich_michael_lyrenmann = RosClient(host='rrc3.serveo.net')
+        ros_zurich_michael_lyrenmann = RosClient(host='rrc-zurich.serveo.net')
 
         # Create ABB Client
         abb_C11_R11 = AbbClient(ros_zurich_michael_lyrenmann, '/C11_R11')
