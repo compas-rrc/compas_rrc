@@ -10,14 +10,14 @@ reactor.timeout = lambda : 0.0001
 if __name__ == '__main__':
 
     # Switches for locations
-    location_einsiedeln = False
+    location_einsiedeln = True
     location_forch = True
     location_zurich = True
 
     # Switches for function
     connection_test = True
-    show_step_1 = False
-    show_step_2 = False
+    show_step_1 = True
+    show_step_2 = True
 
 
     if location_einsiedeln:
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     # Show case step 2
     if show_step_2:
 
-        # Set multi move tasklist
+       # Set multi move tasklist
         string_values, float_values = ['T_ROB11', 'T_ROB12'], []
         done_vC11_R11 = abb_vC11_R11.send_and_wait(CustomInstruction('r_A042_ABB_SetMultiMoveTasks', string_values, float_values))
 
@@ -200,8 +200,8 @@ if __name__ == '__main__':
         done_vC11_R12 = abb_vC11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOff', string_values, float_values, feedback_level=1))
 
         # Wait for feedback
-        done_vC11_R11 = done_vC11_R11.result(timeout=5.0)
-        done_vC11_R12 = done_vC11_R12.result(timeout=5.0)
+        done_vC11_R11 = done_vC11_R11.result(timeout=25.0)
+        done_vC11_R12 = done_vC11_R12.result(timeout=25.0)
         print('MultiMove vC11_R11_R12 Off')
 
         # Deactivate multi move
