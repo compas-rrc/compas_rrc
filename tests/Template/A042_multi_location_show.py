@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # Switches for locations
     location_einsiedeln = True
     location_forch = True
-    location_zurich = True
+    location_zurich = False
 
     # Switches for function
     connection_test = True
@@ -67,22 +67,27 @@ if __name__ == '__main__':
         print('Zurich - Michael Lyrenmann - Connected')
 
 
-    if connection_test and location_einsiedeln:
+    if connection_test:
 
-        # Print message on FlexPendant
-        done_C51_R51 = abb_C51_R51.send_and_wait(PrintText('C51_R51 '))
+        if location_einsiedeln:
 
-    if connection_test and location_forch:
+            # Print message on FlexPendant
+            done_C51_R51 = abb_C51_R51.send_and_wait(PrintText('C51_R51 '))
+            print('Connection test done : Einsiedeln')
 
-        # Print message on FlexPendant
-        done_vC11_R11 = abb_vC11_R11.send_and_wait(PrintText('vC11_R11 '))
-        done_vC11_R12 = abb_vC11_R12.send_and_wait(PrintText('vC11_R12 '))
+        if location_forch:
 
-    if connection_test and location_zurich:
+            # Print message on FlexPendant
+            abb_vC11_R11.send(PrintText('vC11_R11 '))
+            abb_vC11_R12.send(PrintText('vC11_R12 '))
+            print('Connection test done : Forch')
 
-        # Print message on FlexPendant
-        done_C11_R11 = abb_C11_R11.send_and_wait(PrintText('C11_R11 '))
-        done_C11_R12 = abb_C11_R12.send_and_wait(PrintText('C11_R12 '))
+        if location_zurich:
+
+            # Print message on FlexPendant
+            done_C11_R11 = abb_C11_R11.send_and_wait(PrintText('C11_R11 '))
+            done_C11_R12 = abb_C11_R12.send_and_wait(PrintText('C11_R12 '))
+            print('Connection test done : Zürich')
 
     # Show case step 1
     if show_step_1:
@@ -91,67 +96,82 @@ if __name__ == '__main__':
         robot_joints_C51_R51, external_axes_C51_R51 = abb_C51_R51.send_and_wait(GetJoints())
         print('Joints C51_R51', robot_joints_C51_R51, external_axes_C51_R51)
 
-        robot_joints_vC11_R11, external_axes_vC11_R11 = abb_vC11_R11.send_and_wait(GetJoints())
-        print('Joints vC11_R11', robot_joints_vC11_R11, external_axes_vC11_R11)
+        external_axes_vC11_R11 = []
+        # robot_joints_vC11_R11, external_axes_vC11_R11 = abb_vC11_R11.send_and_wait(GetJoints())
+        # print('Joints vC11_R11', robot_joints_vC11_R11, external_axes_vC11_R11)
 
-        robot_joints_vC11_R12, external_axes_vC11_R12 = abb_vC11_R12.send_and_wait(GetJoints())
-        print('Joints vC11_R12', robot_joints_vC11_R12, external_axes_vC11_R12)
+        external_axes_vC11_R12 = []
+        #robot_joints_vC11_R12, external_axes_vC11_R12 = abb_vC11_R12.send_and_wait(GetJoints())
+        # print('Joints vC11_R12', robot_joints_vC11_R12, external_axes_vC11_R12)
 
-        robot_joints_C11_R11, external_axes_C11_R11 = abb_C11_R11.send_and_wait(GetJoints())
-        print('Joints C11_R11', robot_joints_C11_R11, external_axes_C11_R11)
+        if location_zurich:
 
-        robot_joints_C11_R12, external_axes_C11_R12 = abb_C11_R12.send_and_wait(GetJoints())
-        print('Joints C11_R12', robot_joints_C11_R12, external_axes_C11_R12)
+            robot_joints_C11_R11, external_axes_C11_R11 = abb_C11_R11.send_and_wait(GetJoints())
+            print('Joints C11_R11', robot_joints_C11_R11, external_axes_C11_R11)
+
+            robot_joints_C11_R12, external_axes_C11_R12 = abb_C11_R12.send_and_wait(GetJoints())
+            print('Joints C11_R12', robot_joints_C11_R12, external_axes_C11_R12)
 
         # move robots to master position exept gantry axis
 
-        done_vC11_R11 = abb_vC11_R11.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_vC11_R11, 100, Zone.FINE))
+        done_vC11_R11 = abb_vC11_R11.send(MoveToJoints(robot_joints_C51_R51, external_axes_vC11_R11, 100, Zone.FINE))
         print('done_vC11_R11')
 
-        done_vC11_R12 = abb_vC11_R12.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_vC11_R12, 100, Zone.FINE))
+        done_vC11_R12 = abb_vC11_R12.send(MoveToJoints(robot_joints_C51_R51, external_axes_vC11_R12, 100, Zone.FINE))
         print('done_vC11_R12')
 
-        done_C11_R11 = abb_C11_R11.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_C11_R11, 100, Zone.FINE))
-        print('done_C11_R11')
+        if location_zurich:
 
-        done_C11_R12 = abb_C11_R12.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_C11_R12, 100, Zone.FINE))
-        print('done_C11_R12')
+            done_C11_R11 = abb_C11_R11.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_C11_R11, 100, Zone.FINE))
+            print('done_C11_R11')
+
+            done_C11_R12 = abb_C11_R12.send_and_wait(MoveToJoints(robot_joints_C51_R51, external_axes_C11_R12, 100, Zone.FINE))
+            print('done_C11_R12')
 
     # Show case step 2
     if show_step_2:
 
-       # Set multi move tasklist
-        string_values, float_values = ['T_ROB11', 'T_ROB12'], []
-        done_vC11_R11 = abb_vC11_R11.send_and_wait(CustomInstruction('r_A042_ABB_SetMultiMoveTasks', string_values, float_values))
+        # Set Acceleration
+        acc_ramp_vC11_R11 = 100 # Unit [%]
+        abb_vC11_R11.send(SetAcceleration(acc_ramp_vC11_R11, acc_ramp_vC11_R11))
 
-        # Activate multi move
-        string_values, float_values = [], []
-        future_done_vC11_R11 = abb_vC11_R11.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
-        future_done_vC11_R12 = abb_vC11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
+        if location_zurich:
 
-        # Wait for feedback
-        done_vC11_R11 = future_done_vC11_R11.result(timeout=5.0)
-        done_vC11_R12 = future_done_vC11_R12.result(timeout=5.0)
-
-        # User informantion
-        print('MultiMove vC11_R11_R12_On')
-
+            acc_ramp_C11_R11 = 33 # Unit [%]
+            abb_C11_R11.send(SetAcceleration(acc_ramp_C11_R11, acc_ramp_C11_R11))
 
         # Set multi move tasklist
         string_values, float_values = ['T_ROB11', 'T_ROB12'], []
-        done_C11_R11 = abb_C11_R11.send_and_wait(CustomInstruction('r_A042_ABB_SetMultiMoveTasks', string_values, float_values))
+        # done_vC11_R11 = abb_vC11_R11.send_and_wait(CustomInstruction('r_A042_ABB_SetMultiMoveTasks', string_values, float_values))
 
         # Activate multi move
         string_values, float_values = [], []
-        future_done_C11_R11 = abb_C11_R11.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
-        future_done_C11_R12 = abb_C11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
+        # future_done_vC11_R11 = abb_vC11_R11.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
+        # future_done_vC11_R12 = abb_vC11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
 
         # Wait for feedback
-        done_C11_R11 = future_done_C11_R11.result(timeout=5.0)
-        done_C11_R12 = future_done_C11_R12.result(timeout=5.0)
+        # done_vC11_R11 = future_done_vC11_R11.result(timeout=5.0)
+        # done_vC11_R12 = future_done_vC11_R12.result(timeout=5.0)
 
         # User informantion
-        print('MultiMove C11_R11_R12_On')
+        # print('MultiMove vC11_R11_R12_On')
+
+        if location_zurich:
+            # Set multi move tasklist
+            string_values, float_values = ['T_ROB11', 'T_ROB12'], []
+            done_C11_R11 = abb_C11_R11.send_and_wait(CustomInstruction('r_A042_ABB_SetMultiMoveTasks', string_values, float_values))
+
+            # Activate multi move
+            string_values, float_values = [], []
+            future_done_C11_R11 = abb_C11_R11.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
+            future_done_C11_R12 = abb_C11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOn', string_values, float_values, feedback_level=1))
+
+            # Wait for feedback
+            done_C11_R11 = future_done_C11_R11.result(timeout=5.0)
+            done_C11_R12 = future_done_C11_R12.result(timeout=5.0)
+
+            # User informantion
+            print('MultiMove C11_R11_R12_On')
 
 
         # activate soft move on real robot
@@ -161,26 +181,31 @@ if __name__ == '__main__':
         def get_joint_real_robot(result):
 
             robot_joints = result['float_values'][0:6]
+            print('Joints C51_R51', robot_joints)
 
-            # send to vC11_R11 with multi move
-            string_values = []
-            float_values = list(robot_joints) + list(external_axes_vC11_R11) + [0, 0, 0] + [2000] + [Zone.Z100]
-            abb_vC11_R11.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
+            if location_forch:
 
-            # send to vC11_R12 with multi move
-            string_values = []
-            float_values = list(robot_joints) + list(external_axes_vC11_R12) + [0, 0, 0] + [2000] + [Zone.Z100]
-            abb_vC11_R12.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
+                # send to vC11_R11 with multi move
+                string_values = []
+                float_values = list(robot_joints) + list(external_axes_vC11_R11) + [0, 0, 0] + [2000] + [Zone.Z100]
+                abb_vC11_R11.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
 
-            # send to C11_R11 with multi move
-            string_values = []
-            float_values = list(robot_joints) + list(external_axes_C11_R11) + [0, 0, 0] + [2000] + [Zone.Z100]
-            abb_C11_R11.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
+                # send to vC11_R12 with multi move
+                string_values = []
+                float_values = list(robot_joints) + list(external_axes_vC11_R12) + [0, 0, 0] + [2000] + [Zone.Z100]
+                abb_vC11_R12.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
 
-            # send to C11_R12 with multi move
-            string_values = []
-            float_values = list(robot_joints) + list(external_axes_C11_R12) + [0, 0, 0] + [2000] + [Zone.Z100]
-            abb_C11_R12.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
+            if location_zurich:
+
+                # send to C11_R11 with multi move
+                string_values = []
+                float_values = list(robot_joints) + list(external_axes_C11_R11) + [0, 0, 0] + [2000] + [Zone.Z100]
+                abb_C11_R11.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
+
+                # send to C11_R12 with multi move
+                string_values = []
+                float_values = list(robot_joints) + list(external_axes_C11_R12) + [0, 0, 0] + [2000] + [Zone.Z100]
+                abb_C11_R12.send(CustomInstruction('r_A042_MultiMove_MoveAbsJ', string_values, float_values, feedback_level=0))
 
         # subscribe real robot position
         abb_C51_R51.send_and_subscribe(Debug(CustomInstruction('r_A042_CyJobStart',['r_A042_GetJointT'],[0.25],exec_level=ExecutionLevel.MASTER)), get_joint_real_robot)
@@ -196,12 +221,12 @@ if __name__ == '__main__':
 
         # Deactivate multi move
         string_values, float_values = [], []
-        done_vC11_R11 = abb_vC11_R11.send(CustomInstruction('r_A042_ABB_MultiMoveOff', string_values, float_values, feedback_level=1))
-        done_vC11_R12 = abb_vC11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOff', string_values, float_values, feedback_level=1))
+        # done_vC11_R11 = abb_vC11_R11.send(CustomInstruction('r_A042_ABB_MultiMoveOff', string_values, float_values, feedback_level=1))
+        # done_vC11_R12 = abb_vC11_R12.send(CustomInstruction('r_A042_ABB_MultiMoveOff', string_values, float_values, feedback_level=1))
 
         # Wait for feedback
-        done_vC11_R11 = done_vC11_R11.result(timeout=25.0)
-        done_vC11_R12 = done_vC11_R12.result(timeout=25.0)
+        # done_vC11_R11 = done_vC11_R11.result(timeout=25.0)
+        # done_vC11_R12 = done_vC11_R12.result(timeout=25.0)
         print('MultiMove vC11_R11_R12 Off')
 
         # Deactivate multi move
