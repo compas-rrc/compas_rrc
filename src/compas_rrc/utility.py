@@ -109,10 +109,10 @@ class GetJoints(ROSmsg):
 
     def parse_feedback(self, result):
         # read robot jonts
-        robot_joints = [result['float_values'][i] for i in range(18, 24)]
+        robot_joints = [result['float_values'][i] for i in range(0, 6)]
 
         # read external axes
-        external_axes = [result['float_values'][i] for i in range(24, 27) if not is_rapid_none(result['float_values'][i])]
+        external_axes = [result['float_values'][i] for i in range(6, 12) if not is_rapid_none(result['float_values'][i])]
 
         # write result
         return RobotJoints(*robot_joints), ExternalAxes(*external_axes)
@@ -134,20 +134,20 @@ class GetRobtarget(ROSmsg):
     def parse_feedback(self, result):
 
         # read pos
-        x = result['float_values'][17]
-        y = result['float_values'][18]
-        z = result['float_values'][19]
+        x = result['float_values'][0]
+        y = result['float_values'][1]
+        z = result['float_values'][2]
         pos = [x, y, z]
 
         # read orient
-        orient_q1 = result['float_values'][20]
-        orient_q2 = result['float_values'][21]
-        orient_q3 = result['float_values'][22]
-        orient_q4 = result['float_values'][23]
+        orient_q1 = result['float_values'][3]
+        orient_q2 = result['float_values'][4]
+        orient_q3 = result['float_values'][5]
+        orient_q4 = result['float_values'][6]
         orientation = [orient_q1, orient_q2, orient_q3, orient_q4]
 
         # read gantry joints
-        external_axes = [result['float_values'][i] for i in range(24, 27) if not is_rapid_none(result['float_values'][i])]
+        external_axes = [result['float_values'][i] for i in range(7, 13) if not is_rapid_none(result['float_values'][i])]
 
         # write result
 
