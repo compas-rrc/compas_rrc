@@ -3,6 +3,8 @@ import threading
 import time
 
 import roslibpy
+
+from .common import CLIENT_PROTOCOL_VERSION
 from .common import FutureResult
 from .common import InstructionException
 
@@ -77,11 +79,33 @@ class AbbClient(object):
         self.counter = SequenceCounter()
         if not namespace.endswith('/'):
             namespace += '/'
+        self._version_checked = False
+        self._server_protocol_check = dict(event=threading.Event(),
+                                           param=roslibpy.Param(ros, namespace + 'protocol_version'),
+                                           version=None)
+        self.ros.on_ready(self.version_check)
         self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc_driver/RobotMessage', queue_size=None)
         self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage')
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
         self.futures = {}
+
+    def version_check(self):
+        self._server_protocol_check['version'] = self._server_protocol_check['param'].get()
+        self._server_protocol_check['event'].set()
+
+    def ensure_protocol_version(self):
+        if self._version_checked:
+            return
+
+        if not self._server_protocol_check['version']:
+            if not self._server_protocol_check['event'].wait(10):
+                raise Exception('Could not yet retrieve server protocol version')
+
+        if self._server_protocol_check['version'] != CLIENT_PROTOCOL_VERSION:
+            raise Exception('Protocol version mismatch. Server={}, Client={}'.format(self._server_protocol_check['version'], CLIENT_PROTOCOL_VERSION))
+
+        self._version_checked = True
 
     def run(self, timeout=None):
         """Starts the event loop in a thread."""
@@ -130,6 +154,7 @@ class AbbClient(object):
             the return is a future object that allows to defer waiting for
             results.
         """
+        self.ensure_protocol_version()
         instruction.sequence_id = self.counter.increment()
 
         key = _get_key(instruction)
@@ -162,6 +187,7 @@ class AbbClient(object):
         return future.result(timeout)
 
     def send_and_subscribe(self, instruction, callback):
+        self.ensure_protocol_version()
         instruction.sequence_id = self.counter.increment()
 
         key = _get_key(instruction)
