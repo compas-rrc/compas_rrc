@@ -4,13 +4,17 @@ import threading
 from compas.robots import Joint
 from compas_fab.robots import Configuration
 
-__all__ = ['FeedbackLevel',
+__all__ = ['CLIENT_PROTOCOL_VERSION',
+           'FeedbackLevel',
            'ExecutionLevel',
            'InstructionException',
            'TimeoutException',
            'FutureResult',
            'ExternalAxes',
            'RobotJoints']
+
+
+CLIENT_PROTOCOL_VERSION = 2
 
 
 class FeedbackLevel(object):
@@ -66,8 +70,8 @@ class FutureResult(object):
 
         return self.value
 
-    def _set_result(self, message):
-        self.value = message
+    def _set_result(self, value):
+        self.value = value
         self.done = True
         self.event.set()
 

@@ -15,7 +15,8 @@ __all__ = ['Noop',
            'SetMaxSpeed',
            'Stop',
            'WaitTime',
-           'SetWorkObject']
+           'SetWorkObject',
+           'Debug']
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -39,6 +40,60 @@ class Noop(ROSmsg):
         self.float_values = []
 
 
+class Debug(ROSmsg):
+    """Activate debug mode on any instruction by wrapping it.
+
+    Examples
+    --------
+    >>> abb.send_and_wait(Debug(GetJoints()))
+    """
+
+    def __init__(self, instruction, debug_parser=None):
+        self._instruction = instruction
+        self.debug_parser = debug_parser
+
+    @property
+    def msg(self):
+        return self._instruction.msg
+
+    @property
+    def instruction(self):
+        return self._instruction.instruction
+
+    @property
+    def sequence_id(self):
+        return self._instruction.sequence_id
+
+    @sequence_id.setter
+    def sequence_id(self, value):
+        self._instruction.sequence_id = value
+
+    @property
+    def feedback_level(self):
+        return self._instruction.feedback_level
+
+    @feedback_level.setter
+    def feedback_level(self, value):
+        self._instruction.feedback_level = value
+
+    @property
+    def exec_level(self):
+        return self._instruction.exec_level
+
+    @property
+    def string_values(self):
+        return self._instruction.string_values
+
+    @property
+    def float_values(self):
+        return self._instruction.float_values
+
+    def parse_feedback(self, result):
+        if self.debug_parser:
+            return self.debug_parser(result)
+        return result
+
+
 class GetJoints(ROSmsg):
     """Get joints is a call that queries the axis values of the robot.
 
@@ -54,10 +109,10 @@ class GetJoints(ROSmsg):
 
     def parse_feedback(self, result):
         # read robot jonts
-        robot_joints = [result['float_values'][i] for i in range(18, 24)]
+        robot_joints = [result['float_values'][i] for i in range(0, 6)]
 
         # read external axes
-        external_axes = [result['float_values'][i] for i in range(24, 27) if not is_rapid_none(result['float_values'][i])]
+        external_axes = [result['float_values'][i] for i in range(6, 12) if not is_rapid_none(result['float_values'][i])]
 
         # write result
         return RobotJoints(*robot_joints), ExternalAxes(*external_axes)
@@ -79,20 +134,20 @@ class GetRobtarget(ROSmsg):
     def parse_feedback(self, result):
 
         # read pos
-        x = result['float_values'][17]
-        y = result['float_values'][18]
-        z = result['float_values'][19]
+        x = result['float_values'][0]
+        y = result['float_values'][1]
+        z = result['float_values'][2]
         pos = [x, y, z]
 
         # read orient
-        orient_q1 = result['float_values'][20]
-        orient_q2 = result['float_values'][21]
-        orient_q3 = result['float_values'][22]
-        orient_q4 = result['float_values'][23]
+        orient_q1 = result['float_values'][3]
+        orient_q2 = result['float_values'][4]
+        orient_q3 = result['float_values'][5]
+        orient_q4 = result['float_values'][6]
         orientation = [orient_q1, orient_q2, orient_q3, orient_q4]
 
         # read gantry joints
-        external_axes = [result['float_values'][i] for i in range(24, 27) if not is_rapid_none(result['float_values'][i])]
+        external_axes = [result['float_values'][i] for i in range(7, 13) if not is_rapid_none(result['float_values'][i])]
 
         # write result
 

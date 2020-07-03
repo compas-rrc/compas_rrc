@@ -17,6 +17,7 @@ Contents
    readme
    reference/index
    contributing
+   architecture
    authors
    changelog
 

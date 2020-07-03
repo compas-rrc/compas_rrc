@@ -15,7 +15,7 @@ if __name__ == '__main__':
     print('Switching to EGM')
 
     # User message and input
-    input('Robot start position reached, press any key to start the print.')
+    input('RRC in EGM mode. Press enter to return to normal RRC mode')
 
     abb.send(CustomInstruction('r_A053_StopEGM', exec_level=ExecutionLevel.MASTER))
     print('Switching to EGM')
