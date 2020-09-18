@@ -1,7 +1,7 @@
 version: '3'
 services:
   ros-master:
-    image: gramaziokohler/compas_rrc_driver
+    image: compasrrc/compas_rrc_driver
     container_name: ros-master
     environment:
       - ROS_HOSTNAME=ros-master
@@ -12,7 +12,7 @@ services:
       - roscore
 
   ros-bridge:
-    image: gramaziokohler/compas_rrc_driver
+    image: compasrrc/compas_rrc_driver
     container_name: ros-bridge
     environment:
       - ROS_HOSTNAME=ros-bridge
@@ -29,7 +29,7 @@ services:
       - unregister_timeout:=28800      # This horribly long timeout of 8 hours is to workaround this issue: https://github.com/RobotWebTools/rosbridge_suite/issues/138
 
   abb-driver-c51:
-    image: gramaziokohler/compas_rrc_driver
+    image: compasrrc/compas_rrc_driver
     container_name: abb-driver-c51
     environment:
       - ROS_HOSTNAME=abb-driver-c51
@@ -47,7 +47,7 @@ services:
       - namespace:=C51
 
   abb-driver-vc51:
-    image: gramaziokohler/compas_rrc_driver
+    image: compasrrc/compas_rrc_driver
     container_name: abb-driver-vc51
     environment:
       - ROS_HOSTNAME=abb-driver-vc51

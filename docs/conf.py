@@ -31,8 +31,8 @@ version = release = '1.0.0'
 pygments_style = 'trac'  # Perhaps change to sphinx
 templates_path = ['.']
 extlinks = {
-    'issue': ('https://bitbucket.org/ethrfl/compas_rrc/issues/%s', '#'),
-    'pr': ('https://bitbucket.org/ethrfl/compas_rrc/pull/%s', 'PR #'),
+    'issue': ('https://github.com/compas-rrc/compas_rrc/issues/%s', '#'),
+    'pr': ('https://github.com/compas-rrc/compas_rrc/pull/%s', 'PR #'),
 }
 # on_rtd is whether we are on readthedocs.org
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
@@ -42,7 +42,7 @@ html_theme_options = {
     "package_name": 'compas_rrc',
     "package_title": project,
     "package_version": release,
-    "package_repo": 'https://bitbucket.org/ethrfl/compas_rrc',
+    "package_repo": 'https://github.com/compas-rrc/compas_rrc',
 }
 
 html_use_smartypants = True

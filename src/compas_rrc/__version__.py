@@ -1,6 +1,6 @@
 __title__ = 'compas_rrc'
 __description__ = 'COMPAS RRC: Library for ABB Robots (MoveAbsJ etc.) '
-__url__ = 'https://bitbucket.org/ethrfl/compas_rrc'
+__url__ = 'https://github.com/compas-rrc/compas_rrc'
 __version__ = '1.0.0'
 __author__ = 'ETH Zürich'
 __author_email__ = 'fleischmann@arch.ethz.ch'

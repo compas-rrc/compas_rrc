@@ -38,7 +38,7 @@ And then install ``COMPAS RRC``:
 
 ::
 
-    pip install git+https://@bitbucket.org/ethrfl/compas_rrc.git
+    pip install git+https://@github.com/compas-rrc/compas_rrc.git
 
 
 Contributing
@@ -46,7 +46,7 @@ Contributing
 
 Make sure you setup your local development environment correctly:
 
-* Clone the `compas_rrc <https://bitbucket.org/ethrfl/compas_rrc>`_ repository.
+* Clone the `compas_rrc <https://github.com/compas-rrc/compas_rrc>`_ repository.
 * Install development dependencies and make the project accessible from Rhino:
 
 ::
@@ -71,4 +71,4 @@ For more details, check the `Contributor's Guide <CONTRIBUTING.rst>`_.
 Credits
 -------------
 
-This package was created by Philippe Fleischmann <fleischmann@arch.ethz.ch> `@fleischp <https://github.com/fleischp>`_ at `@ethrfl <https://bitbucket.org/ethrfl>`_
+This package was created by Philippe Fleischmann <fleischmann@arch.ethz.ch> `@fleischp <https://github.com/fleischp>`_ at `@ethrfl <https://github.com/compas-rrc>`_
