@@ -28,11 +28,11 @@ services:
       - rosbridge_websocket.launch
       - unregister_timeout:=28800      # This horribly long timeout of 8 hours is to workaround this issue: https://github.com/RobotWebTools/rosbridge_suite/issues/138
 
-  abb-driver:
+  abb-driver-1:
     image: compasrrc/compas_rrc_driver
-    container_name: abb-driver
+    container_name: abb-driver-1
     environment:
-      - ROS_HOSTNAME=abb-driver
+      - ROS_HOSTNAME=abb-driver-1
       - ROS_MASTER_URI=http://ros-master:11311
     depends_on:
       - ros-master
@@ -41,6 +41,25 @@ services:
       - --wait
       - compas_rrc_driver
       - bringup.launch
-      - robot_ip:=192.168.0.21
+      - robot_ip:=192.168.125.1
+      - robot_streaming_port:=30101
+      - robot_state_port:=30201
+      - namespace:=rob1
+
+  abb-driver-2:
+    image: compasrrc/compas_rrc_driver
+    container_name: abb-driver-2
+    environment:
+      - ROS_HOSTNAME=abb-driver-2
+      - ROS_MASTER_URI=http://ros-master:11311
+    depends_on:
+      - ros-master
+    command:
+      - roslaunch
+      - --wait
+      - compas_rrc_driver
+      - bringup.launch
+      - robot_ip:=192.168.125.1
       - robot_streaming_port:=30102
       - robot_state_port:=30202
+      - namespace:=rob2

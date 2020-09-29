@@ -28,11 +28,11 @@ services:
       - rosbridge_websocket.launch
       - unregister_timeout:=28800      # This horribly long timeout of 8 hours is to workaround this issue: https://github.com/RobotWebTools/rosbridge_suite/issues/138
 
-  abb-driver-C51_R51:
+  abb-driver-1:
     image: compasrrc/compas_rrc_driver
-    container_name: abb-driver-C51_R51
+    container_name: abb-driver-1
     environment:
-      - ROS_HOSTNAME=abb-driver-C51_R51
+      - ROS_HOSTNAME=abb-driver-1
       - ROS_MASTER_URI=http://ros-master:11311
     depends_on:
       - ros-master
@@ -41,16 +41,16 @@ services:
       - --wait
       - compas_rrc_driver
       - bringup.launch
-      - robot_ip:=192.168.0.51
+      - robot_ip:=192.168.0.10
       - robot_streaming_port:=30101
       - robot_state_port:=30201
-      - namespace:=C51_R51
+      - namespace:=ctrl1_rob1
 
-  abb-driver-vC51_R51:
+  abb-driver-2:
     image: compasrrc/compas_rrc_driver
-    container_name: abb-driver-vC51_R51
+    container_name: abb-driver-2
     environment:
-      - ROS_HOSTNAME=abb-driver-vC51_R51
+      - ROS_HOSTNAME=abb-driver-2
       - ROS_MASTER_URI=http://ros-master:11311
     depends_on:
       - ros-master
@@ -59,43 +59,7 @@ services:
       - --wait
       - compas_rrc_driver
       - bringup.launch
-      - robot_ip:=host.docker.internal
+      - robot_ip:=192.168.0.20
       - robot_streaming_port:=30101
       - robot_state_port:=30201
-      - namespace:=vC51_R51
-
-  abb-driver-vC11_R11:
-    image: compasrrc/compas_rrc_driver
-    container_name: abb-driver-vC11_R11
-    environment:
-      - ROS_HOSTNAME=abb-driver-vC11_R11
-      - ROS_MASTER_URI=http://ros-master:11311
-    depends_on:
-      - ros-master
-    command:
-      - roslaunch
-      - --wait
-      - compas_rrc_driver
-      - bringup.launch
-      - robot_ip:=192.168.0.111
-      - robot_streaming_port:=30101
-      - robot_state_port:=30201
-      - namespace:=vC11_R11
-
-  abb-driver-vC11_R12:
-    image: compasrrc/compas_rrc_driver
-    container_name: abb-driver-vC11_R12
-    environment:
-      - ROS_HOSTNAME=abb-driver-vC11_R12
-      - ROS_MASTER_URI=http://ros-master:11311
-    depends_on:
-      - ros-master
-    command:
-      - roslaunch
-      - --wait
-      - compas_rrc_driver
-      - bringup.launch
-      - robot_ip:=192.168.0.111
-      - robot_streaming_port:=30102
-      - robot_state_port:=30202
-      - namespace:=vC11_R12
+      - namespace:=ctrl2_rob1
