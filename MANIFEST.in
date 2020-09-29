@@ -1,3 +1,5 @@
+graft images
+graft docker
 graft docs
 graft src
 graft tests
