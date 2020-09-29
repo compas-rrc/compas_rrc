@@ -1,8 +1,16 @@
 from compas_fab.backends.ros.messages import ROSmsg
-from compas_rrc.common import FeedbackLevel
+
 from compas_rrc.common import ExecutionLevel
+from compas_rrc.common import FeedbackLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
+
+__all__ = [
+    'INSTRUCTION_PREFIX',
+    'ReadWatch',
+    'StartWatch',
+    'StopWatch',
+]
 
 
 class ReadWatch(ROSmsg):

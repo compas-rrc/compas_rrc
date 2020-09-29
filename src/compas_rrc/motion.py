@@ -1,11 +1,7 @@
-import math
-
 from compas_fab.backends.ros.messages import ROSmsg
-from compas_fab.robots import Configuration
 
-from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import ExecutionLevel
-
+from compas_rrc.common import FeedbackLevel
 
 INSTRUCTION_PREFIX = 'r_A042_'
 
@@ -187,4 +183,3 @@ class MoveToRobtarget(MoveGeneric):
         super(MoveToRobtarget, self).__init__(frame, ext_axes, speed, zone, feedback_level)
         instruction = 'MoveJ' if motion_type == Motion.JOINT else 'MoveL'
         self.instruction = INSTRUCTION_PREFIX + instruction
-

@@ -1,8 +1,4 @@
-import math
 import threading
-
-from compas.robots import Joint
-from compas_fab.robots import Configuration
 
 __all__ = ['CLIENT_PROTOCOL_VERSION',
            'FeedbackLevel',
@@ -38,9 +34,11 @@ class InstructionException(Exception):
         super(InstructionException, self).__init__('{}, RRC Reply={}'.format(message, result))
         self.result = result
 
+
 class TimeoutException(Exception):
     """Timeout exception caused during execution of an instruction."""
     pass
+
 
 class FutureResult(object):
     """Represents a future result value.
@@ -149,6 +147,7 @@ class ExternalAxes(object):
 
     def __iter__(self):
         return iter(self.values)
+
 
 class RobotJoints(object):
     """Represents a configuration for robot joints"""

@@ -157,6 +157,7 @@ class GetRobtarget(ROSmsg):
         # End
         return result, ExternalAxes(*external_axes)
 
+
 class GetFrame(GetRobtarget):
     """Query the current frame of the robot.
 
