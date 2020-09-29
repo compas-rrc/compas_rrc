@@ -11,7 +11,7 @@ Main features
 * Supports futures and blocking calls
 * Builds on top of COMPAS FAB.
 
-**COMPAS RRC** runs on Python 2.x and 3.x as well as IronPython.
+**COMPAS RRC** runs on Python 3.x as well as IronPython 2.7.
 
 Requirements
 ------------
@@ -31,7 +31,7 @@ First install the pre-requisites in a conda environment:
 
 ::
 
-    conda create -n ENVIRONMENT_NAME compas_fab python=3.7
+    conda create -n ENVIRONMENT_NAME compas_fab python=3.8
     conda activate ENVIRONMENT_NAME
 
 And then install ``COMPAS RRC``:
@@ -63,7 +63,6 @@ command line to ease recurring operations:
 * ``invoke check``: Run various code and documentation style checks.
 * ``invoke docs``: Generate documentation.
 * ``invoke test``: Run all tests and checks in one swift command.
-* ``invoke add-to-rhino``: Make the project accessible from Rhino.
 * ``invoke``: Show available tasks.
 
 For more details, check the `Contributor's Guide <CONTRIBUTING.rst>`_.
