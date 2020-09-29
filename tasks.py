@@ -123,6 +123,7 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
 
     if bytecode:
         folders.append('src/compas_rrc/__pycache__')
+        folders.append('.pytest_cache')
 
     if builds:
         folders.append('build/')
@@ -161,13 +162,17 @@ def check(ctx):
 
 
 @task(help={
-      'checks': 'True to run all checks before testing, otherwise False.'})
-def test(ctx, checks=True):
+      'checks': 'True to run all checks before testing, otherwise False.',
+      'doctests': 'True to run doctests, otherwise False.'})
+def test(ctx, checks=False, doctests=False):
     """Run all tests."""
     if checks:
         check(ctx)
 
-    ctx.run('pytest --doctest-module')
+    if doctests:
+        ctx.run('pytest --doctest-modules')
+    else:
+        ctx.run('pytest')
 
 
 @task(help={
