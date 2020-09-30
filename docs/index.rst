@@ -16,6 +16,7 @@ Contents
 
    readme
    reference/index
+   links
    contributing
    architecture
    authors
