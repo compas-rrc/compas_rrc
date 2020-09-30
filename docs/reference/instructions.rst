@@ -3,8 +3,20 @@ Instructions
 
 .. currentmodule:: compas_rrc
 
-Motion instructions
--------------------
+Basics
+------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    SetAcceleration
+    SetMaxSpeed
+    SetTool
+    SetWorkObject
+
+Motion
+------
 
 .. autosummary::
     :toctree: generated/
@@ -13,9 +25,11 @@ Motion instructions
     MoveToJoints
     MoveToFrame
     MoveToRobtarget
+    Motion
+    Zone
 
-Get Position
-------------
+Position
+--------
 
 .. autosummary::
     :toctree: generated/
@@ -40,20 +54,25 @@ Input/Output
     SetGroup
     PulseDigital
 
-Custom instructions
--------------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    CustomInstruction
-
-Utility instructions
---------------------
+Utility
+-------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     Noop
+    PrintText
+    Stop
+    WaitTime
+
+Watch
+-----
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    ReadWatch
+    StartWatch
+    StopWatch

@@ -20,7 +20,15 @@ class FeedbackLevel(object):
 
 
 class ExecutionLevel(object):
-    """Defines the execution level of an instruction."""
+    """Defines the execution level of an instruction.
+
+    Class Attributes
+    ----------------
+    ROBOT : :obj:`int`
+        Execute instruction on the robot task.
+    MASTER : :obj:`int`
+        Execute instruction on the ``master`` task. (Only usable with custom instructions)
+    """
     ROBOT = 0
     RECEIVER = 1
     SENDER = 2
@@ -75,14 +83,22 @@ class FutureResult(object):
 
 
 class ExternalAxes(object):
-    """Represents a configuration for external axes"""
+    """Represents a configuration for external axes."""
 
     def __init__(self, *values):
+        """Initialize a new object with the specified values for external axes.
+
+        Parameters
+        ----------
+        values : :obj:`list`
+            List of floats indicating the external axis positions.
+        """
         self.values = list(values)
 
     # Properties
     @property
     def eax_a(self):
+        """Value of the first external axis."""
         return self[0]
 
     @eax_a.setter
@@ -91,6 +107,7 @@ class ExternalAxes(object):
 
     @property
     def eax_b(self):
+        """Value of the second external axis."""
         return self[1]
 
     @eax_b.setter
@@ -99,6 +116,7 @@ class ExternalAxes(object):
 
     @property
     def eax_c(self):
+        """Value of the third external axis."""
         return self[2]
 
     @eax_c.setter
@@ -107,6 +125,7 @@ class ExternalAxes(object):
 
     @property
     def eax_d(self):
+        """Value of the fourth external axis."""
         return self[3]
 
     @eax_d.setter
@@ -115,6 +134,7 @@ class ExternalAxes(object):
 
     @property
     def eax_e(self):
+        """Value of the fifth external axis."""
         return self[4]
 
     @eax_e.setter
@@ -123,6 +143,7 @@ class ExternalAxes(object):
 
     @property
     def eax_f(self):
+        """Value of the sexth external axis."""
         return self[5]
 
     @eax_f.setter

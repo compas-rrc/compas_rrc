@@ -2,8 +2,8 @@
 
 .. currentmodule:: compas_rrc
 
-Concepts
-========
+Main concepts
+=============
 
 The API of ``COMPAS RRC`` is minimal and very easy to understand.
 
@@ -11,13 +11,16 @@ Communication methods
 ---------------------
 
 The primary way to interact with robots is using the client classes. They allow four
-methods of communication:
+different ways of communication:
 
- * ``send`` : Sends a command without waiting for feedback.
- * ``send`` in the future : Sends a command without waiting for feedback.
- * ``send_and_wait`` : Sends a command and waits for the robot
-   to respond before continuing to the next line of code.
- * ``send_and_subscribe`` : XXXXX
+* **Send**: The method :meth:`~compas_rrc.AbbClient.send` allows streaming
+  commands without blocking or waiting for feedback.
+* **Send & Wait**: The method :meth:`~compas_rrc.AbbClient.send_and_wait` sends
+  an instruction and wait for feedback from the robot.
+* **Send & Wait in the future**: Using the return value of the method
+  :meth:`~compas_rrc.AbbClient.send` allows to defer the waiting to a future point in time.
+* **Send & Subscribe**: The method :meth:`~compas_rrc.AbbClient.send_and_subscribe` can activate
+  a streaming service on the robot that will stream feedback at a regular inverval.
 
 .. autosummary::
     :toctree: generated/
@@ -25,26 +28,24 @@ methods of communication:
 
     AbbClient
     ExecutionLevel
-
-Handling feedback
-~~~~~~~~~~~~~~~~~
-
-For cases in which you wish to send a command and wait for feedback, the
-easiest option is to use ``send_and_wait``, but for fine-grained control of
-when to wait for feedback, the ``send`` methods returns an object of type
-:class:`FutureResult`. The call is non-blocking, so it returns immediatelly
-but when the ``result()`` method of the future result is invoked, it will block
-until the result is eventually available.
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    FutureResult
     FeedbackLevel
+    FutureResult
 
 Robot joints and External axes
 ------------------------------
+
+The following example shows how to retrieve, update and send the robot joints and external axes::
+
+    # Get joints
+    robot_joints, external_axes = abb.send_and_wait(GetJoints())
+
+    # Print received values
+    print(robot_joints, external_axes)
+
+    # Change any value and move to new position
+    robot_joints.rax_1 += 15
+    done = abb.send_and_wait(MoveToJoints(robot_joints, external_axes, 100, Zone.FINE))
+
 
 .. autosummary::
     :toctree: generated/
@@ -53,19 +54,24 @@ Robot joints and External axes
     RobotJoints
     ExternalAxes
 
-Custom instructions
--------------------
+Debugging instructions
+----------------------
 
-This library has support for non-standard instructions. Simply pass
-an instance of :class:`CustomInstruction` specifying an instruction
-name, and this will be evaluated and executed on the robot's side,
-if a RAPID procedure with that name exists on the controller.
+Wrapping any instruction in a :class:`~compas_rrc.Debug` allows to get raw access to the
+output values::
+
+
+    # Get joints
+    raw_debug_output = abb.send_and_wait(Debug(GetJoints()))
+
+    # Print received values
+    print(raw_debug_output)
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    CustomInstruction
+    Debug
 
 """
 

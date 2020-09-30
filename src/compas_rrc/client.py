@@ -62,14 +62,41 @@ class AbbClient(object):
     Examples
     --------
 
-    >>> from compas_fab.backends import RosClient
-    >>> from compas_rrc import *
-    >>> ros = RosClient()
-    >>> abb = AbbClient(ros)
-    >>> abb.run()
-    >>> abb.ros.is_connected
-    True
-    >>> abb.close()
+    Connection example to a single robot::
+
+        # Create Ros Client
+        ros = RosClient()
+
+        # Create ABB Client
+        abb = AbbClient(ros)
+        abb.run()
+        print('Connected.')
+
+        # Close client
+        abb.close()
+        abb.terminate()
+
+    Advance connection example to multiple robots::
+
+        # Create Ros Client
+        ros = RosClient()
+
+        # Create ABB Clients
+        abb_rob1 = AbbClient(ros, '/rob1')
+        abb_rob2 = AbbClient(ros, '/rob2')
+
+        # run the eventloop on python to connect with ros
+        ros.run()
+        print('Connected.')
+
+        # Print Text
+        abb_rob1.send(PrintText('Hello Robot 1'))
+        abb_rob2.send(PrintText('Hello Robot 2'))
+
+        # Close client
+        abb_rob1.close()
+        abb_rob2.close()
+        ros.terminate()
 
     """
 
@@ -99,11 +126,12 @@ class AbbClient(object):
         self.futures = {}
 
     def version_check(self):
-        """Check if the version on the server matches the version of protocol on the client side"""
+        """Check if the protocol version on the server matches the protocol version on the client."""
         self._server_protocol_check['version'] = self._server_protocol_check['param'].get()
         self._server_protocol_check['event'].set()
 
     def ensure_protocol_version(self):
+        """Ensure protocol version on the server matches the protocol version on the client."""
         if self._version_checked:
             return
 
@@ -151,6 +179,9 @@ class AbbClient(object):
         feedback (i.e. ``feedback_level`` is greater than zero), the method
         returns a future result object that can be used to wait for completion.
 
+        Waiting for a future can be done immediately after calling this, or
+        deferred to a later point.
+
         Parameters
         ----------
         instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
@@ -162,6 +193,30 @@ class AbbClient(object):
             Represent the future value of the feedback request. This method
             will return immediately, and this object can be used to wait or
             react to the feedback whenever it becomes available.
+
+        Examples
+        --------
+
+        Streaming commands without blocking or waiting for feedback::
+
+            # Print path
+            abb.send(MoveToFrame(Frame.worldXY(), 150, Zone.FINE, Motion.LINEAR))
+
+        Send commands and defer waiting to a future point in time::
+
+            # Stop watch
+            done = abb.send_and_wait(StopWatch())
+
+            # Read watch
+            future = abb.send(ReadWatch())
+
+            # Move robot to end position
+            abb.send(MoveToJoints(robot_joints_end_position, external_axis_dummy, 1000, Zone.FINE))
+
+            # Read and print printing time
+            watch_time = future.result(timeout=3.0)
+            print('Print Time [s] = ', watch_time)
+
         """
         self.ensure_protocol_version()
         instruction.sequence_id = self.counter.increment()
@@ -181,21 +236,34 @@ class AbbClient(object):
     def send_and_wait(self, instruction, timeout=None):
         """Send instruction and wait for feedback.
 
-        This is a blocking call, it will only return once the client
-        send the requested feedback. For this reason, the ``feedback_level``
-        of the ``instruction`` parameter needs to be greater than zero.
+        This is a blocking call, it will only return once the robot
+        sends the requested feedback. If ``feedback_level``
+        of the ``instruction`` parameter is ``0``, it will be automatically
+        set to ``1``.
 
         Parameters
         ----------
         instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
             ROS Message representing the instruction to send.
-        timeout : :obj:`int
+        timeout : :obj:`int`
             Timeout in seconds to wait before raising an exception. Optional.
 
         Returns
         -------
         object
             Returns the feedback value that resulted from the execution of the instruction.
+
+        Examples
+        --------
+
+        Send an instruction and wait for feedback from the robot. In the following example,
+        the code will not continue until the robot has started to execute this instruction.
+        On move instructions, a ``Zone.FINE`` can be used to make sure the motion planner has
+        executed the instruction fully::
+
+            # Move robot to start position
+            done = abb.send_and_wait(MoveToJoints(robot_joints_start_position, external_axis_dummy, 1000, Zone.FINE))
+
         """
         if instruction.feedback_level == 0:
             instruction.feedback_level = 1
@@ -204,6 +272,20 @@ class AbbClient(object):
         return future.result(timeout)
 
     def send_and_subscribe(self, instruction, callback):
+        """Send instruction and activate a service on the robot to stream feedback at a regular inverval.
+
+        Parameters
+        ----------
+        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
+            ROS Message representing the instruction to send.
+        callback
+            Python function to be invoked every time a new value is made available.
+
+        Notes
+        -----
+            This feature is currently only usable with custom instructions.
+
+        """
         self.ensure_protocol_version()
         instruction.sequence_id = self.counter.increment()
 
@@ -215,6 +297,7 @@ class AbbClient(object):
         self.topic.publish(roslibpy.Message(instruction.msg))
 
     def feedback_callback(self, message):
+        """Internal method."""
         response_key = _get_response_key(message)
         future = self.futures.get(response_key, None)
 

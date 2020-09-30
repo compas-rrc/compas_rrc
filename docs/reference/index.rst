@@ -20,3 +20,4 @@ API Reference
 
    concepts
    instructions
+   custom_instructions
