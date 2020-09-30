@@ -74,6 +74,15 @@ class AbbClient(object):
     """
 
     def __init__(self, ros, namespace='/'):
+        """Initilize a new robot client instance.
+
+        Parameters
+        ----------
+        ros : :class:`compas_fab.backends.RosClient`
+            Instance of a ROS connection.
+        namespace : :obj:`str`
+            Namespace to allow multiple robots to be controlled through the same ROS instance.
+        """
         self.ros = ros
         self.counter = SequenceCounter()
         if not namespace.endswith('/'):
@@ -90,6 +99,7 @@ class AbbClient(object):
         self.futures = {}
 
     def version_check(self):
+        """Check if the version on the server matches the version of protocol on the client side"""
         self._server_protocol_check['version'] = self._server_protocol_check['param'].get()
         self._server_protocol_check['event'].set()
 
@@ -128,7 +138,8 @@ class AbbClient(object):
         """Terminate the event loop that controls the connection.
 
         Once terminated, the program must exit, as the underlying event-loop
-        cannot be restarted."""
+        cannot be restarted.
+        """
         self.ros.terminate()
 
     def send(self, instruction):
@@ -140,18 +151,17 @@ class AbbClient(object):
         feedback (i.e. ``feedback_level`` is greater than zero), the method
         returns a future result object that can be used to wait for completion.
 
-        Returns: :class:`FutureResult`
+        Parameters
+        ----------
+        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
+            ROS Message representing the instruction to send.
+
+        Returns
+        -------
+        :class:`FutureResult`:
             Represent the future value of the feedback request. This method
             will return immediately, and this object can be used to wait or
             react to the feedback whenever it becomes available.
-
-        Args:
-            instruction: ROS Message representing the instruction to send.
-
-        Returns:
-            :class:`FutureResult`: If ``feedback_level`` is greater than zero,
-            the return is a future object that allows to defer waiting for
-            results.
         """
         self.ensure_protocol_version()
         instruction.sequence_id = self.counter.increment()
@@ -175,9 +185,17 @@ class AbbClient(object):
         send the requested feedback. For this reason, the ``feedback_level``
         of the ``instruction`` parameter needs to be greater than zero.
 
-        Args:
-            instruction: ROS Message representing the instruction to send.
-            timeout (int): Timeout in seconds to wait before raising an exception. Optional.
+        Parameters
+        ----------
+        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
+            ROS Message representing the instruction to send.
+        timeout : :obj:`int
+            Timeout in seconds to wait before raising an exception. Optional.
+
+        Returns
+        -------
+        object
+            Returns the feedback value that resulted from the execution of the instruction.
         """
         if instruction.feedback_level == 0:
             instruction.feedback_level = 1
