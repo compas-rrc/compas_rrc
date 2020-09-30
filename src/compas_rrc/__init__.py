@@ -2,10 +2,13 @@
 
 .. currentmodule:: compas_rrc
 
+Concepts
+========
+
 The API of ``COMPAS RRC`` is minimal and very easy to understand.
 
 Communication methods
-=====================
+---------------------
 
 The primary way to interact with robots is using the client classes. They allow four
 methods of communication:
@@ -24,7 +27,7 @@ methods of communication:
     ExecutionLevel
 
 Handling feedback
------------------
+~~~~~~~~~~~~~~~~~
 
 For cases in which you wish to send a command and wait for feedback, the
 easiest option is to use ``send_and_wait``, but for fine-grained control of
@@ -41,7 +44,7 @@ until the result is eventually available.
     FeedbackLevel
 
 Robot joints and External axes
-==============================
+------------------------------
 
 .. autosummary::
     :toctree: generated/
@@ -51,7 +54,7 @@ Robot joints and External axes
     ExternalAxes
 
 Custom instructions
-===================
+-------------------
 
 This library has support for non-standard instructions. Simply pass
 an instance of :class:`CustomInstruction` specifying an instruction
