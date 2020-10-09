@@ -171,10 +171,23 @@ class GetFrame(GetRobtarget):
 class SetAcceleration(ROSmsg):
     """Set acceleration is a call that sets the acc- and deceleration from the robot.
 
-    RAPID Instruction: SetAcc
+    RAPID Instruction: ``SetAcc``
+
+    .. include:: ../abb-reference.rst
     """
 
     def __init__(self, acc, ramp, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        acc : :obj:`float`
+            Acceleration or deceleration expressed in percentage of the system parameters of the robot.
+        ramp : :obj:`float`
+            The rate at which acceleration or deceleration changes expressed in percentage.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'SetAcc'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -183,12 +196,23 @@ class SetAcceleration(ROSmsg):
 
 
 class SetTool(ROSmsg):
-    """Set tool is a call that sets a pre defined tool in the robot as active.
+    """Set tool is a call that sets a predefined tool in the robot as active.
 
-    RAPID Instruction: SetTool
+    RAPID Instruction: ``SetTool``
+
+    .. include:: ../abb-reference.rst
     """
 
     def __init__(self, tool_name, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        tool_name : :obj:`str`
+            Name of the tool as defined in RAPID.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'SetTool'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT

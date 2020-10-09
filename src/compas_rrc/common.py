@@ -14,9 +14,18 @@ CLIENT_PROTOCOL_VERSION = 2
 
 
 class FeedbackLevel(object):
-    """Represents default valid feedback levels."""
+    """Represents default valid feedback levels.
+
+    .. autoattribute:: NONE
+    .. autoattribute:: DONE
+    """
     NONE = 0
+    """Indicates no feedback is requested from the robot."""
+
     DONE = 1
+    """Indicates completion feedback is requested from the robot. Completion feedback means
+    the robot has executed the procedure. See :meth:`AbbClient.send_and_wait` for more details.
+    """
 
 
 class ExecutionLevel(object):
