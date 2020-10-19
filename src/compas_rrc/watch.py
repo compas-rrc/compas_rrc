@@ -20,7 +20,7 @@ class ReadWatch(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.DONE):
-        self.instruction = INSTRUCTION_PREFIX + 'WatchRead'
+        self.instruction = INSTRUCTION_PREFIX + 'ReadWatch'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -40,7 +40,7 @@ class StartWatch(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'WatchStart'
+        self.instruction = INSTRUCTION_PREFIX + 'StartWatch'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -54,7 +54,7 @@ class StopWatch(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'WatchStop'
+        self.instruction = INSTRUCTION_PREFIX + 'StopWatch'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []

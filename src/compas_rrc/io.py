@@ -25,7 +25,7 @@ class SetDigital(ROSmsg):
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
         if value not in (0, 1):
             raise ValueError("Value can only be 0 or 1")
-        self.instruction = INSTRUCTION_PREFIX + 'SetDo'
+        self.instruction = INSTRUCTION_PREFIX + 'SetDigital'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -39,7 +39,7 @@ class SetAnalog(ROSmsg):
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'SetAo'
+        self.instruction = INSTRUCTION_PREFIX + 'SetAnalog'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -53,7 +53,7 @@ class SetGroup(ROSmsg):
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'SetGo'
+        self.instruction = INSTRUCTION_PREFIX + 'SetGroup'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -67,7 +67,7 @@ class PulseDigital(ROSmsg):
     """
 
     def __init__(self, io_name, pulse_time, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'PulseDo'
+        self.instruction = INSTRUCTION_PREFIX + 'PulseDigital'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -81,7 +81,7 @@ class ReadAnalog(ROSmsg):
     """
 
     def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
-        self.instruction = INSTRUCTION_PREFIX + 'ReadAi'
+        self.instruction = INSTRUCTION_PREFIX + 'ReadAnalog'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -99,7 +99,7 @@ class ReadDigital(ROSmsg):
     """
 
     def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
-        self.instruction = INSTRUCTION_PREFIX + 'ReadDi'
+        self.instruction = INSTRUCTION_PREFIX + 'ReadDigital'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -118,7 +118,7 @@ class ReadGroup(ROSmsg):
     """
 
     def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
-        self.instruction = INSTRUCTION_PREFIX + 'ReadGi'
+        self.instruction = INSTRUCTION_PREFIX + 'ReadGroup'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]

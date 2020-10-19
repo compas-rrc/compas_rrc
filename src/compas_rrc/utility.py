@@ -33,7 +33,7 @@ class Noop(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'Dummy'
+        self.instruction = INSTRUCTION_PREFIX + 'Noop'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -101,7 +101,7 @@ class GetJoints(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.DONE):
-        self.instruction = INSTRUCTION_PREFIX + 'GetJointT'
+        self.instruction = INSTRUCTION_PREFIX + 'GetJoints'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -125,7 +125,7 @@ class GetRobtarget(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.DONE):
-        self.instruction = INSTRUCTION_PREFIX + 'GetRobT'
+        self.instruction = INSTRUCTION_PREFIX + 'GetRobtarget'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -188,7 +188,7 @@ class SetAcceleration(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetAcc'
+        self.instruction = INSTRUCTION_PREFIX + 'SetAcceleration'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -229,7 +229,7 @@ class SetMaxSpeed(ROSmsg):
     """
 
     def __init__(self, override, max_tcp, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'SetVel'
+        self.instruction = INSTRUCTION_PREFIX + 'SetMaxSpeed'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -243,7 +243,7 @@ class SetWorkObject(ROSmsg):
     """
 
     def __init__(self, wobj_name, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'SetWobj'
+        self.instruction = INSTRUCTION_PREFIX + 'SetWorkObject'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [wobj_name]

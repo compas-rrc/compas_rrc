@@ -17,7 +17,7 @@ class PrintText(ROSmsg):
     """
 
     def __init__(self, text, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'TPWrite'
+        self.instruction = INSTRUCTION_PREFIX + 'PrintText'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [text]

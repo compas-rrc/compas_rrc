@@ -66,7 +66,7 @@ class MoveToJoints(ROSmsg):
     """
 
     def __init__(self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
-        self.instruction = INSTRUCTION_PREFIX + 'MoveAbsJ'
+        self.instruction = INSTRUCTION_PREFIX + 'MoveToJoints'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
