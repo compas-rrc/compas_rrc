@@ -18,7 +18,7 @@ __all__ = ['Noop',
            'SetWorkObject',
            'Debug']
 
-INSTRUCTION_PREFIX = 'r_A042_'
+INSTRUCTION_PREFIX = 'r_RRC_'
 
 
 def is_rapid_none(val):
@@ -171,7 +171,7 @@ class GetFrame(GetRobtarget):
 class SetAcceleration(ROSmsg):
     """Set acceleration is a call that sets the acc- and deceleration from the robot.
 
-    RAPID Instruction: ``SetAcc``
+    RAPID Instruction: ``AccSet``
 
     .. include:: ../abb-reference.rst
     """
@@ -198,7 +198,7 @@ class SetAcceleration(ROSmsg):
 class SetTool(ROSmsg):
     """Set tool is a call that sets a predefined tool in the robot as active.
 
-    RAPID Instruction: ``SetTool``
+    RAPID Instruction: ``tooldata``
 
     .. include:: ../abb-reference.rst
     """
@@ -221,9 +221,11 @@ class SetTool(ROSmsg):
 
 
 class SetMaxSpeed(ROSmsg):
-    """Set max spedd is a call that limits the maximum TCP speed.
+    """Set max speed is a call that sets the override and maximal tool centre point speed from the robot.
 
-    RAPID Instruction: SetVel
+    RAPID Instruction: ``VelSet``
+
+    .. include:: ../abb-reference.rst
     """
 
     def __init__(self, override, max_tcp, feedback_level=FeedbackLevel.NONE):

@@ -3,7 +3,7 @@ from compas_fab.backends.ros.messages import ROSmsg
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 
-INSTRUCTION_PREFIX = 'r_A042_'
+INSTRUCTION_PREFIX = 'r_RRC_'
 
 __all__ = [
     'SetDigital',
