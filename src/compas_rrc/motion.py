@@ -145,9 +145,9 @@ class MoveToFrame(MoveGeneric):
 
     def __init__(self, frame, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
         super(MoveToFrame, self).__init__(frame, [], speed, zone, feedback_level)
-        instruction = 'MoveToFrameJ' if motion_type == Motion.JOINT else 'MoveToFrameL'
+        instruction = 'MoveTo'
         self.instruction = INSTRUCTION_PREFIX + instruction
-
+        self.string_values = ['FrameJ'] if motion_type == Motion.JOINT else ['FrameL']
 
 class MoveToRobtarget(MoveGeneric):
     """Move to frame is a call that moves the robot in the cartisian space.
@@ -181,5 +181,6 @@ class MoveToRobtarget(MoveGeneric):
 
     def __init__(self, frame, ext_axes, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
         super(MoveToRobtarget, self).__init__(frame, ext_axes, speed, zone, feedback_level)
-        instruction = 'MoveJ' if motion_type == Motion.JOINT else 'MoveL'
+        instruction = 'MoveTo'
         self.instruction = INSTRUCTION_PREFIX + instruction
+        self.string_values = ['J'] if motion_type == Motion.JOINT else ['L']
