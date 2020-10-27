@@ -16,7 +16,17 @@ __all__ = [
 class ReadWatch(ROSmsg):
     """Read Watch is a call that returns the value from the watch in the robot code.
 
-    RAPID Instruction: WatchRead
+    Examples
+    --------
+    .. code-block:: python
+
+        # Read watch
+        watch_time = abb.send_and_wait(ReadWatch())
+
+    RAPID Instruction: ``ClkRead``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, feedback_level=FeedbackLevel.DONE):
@@ -36,7 +46,17 @@ class ReadWatch(ROSmsg):
 class StartWatch(ROSmsg):
     """Start Watch is a call that starts the watch in the robot code.
 
-    RAPID Instruction: WatchStart
+    Examples
+    --------
+    .. code-block:: python
+
+        # Start watch
+        done = abb.send_and_wait(StartWatch())
+
+    RAPID Instruction: ``ClkStart``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
@@ -50,7 +70,17 @@ class StartWatch(ROSmsg):
 class StopWatch(ROSmsg):
     """Stop Watch is a call that stops the watch in the robot code.
 
-    RAPID Instruction: WatchStop
+    Examples
+    --------
+    .. code-block:: python
+
+        # Stop watch
+        done = abb.send_and_wait(StopWatch())
+
+    RAPID Instruction: ``ClkStop``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
