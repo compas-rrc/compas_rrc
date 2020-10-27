@@ -76,7 +76,7 @@ class SetGroup(ROSmsg):
     --------
     .. code-block:: python
 
-        # Set analog output
+        # Set group output
         value = 33
         done = abb.send_and_wait(SetGroup('go_1', value))
 
