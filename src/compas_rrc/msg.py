@@ -17,7 +17,7 @@ class PrintText(ROSmsg):
     --------
     .. code-block:: python
 
-        # Print Text
+        # Print text
         done = abb.send_and_wait(PrintText('Welcome to COMPAS_RRC'))
 
     RAPID Instruction: ``TPWrite``
