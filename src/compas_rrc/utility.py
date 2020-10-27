@@ -36,6 +36,10 @@ class Noop(ROSmsg):
         # Noop
         done = abb.send_and_wait(Noop())
 
+    RAPID Instruction: ``none``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
