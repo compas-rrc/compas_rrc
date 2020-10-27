@@ -11,9 +11,19 @@ __all__ = [
 
 
 class PrintText(ROSmsg):
-    """Print text is a call that prints a text on the roboter panel (FlexPendant or TeachPendant).
+    """Print text is a call that prints a text on the roboter panel.
 
-    RAPID Instruction: TPWrite
+    Examples
+    --------
+    .. code-block:: python
+
+        # Print Text
+        done = abb.send_and_wait(PrintText('Welcome to COMPAS_RRC'))
+
+    RAPID Instruction: ``TPWrite``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, text, feedback_level=FeedbackLevel.NONE):
