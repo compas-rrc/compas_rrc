@@ -40,9 +40,7 @@ class Motion(object):
 
 
 class MoveToJoints(ROSmsg):
-    """Move to configuration is a call that moves the robot with axis values.
-
-    RAPID Instruction: ``MoveAbsJ``
+    """Move to joints is a call that moves the robot and the external axis with axis values.
 
     Attributes:
 
@@ -63,6 +61,26 @@ class MoveToJoints(ROSmsg):
             Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
             Feedback level is instruction-specific but the value ``1`` always represents
             completion of the instruction.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Get joints
+        robot_joints, external_axes = abb.send_and_wait(GetJoints())
+
+        # Print received values
+        print(robot_joints, external_axes)
+
+        # Change value and move to new position
+        robot_joints.rax_1 += 15
+        speed = 100 # Unit [mm/s]
+        done = abb.send_and_wait(MoveToJoints(robot_joints, external_axes, speed, Zone.FINE))
+
+    RAPID Instruction: ``MoveAbsJ``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
@@ -141,6 +159,25 @@ class MoveToFrame(MoveGeneric):
         This instruction can only be used in the main task T_ROB1 or, if in a MultiMove
         system, in Motion tasks.
 
+    Examples
+    --------
+    .. code-block:: python
+
+        # Get frame
+        frame = abb.send_and_wait(GetFrame())
+
+        # Print received values
+        print(frame)
+
+        # Change any frame value and move robot to new position
+        frame.point[0] += 50
+        speed = 100 # Unit [mm/s]
+        done = abb.send_and_wait(MoveToFrame(frame, speed, Zone.FINE, Motion.LINEAR))
+
+    RAPID Instruction: ``MoveJ`` or ``MoveL``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, frame, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
@@ -176,6 +213,25 @@ class MoveToRobtarget(MoveGeneric):
             Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
             Feedback level is instruction-specific but the value ``1`` always represents
             completion of the instruction.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Get frame and external axes
+        frame, external_axes = abb.send_and_wait(GetRobtarget())
+
+        # Print received values
+        print(frame, external_axes)
+
+        # Change any value and move to new position
+        frame.point[0] += 50
+        speed = 100 # Unit [mm/s]
+        done = abb.send_and_wait(MoveToRobtarget(frame, external_axes, speed, Zone.FINE))
+
+    RAPID Instruction: ``MoveJ`` or ``MoveL``
+
+    .. include:: ../abb-reference.rst
 
     """
 
