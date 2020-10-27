@@ -9,8 +9,19 @@ __all_ = ['CustomInstruction']
 class CustomInstruction(ROSmsg):
     """Custom instruction is a call that calls a custom RAPID instruction. The name has to match to a ``RAPID`` procedure.
 
+    Examples
+    --------
+    .. code-block:: python
 
-    RAPID Instruction: CustomInstruction
+        # Custom instruction
+        string_values = ['Custom Text']
+        float_values = [42]
+        done = abb.send_and_wait(CustomInstruction('r_RRC_CustomInstruction', string_values, float_values))
+
+    RAPID Instruction: ``All usable``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, name, string_values=[], float_values=[], feedback_level=FeedbackLevel.NONE, exec_level=ExecutionLevel.ROBOT):
