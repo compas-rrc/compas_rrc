@@ -19,7 +19,19 @@ __all__ = [
 class SetDigital(ROSmsg):
     """Set digital is a call that sets the value of an digital output signal (0 or 1).
 
-    RAPID Instruction: SetDo
+    Examples
+    --------
+    .. code-block:: python
+
+        # Set digital output to low or high
+        low = 0
+        high = 1
+        done = abb.send_and_wait(SetDigital('do_1',low))
+
+    RAPID Instruction: ``SetDO``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
@@ -33,9 +45,20 @@ class SetDigital(ROSmsg):
 
 
 class SetAnalog(ROSmsg):
-    """Set analog is a call that sets the value of an analog output signal (float).
+    """Set analog is a call that sets the value of an analog output signal (float). Minimum and maximum values are given by the signal configuration in the robot.
 
-    RAPID Instruction: SetAo
+    Examples
+    --------
+    .. code-block:: python
+
+        # Set analog output
+        value = -3.33
+        done = abb.send_and_wait(SetAnalog('ao_1', value))
+
+    RAPID Instruction: ``SetAO``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
@@ -49,7 +72,18 @@ class SetAnalog(ROSmsg):
 class SetGroup(ROSmsg):
     """Set group is a call that sets the value of an digital group output signal (Integer Value, depending on the size of the group ).
 
-    RAPID Instruction: SetGo
+    Examples
+    --------
+    .. code-block:: python
+
+        # Set analog output
+        value = 33
+        done = abb.send_and_wait(SetGroup('go_1', value))
+
+    RAPID Instruction: ``SetGO``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
@@ -63,7 +97,18 @@ class SetGroup(ROSmsg):
 class PulseDigital(ROSmsg):
     """Pulse digital is a call that sets the value to high of an digital output signal for a certain time.
 
-    RAPID Instruction: PulseDo
+    Examples
+    --------
+    .. code-block:: python
+
+        # Pulse digital output
+        pulse_time = 2.5 # Unit [s]
+        done = abb.send_and_wait(PulseDigital('do_1', pulse_time))
+
+    RAPID Instruction: ``PulseDO``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, io_name, pulse_time, feedback_level=FeedbackLevel.NONE):
@@ -77,7 +122,18 @@ class PulseDigital(ROSmsg):
 class ReadAnalog(ROSmsg):
     """Read analog is a call that returns the value of an analog input signal.
 
-    RAPID Instruction: ReadAi
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Read analog
+        analog_input_1 = abb.send_and_wait(ReadAnalog('ai_1'))
+
+    RAPID Instruction: ``AInput``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
@@ -95,7 +151,17 @@ class ReadAnalog(ROSmsg):
 class ReadDigital(ROSmsg):
     """Read digital is a call that returns the value of an digital input signal.
 
-    RAPID Instruction: ReadDi
+    Examples
+    --------
+    .. code-block:: python
+
+        # Read digital
+        digital_input_1 = abb.send_and_wait(ReadDigital('di_1'))
+
+    RAPID Instruction: ``DInput``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
@@ -114,7 +180,17 @@ class ReadDigital(ROSmsg):
 class ReadGroup(ROSmsg):
     """Read group is a call that returns the value of an digital group input signal.
 
-    RAPID Instruction: ReadGi
+    Examples
+    --------
+    .. code-block:: python
+
+        # Read group
+        group_input_1 = abb.send_and_wait(ReadGroup('gi_1'))
+
+    RAPID Instruction: ``GInput``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
