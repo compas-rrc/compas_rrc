@@ -27,12 +27,25 @@ def is_rapid_none(val):
 
 
 class Noop(ROSmsg):
-    """No-op is a call without any effect.
+    """No-op is a call without any effect. But like all other instructions it makes a roundtrip from the user code to the robot and back.
 
-    RAPID Instruction: Dummy
+    Examples
+    --------
+    .. code-block:: python
+
+        # Noop
+        done = abb.send_and_wait(Noop())
+
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'Noop'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -45,10 +58,26 @@ class Debug(ROSmsg):
 
     Examples
     --------
-    >>> abb.send_and_wait(Debug(GetJoints()))
+    .. code-block:: python
+
+        # Get joints
+        raw_debug_output = abb.send_and_wait(Debug(GetJoints()))
+
+        # Print received values
+        print(raw_debug_output)
+
     """
 
     def __init__(self, instruction, debug_parser=None):
+        """Initialize a new debug instruction wrapping another instruction.
+
+        Parameters
+        ----------
+        instruction : :class:`ROSmsg`
+            Any instruction inheriting from ROS message.
+        debug_parser : callable
+            Function to be used for parsing the feedback. Optional.
+        """
         self._instruction = instruction
         self.debug_parser = debug_parser
 
@@ -95,9 +124,19 @@ class Debug(ROSmsg):
 
 
 class GetJoints(ROSmsg):
-    """Get joints is a call that queries the axis values of the robot.
+    """Get joints is a call that queries the axis values of the robot and the external axes.
 
-    RAPID Instruction: GetJointT
+    Examples
+    --------
+    .. code-block:: python
+
+        # Get joints
+        robot_joints, external_axes = abb.send_and_wait(GetJoints())
+
+    RAPID Instruction: ``CJointT``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, feedback_level=FeedbackLevel.DONE):
@@ -119,9 +158,19 @@ class GetJoints(ROSmsg):
 
 
 class GetRobtarget(ROSmsg):
-    """Query the current robtarget (defined as frame + external axes) of the robot.
+    """Query the current robtarget defined as frame and external axes of the robot.
 
-    RAPID Instruction: ``GetRobT``
+    Examples
+    --------
+    .. code-block:: python
+
+        # Get frame and external axes
+        frame, external_axes = abb.send_and_wait(GetRobtarget())
+
+    RAPID Instruction: ``CRobT``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, feedback_level=FeedbackLevel.DONE):
@@ -161,8 +210,19 @@ class GetRobtarget(ROSmsg):
 class GetFrame(GetRobtarget):
     """Query the current frame of the robot.
 
-    RAPID Instruction: ``GetRobT``
+    Examples
+    --------
+    .. code-block:: python
+
+        # Get frame
+        frame = abb.send_and_wait(GetFrame())
+
+    RAPID Instruction: ``CRobT``
+
+    .. include:: ../abb-reference.rst
+
     """
+
     def parse_feedback(self, result):
         frame, _ext_axes = super(GetFrame, self).parse_feedback(result)
         return frame
@@ -170,6 +230,15 @@ class GetFrame(GetRobtarget):
 
 class SetAcceleration(ROSmsg):
     """Set acceleration is a call that sets the acc- and deceleration from the robot.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Set Acceleration
+        acc = 100 # Unit [%]
+        ramp = 100  # Unit [%]
+        done = abb.send_and_wait(SetAcceleration(acc, ramp))
 
     RAPID Instruction: ``AccSet``
 
@@ -198,9 +267,17 @@ class SetAcceleration(ROSmsg):
 class SetTool(ROSmsg):
     """Set tool is a call that sets a predefined tool in the robot as active.
 
+    Examples
+    --------
+    .. code-block:: python
+
+        # Set Tool
+        done = abb.send_and_wait(SetTool('tool0'))
+
     RAPID Instruction: ``tooldata``
 
     .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, tool_name, feedback_level=FeedbackLevel.NONE):
@@ -223,9 +300,19 @@ class SetTool(ROSmsg):
 class SetMaxSpeed(ROSmsg):
     """Set max speed is a call that sets the override and maximal tool centre point speed from the robot.
 
+    Examples
+    --------
+    .. code-block:: python
+
+        # Set Max Speed
+        override = 100 # Unit [%]
+        max_tcp = 2500 # Unit [mm/s]
+        done = abb.send_and_wait(SetMaxSpeed(override, max_tcp))
+
     RAPID Instruction: ``VelSet``
 
     .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, override, max_tcp, feedback_level=FeedbackLevel.NONE):
@@ -239,7 +326,17 @@ class SetMaxSpeed(ROSmsg):
 class SetWorkObject(ROSmsg):
     """Set work object is a call that sets a pre defined work object in the robot as active.
 
-    RAPID Instruction: SetWobj
+    Examples
+    --------
+    .. code-block:: python
+
+        # Set Work Object
+        done = abb.send_and_wait(SetWorkObject('wobj0'))
+
+    RAPID Instruction: ``wobjdata``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, wobj_name, feedback_level=FeedbackLevel.NONE):
@@ -251,9 +348,20 @@ class SetWorkObject(ROSmsg):
 
 
 class Stop(ROSmsg):
-    """Stop is a call that stops the motion task from the robot.
+    """Stop is a function to stopp a robot task. By default, the associated motion task is stopped.
+    With the argument Execution Level this can be changed.
 
-    RAPID Instruction: Stop
+    Examples
+    --------
+    .. code-block:: python
+
+        # Stop
+        done = abb.send_and_wait(Stop())
+
+    RAPID Instruction: ``Stop``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
@@ -267,7 +375,18 @@ class Stop(ROSmsg):
 class WaitTime(ROSmsg):
     """Wait time is a call that calls a wait instruction on the robot.
 
-    RAPID Instruction: WaitTime
+    Examples
+    --------
+    .. code-block:: python
+
+        # Wait Time
+        time = 1.0
+        done = abb.send_and_wait(WaitTime(time))
+
+    RAPID Instruction: ``WaitTime``
+
+    .. include:: ../abb-reference.rst
+
     """
 
     def __init__(self, time, feedback_level=FeedbackLevel.NONE):
