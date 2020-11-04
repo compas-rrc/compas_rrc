@@ -44,3 +44,4 @@ services:
       - robot_ip:=192.168.125.1
       - robot_streaming_port:=30101
       - robot_state_port:=30201
+      - namespace:=rob1
