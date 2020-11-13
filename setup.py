@@ -15,7 +15,7 @@ from os.path import splitext
 from setuptools import find_packages
 from setuptools import setup
 
-requirements = ['compas_fab', 'roslibpy>=0.6']
+requirements = ['compas_fab', 'roslibpy>=1.1']
 keywords_list = []
 
 here = abspath(dirname(__file__))

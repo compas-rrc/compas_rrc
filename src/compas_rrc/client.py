@@ -66,27 +66,27 @@ class AbbClient(object):
 
         # Create Ros Client
         ros = RosClient()
+        ros.run()
 
         # Create ABB Client
         abb = AbbClient(ros)
-        abb.run()
         print('Connected.')
 
         # Close client
-        abb.close()
-        abb.terminate()
+        ros.close()
+        ros.terminate()
 
     Advance connection example to multiple robots::
 
         # Create Ros Client
         ros = RosClient()
+        ros.run()
 
         # Create ABB Clients
         abb_rob1 = AbbClient(ros, '/rob1')
         abb_rob2 = AbbClient(ros, '/rob2')
 
-        # run the eventloop on python to connect with ros
-        ros.run()
+        # Clients are connected
         print('Connected.')
 
         # Print Text
@@ -94,8 +94,7 @@ class AbbClient(object):
         abb_rob2.send(PrintText('Hello Robot 2'))
 
         # Close client
-        abb_rob1.close()
-        abb_rob2.close()
+        ros.close()
         ros.terminate()
 
     """
@@ -125,6 +124,8 @@ class AbbClient(object):
         self.topic.advertise()
         self.futures = {}
 
+        self.ros.on('closing', self._disconnect_topics)
+
     def version_check(self):
         """Check if the protocol version on the server matches the protocol version on the client."""
         self._server_protocol_check['version'] = self._server_protocol_check['param'].get()
@@ -144,31 +145,10 @@ class AbbClient(object):
 
         self._version_checked = True
 
-    def run(self, timeout=None):
-        """Starts the event loop in a thread."""
-        self.ros.run(timeout)
-
-    def run_forever(self):
-        """Starts the event loop and blocks."""
-        self.ros.run_forever()
-
-    def close(self):
-        """Close the connection to the robot."""
+    def _disconnect_topics(self):
         self.topic.unadvertise()
         self.feedback.unsubscribe()
-
-        # Give it a bit of time to unsubscribe
-        time.sleep(1)
-
-        self.ros.close()
-
-    def terminate(self):
-        """Terminate the event loop that controls the connection.
-
-        Once terminated, the program must exit, as the underlying event-loop
-        cannot be restarted.
-        """
-        self.ros.terminate()
+        time.sleep(0.5)
 
     def send(self, instruction):
         """Sends an instruction to the robot without waiting.
