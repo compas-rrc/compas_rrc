@@ -69,7 +69,7 @@ class AbbClient(object):
         ros.run()
 
         # Create ABB Client
-        abb = AbbClient(ros)
+        abb = AbbClient(ros, '/rob1')
         print('Connected.')
 
         # Close client
@@ -108,6 +108,7 @@ class AbbClient(object):
             Instance of a ROS connection.
         namespace : :obj:`str`
             Namespace to allow multiple robots to be controlled through the same ROS instance.
+            Optional. If not specified, it will use the root namespace (``/``).
         """
         self.ros = ros
         self.counter = SequenceCounter()
