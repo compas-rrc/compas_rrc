@@ -15,52 +15,125 @@ __all__ = [
 
 
 class Zone(object):
-    """Describes the valid zone data definitions."""
+    """Describes the valid zone data definitions.
+
+    There are two types of zones: fine and fly-by.
+    If zone is ``FINE``, the movement terminates as a stop point, and the program execution
+    will not continue until robot reach the stop point. For all other zones, the movement
+    terminates as a fly-by point, and the program execution continues about 100 ms before
+    the robot reaches the zone.
+
+    .. autoattribute:: FINE
+    .. autoattribute:: Z0
+    .. autoattribute:: Z1
+    .. autoattribute:: Z5
+    .. autoattribute:: Z10
+    .. autoattribute:: Z15
+    .. autoattribute:: Z20
+    .. autoattribute:: Z30
+    .. autoattribute:: Z40
+    .. autoattribute:: Z50
+    .. autoattribute:: Z60
+    .. autoattribute:: Z80
+    .. autoattribute:: Z100
+    .. autoattribute:: Z150
+    .. autoattribute:: Z200
+
+    """
+
     FINE = -1
+    """
+    Fine point.
+    """
+
     Z0 = 0
+    """
+    0.3 mm.
+    """
+
     Z1 = 1
+    """
+    1 mm.
+    """
+
     Z5 = 5
+    """
+    5 mm.
+    """
+
     Z10 = 10
+    """
+    10 mm.
+    """
+
     Z15 = 15
+    """
+    15 mm.
+    """
+
     Z20 = 20
+    """
+    20 mm.
+    """
+
     Z30 = 30
+    """
+    30 mm.
+    """
+
     Z40 = 40
+    """
+    40 mm.
+    """
+
     Z50 = 50
+    """
+    50 mm.
+    """
+
     Z60 = 60
+    """
+    60 mm.
+    """
+
     Z80 = 80
+    """
+    80 mm.
+    """
+
     Z100 = 100
+    """
+    100 mm.
+    """
+
     Z150 = 150
+    """
+    150 mm.
+    """
+
     Z200 = 200
+    """
+    200 mm.
+    """
+
 
 
 class Motion(object):
-    """Describes the valid motion types."""
+    """Represents valid motion types.
+
+    .. autoattribute:: LINEAR
+    .. autoattribute:: JOINT
+    """
     LINEAR = 'L'
+    """Moves the robot linearly to the specified position."""
+
     JOINT = 'J'
+    """Moves the robot not linearly to the specified position by coordinating all joints to start and end together.
+    This type of motion can be faster than LINEAR motion."""
 
 
 class MoveToJoints(ROSmsg):
-    """Move to joints is a call that moves the robot and the external axis with axis values.
-
-    Attributes:
-
-        joints (:class:`compas_rrc.common.RobotJoints` or :obj:`list` of :obj:`float`):
-            Robot joint positions.
-
-        ext_axes (:class:`compas_rrc.common.ExternalAxes` or :obj:`list` of :obj:`float`):
-            External axes positions.
-
-        speed (:obj:`int`):
-            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
-
-        zone (:class:`Zone`):
-            Zone data. Predefined in the robot contrller,
-            only Zone ``fine`` will do a stop point all others are fly by points
-
-        feedback_level (:obj:`int`):
-            Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
-            Feedback level is instruction-specific but the value ``1`` always represents
-            completion of the instruction.
+    """Move to joints is a call that moves the robot and the external axes with axes values.
 
     Examples
     --------
@@ -84,6 +157,24 @@ class MoveToJoints(ROSmsg):
     """
 
     def __init__(self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        joints : :class:`compas_rrc.RobotJoints` or :obj:`list` of :obj:`float`
+            Robot joint positions.
+        ext_axes : :class:`compas_rrc.ExternalAxes` or :obj:`list` of :obj:`float`
+            External axes positions.
+        speed : :obj:`float`
+            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
+        zone : :class:`Zone`
+            Zone data. Predefined in the robot controller,
+            only Zone :attr:`Zone.FINE` will do a stop point all others are fly by points
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+            Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
+            the motion planner has executed the instruction fully.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'MoveToJoints'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -120,44 +211,8 @@ class MoveGeneric(ROSmsg):
 
 
 class MoveToFrame(MoveGeneric):
-    """Move to frame is a call that moves the robot in the cartisian space.
-
-    RAPID Instruction: MoveJ or MoveL
-
-    -- old Text --
-    Represents a move joint instruction.
-
-    Attributes:
-
-        frame (:class:`compas.geometry.Frame`):
-            Target frame.
-
-        speed (:obj:`int`):
-            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
-
-        zone (:class:`Zone`):
-            Zone data. Predefined in the robot contrller,
-            only Zone ``fine`` will do a stop point all others are fly by points
-
-        motion_type (:class:`Motion`):
-            Motion type. Defaults to Joint.
-
-        feedback_level (:obj:`int`):
-            Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
-            Feedback level is instruction-specific but the value ``1`` always represents
-            completion of the instruction.
-
-    Note
-    ----
-
-        ABB Documentation - Usage:
-
-        MoveJ is used to move the robot quickly from one point to another when that
-        movement does not have to be in a straight line.
-        The robot and external axes move to the destination position along a non-linear
-        path. All axes reach the destination position at the same time.
-        This instruction can only be used in the main task T_ROB1 or, if in a MultiMove
-        system, in Motion tasks.
+    """Move to frame is a call that moves the robot in cartesian space.
+    The external axes (if any) will stay in the same position.
 
     Examples
     --------
@@ -181,38 +236,31 @@ class MoveToFrame(MoveGeneric):
     """
 
     def __init__(self, frame, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        frame : :class:`compas.geometry.Frame`
+            Target frame.
+        speed : :obj:`float`
+            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
+        zone : :class:`Zone`
+            Zone data. Predefined in the robot controller,
+            only Zone :attr:`Zone.FINE` will do a stop point all others are fly by points
+        motion_type : :class:`Motion`
+            Motion type. Defaults to :attr:`Motion.JOINT`.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+            Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
+            the motion planner has executed the instruction fully.
+        """
         super(MoveToFrame, self).__init__(frame, [], speed, zone, feedback_level)
         instruction = 'MoveTo'
         self.instruction = INSTRUCTION_PREFIX + instruction
         self.string_values = ['FrameJ'] if motion_type == Motion.JOINT else ['FrameL']
 
 class MoveToRobtarget(MoveGeneric):
-    """Move to frame is a call that moves the robot in the cartisian space.
-
-    RAPID Instruction: ``MoveJ`` or ``MoveL``
-
-    Attributes:
-
-        frame (:class:`compas.geometry.Frame`):
-            Target frame.
-
-        ext_axes (:class:`compas_rrc.common.ExternalAxes` or :obj:`list` of :obj:`float`):
-            External axes positions.
-
-        speed (:obj:`int`):
-            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
-
-        zone (:class:`Zone`):
-            Zone data. Predefined in the robot controller,
-            only Zone ``fine`` will do a stop point all others are fly by points
-
-        motion_type (:class:`Motion`):
-            Motion type. Defaults to Joint.
-
-        feedback_level (:obj:`int`):
-            Integer specifying requested feedback level. Default=``0`` (i.e. ``NONE``).
-            Feedback level is instruction-specific but the value ``1`` always represents
-            completion of the instruction.
+    """Move to robtarget is a call that moves the robot in cartesian space with explicit external axes values.
 
     Examples
     --------
@@ -236,6 +284,26 @@ class MoveToRobtarget(MoveGeneric):
     """
 
     def __init__(self, frame, ext_axes, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        frame : :class:`compas.geometry.Frame`
+            Target frame.
+        ext_axes : :class:`compas_rrc.ExternalAxes` or :obj:`list` of :obj:`float`
+            External axes positions.
+        speed : :obj:`float`
+            Integer specifying TCP translational speed in mm/s. Min=``0.01``.
+        zone : :class:`Zone`
+            Zone data. Predefined in the robot controller,
+            only Zone :attr:`Zone.FINE` will do a stop point all others are fly by points
+        motion_type : :class:`Motion`
+            Motion type. Defaults to :attr:`Motion.JOINT`.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+            Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
+            the motion planner has executed the instruction fully.
+        """
         super(MoveToRobtarget, self).__init__(frame, ext_axes, speed, zone, feedback_level)
         instruction = 'MoveTo'
         self.instruction = INSTRUCTION_PREFIX + instruction

@@ -31,17 +31,14 @@ class FeedbackLevel(object):
 class ExecutionLevel(object):
     """Defines the execution level of an instruction.
 
-    Class Attributes
-    ----------------
-    ROBOT : :obj:`int`
-        Execute instruction on the robot task.
-    MASTER : :obj:`int`
-        Execute instruction on the ``master`` task. (Only usable with custom instructions)
+    .. autoattribute:: ROBOT
+    .. autoattribute:: CONTROLLER
     """
     ROBOT = 0
-    RECEIVER = 1
-    SENDER = 2
-    MASTER = 10
+    """Execute instruction on the robot task."""
+
+    CONTROLLER = 10
+    """Execute instruction on the ``controller`` task (only usable with custom instructions)."""
 
 
 class InstructionException(Exception):

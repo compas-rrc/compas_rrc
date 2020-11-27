@@ -87,14 +87,17 @@ class Debug(ROSmsg):
 
     @property
     def msg(self):
+        """Raw message."""
         return self._instruction.msg
 
     @property
     def instruction(self):
+        """Name of the instruction."""
         return self._instruction.instruction
 
     @property
     def sequence_id(self):
+        """Sequence identifier."""
         return self._instruction.sequence_id
 
     @sequence_id.setter
@@ -103,6 +106,7 @@ class Debug(ROSmsg):
 
     @property
     def feedback_level(self):
+        """Feedback level."""
         return self._instruction.feedback_level
 
     @feedback_level.setter
@@ -111,14 +115,17 @@ class Debug(ROSmsg):
 
     @property
     def exec_level(self):
+        """Execution level."""
         return self._instruction.exec_level
 
     @property
     def string_values(self):
+        """List of string values."""
         return self._instruction.string_values
 
     @property
     def float_values(self):
+        """List of float values."""
         return self._instruction.float_values
 
     def parse_feedback(self, result):
@@ -128,7 +135,7 @@ class Debug(ROSmsg):
 
 
 class GetJoints(ROSmsg):
-    """Get joints is a call that queries the axis values of the robot and the external axes.
+    """Get joints is a call that requests the joint values (:class:`RobotJoints`) and the external axes (:class:`ExternalAxes`) of the robot.
 
     Examples
     --------
@@ -143,14 +150,22 @@ class GetJoints(ROSmsg):
 
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.DONE):
+    def __init__(self):
+        """Create a new instance of the instruction."""
         self.instruction = INSTRUCTION_PREFIX + 'GetJoints'
-        self.feedback_level = feedback_level
+        self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
 
     def parse_feedback(self, result):
+        """Parses the result as :class:`RobotJoints` and :class:`ExternalAxes`.
+
+        Return
+        ------
+        :class:`RobotJoints`, :class:`ExternalAxes`
+            Current joints and external axes of the robot.
+        """
         # read robot jonts
         robot_joints = [result['float_values'][i] for i in range(0, 6)]
 
@@ -162,7 +177,8 @@ class GetJoints(ROSmsg):
 
 
 class GetRobtarget(ROSmsg):
-    """Query the current robtarget defined as frame and external axes of the robot.
+    """Instruction to request the current robtarget defined as frame (:class:`compas.geometry.Frame`)
+    and external axes (:class:`ExternalAxes`) of the robot.
 
     Examples
     --------
@@ -177,14 +193,22 @@ class GetRobtarget(ROSmsg):
 
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.DONE):
+    def __init__(self):
+        """Create a new instance of the instruction."""
         self.instruction = INSTRUCTION_PREFIX + 'GetRobtarget'
-        self.feedback_level = feedback_level
+        self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
 
     def parse_feedback(self, result):
+        """Parses the result as a :class:`compas.geometry.Frame` and :class:`ExternalAxes`.
+
+        Return
+        ------
+        :class:`compas.geometry.Frame`, :class:`ExternalAxes`
+            Current frame and external axes of the robot.
+        """
 
         # read pos
         x = result['float_values'][0]
@@ -212,7 +236,7 @@ class GetRobtarget(ROSmsg):
 
 
 class GetFrame(GetRobtarget):
-    """Query the current frame of the robot.
+    """Instruction to request the current frame (:class:`compas.geometry.Frame`) of the robot.
 
     Examples
     --------
@@ -228,12 +252,19 @@ class GetFrame(GetRobtarget):
     """
 
     def parse_feedback(self, result):
+        """Parses the result as a :class:`compas.geometry.Frame`.
+
+        Return
+        ------
+        :class:`compas.geometry.Frame`
+            Current frame of the robot.
+        """
         frame, _ext_axes = super(GetFrame, self).parse_feedback(result)
         return frame
 
 
 class SetAcceleration(ROSmsg):
-    """Set acceleration is a call that sets the acc- and deceleration from the robot.
+    """Set acceleration is a call that sets the acc- and deceleration of the robot.
 
     Examples
     --------
@@ -302,7 +333,7 @@ class SetTool(ROSmsg):
 
 
 class SetMaxSpeed(ROSmsg):
-    """Set max speed is a call that sets the override and maximal tool centre point speed from the robot.
+    """Set max speed is a call that sets the override and maximal tool center point (TCP) speed from the robot.
 
     Examples
     --------
@@ -320,6 +351,20 @@ class SetMaxSpeed(ROSmsg):
     """
 
     def __init__(self, override, max_tcp, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        override : :obj:`float`
+            Internal speed override expressed in percentage. This override is additional to the one that
+            can be defined on the robot panel. It is recommended to use only one of them, preferably the
+            one on the robot panel, and leave this to 100%.
+        max_tcp : :obj:`float`
+            Maximum tool center point (TCP) speed expressed in mm/sec. All instructions following a ``SetMaxSpeed``
+            are affected by it.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'SetMaxSpeed'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -328,7 +373,7 @@ class SetMaxSpeed(ROSmsg):
 
 
 class SetWorkObject(ROSmsg):
-    """Set work object is a call that sets a pre defined work object in the robot as active.
+    """Set work object is a call that sets a predefined work object in the robot as active.
 
     Examples
     --------
@@ -344,6 +389,15 @@ class SetWorkObject(ROSmsg):
     """
 
     def __init__(self, wobj_name, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        wobj_name : :obj:`str`
+            Name of the work object as defined in RAPID.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'SetWorkObject'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -352,8 +406,7 @@ class SetWorkObject(ROSmsg):
 
 
 class Stop(ROSmsg):
-    """Stop is a function to stopp a robot task. By default, the associated motion task is stopped.
-    With the argument Execution Level this can be changed.
+    """Stop is a function to stop the associated motion task of the robot.
 
     Examples
     --------
@@ -369,6 +422,13 @@ class Stop(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'Stop'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -377,14 +437,14 @@ class Stop(ROSmsg):
 
 
 class WaitTime(ROSmsg):
-    """Wait time is a call that calls a wait instruction on the robot.
+    """Wait time is a call that will wait on the robot task for a certain time.
 
     Examples
     --------
     .. code-block:: python
 
         # Wait time
-        time = 1.0
+        time = 1.0 # Unit [s]
         done = abb.send_and_wait(WaitTime(time))
 
     RAPID Instruction: ``WaitTime``
@@ -394,6 +454,15 @@ class WaitTime(ROSmsg):
     """
 
     def __init__(self, time, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        time : :obj:`float`
+            Duration of the wait expressed in seconds.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'WaitTime'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT

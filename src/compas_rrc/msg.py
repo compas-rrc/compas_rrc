@@ -11,7 +11,7 @@ __all__ = [
 
 
 class PrintText(ROSmsg):
-    """Print text is a call that prints a text on the roboter panel.
+    """Print text is a call that prints a single line of text on the robot panel.
 
     Examples
     --------
@@ -27,6 +27,17 @@ class PrintText(ROSmsg):
     """
 
     def __init__(self, text, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        text : :obj:`str`
+            Single line of text to print on the robot panel with a maximum of 80 characters.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
+        if len(text) > 80:
+            raise ValueError("text can only be up to 80 chars")
         self.instruction = INSTRUCTION_PREFIX + 'PrintText'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT

@@ -14,14 +14,14 @@ __all__ = [
 
 
 class ReadWatch(ROSmsg):
-    """Read Watch is a call that returns the value from the watch in the robot code.
+    """Read Watch is a call that requests the value of the watch in the robot code.
 
     Examples
     --------
     .. code-block:: python
 
         # Read watch
-        watch_time = abb.send_and_wait(ReadWatch())
+        watch_time = abb.send_and_wait(ReadWatch())  # Unit [s]
 
     RAPID Instruction: ``ClkRead``
 
@@ -29,15 +29,22 @@ class ReadWatch(ROSmsg):
 
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.DONE):
+    def __init__(self):
+        """Create a new instance of the instruction."""
         self.instruction = INSTRUCTION_PREFIX + 'ReadWatch'
-        self.feedback_level = feedback_level
+        self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
 
     def parse_feedback(self, result):
+        """Parses the result as a :obj:`float` (seconds).
 
+        Return
+        ------
+        :obj:`float`
+            Current value of the watch in seconds.
+        """
         # read input value
         result = round(result['float_values'][0], 3)
         return result
@@ -60,6 +67,13 @@ class StartWatch(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'StartWatch'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -84,6 +98,13 @@ class StopWatch(ROSmsg):
     """
 
     def __init__(self, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'StopWatch'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT

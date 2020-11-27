@@ -17,7 +17,7 @@ __all__ = [
 
 
 class SetDigital(ROSmsg):
-    """Set digital is a call that sets the value of an digital output signal (0 or 1).
+    """Set digital is a call that sets the value of an digital output signal (:obj:`int`, 0 or 1).
 
     Examples
     --------
@@ -35,6 +35,17 @@ class SetDigital(ROSmsg):
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        io_name : :obj:`str`
+            Name of the output signal.
+        value : :obj:`int`
+            Value of the output signal.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         if value not in (0, 1):
             raise ValueError("Value can only be 0 or 1")
         self.instruction = INSTRUCTION_PREFIX + 'SetDigital'
@@ -45,7 +56,8 @@ class SetDigital(ROSmsg):
 
 
 class SetAnalog(ROSmsg):
-    """Set analog is a call that sets the value of an analog output signal (float). Minimum and maximum values are given by the signal configuration in the robot.
+    """Set analog is a call that sets the value of an analog output signal (:obj:`float`).
+    Minimum and maximum values are given by the signal configuration in the robot.
 
     Examples
     --------
@@ -62,6 +74,17 @@ class SetAnalog(ROSmsg):
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        io_name : :obj:`str`
+            Name of the output signal.
+        value : :obj:`float`
+            Value of the output signal.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'SetAnalog'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -70,7 +93,8 @@ class SetAnalog(ROSmsg):
 
 
 class SetGroup(ROSmsg):
-    """Set group is a call that sets the value of an digital group output signal (Integer Value, depending on the size of the group ).
+    """Set group is a call that sets the value of an digital group output signal (:obj:`int`).
+    Minimum and maximum values are given by the signal configuration in the robot.
 
     Examples
     --------
@@ -87,6 +111,17 @@ class SetGroup(ROSmsg):
     """
 
     def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        io_name : :obj:`str`
+            Name of the output signal.
+        value : :obj:`int`
+            Value of the output signal.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'SetGroup'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -95,7 +130,7 @@ class SetGroup(ROSmsg):
 
 
 class PulseDigital(ROSmsg):
-    """Pulse digital is a call that sets the value to high of an digital output signal for a certain time.
+    """Pulse digital is a call that sets the value to HIGH of an digital output signal for a certain time.
 
     Examples
     --------
@@ -112,6 +147,17 @@ class PulseDigital(ROSmsg):
     """
 
     def __init__(self, io_name, pulse_time, feedback_level=FeedbackLevel.NONE):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        io_name : :obj:`str`
+            Name of the output signal.
+        pulse_time : :obj:`float`
+            Duration of the pulse expressed in seconds.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'PulseDigital'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -120,8 +166,7 @@ class PulseDigital(ROSmsg):
 
 
 class ReadAnalog(ROSmsg):
-    """Read analog is a call that returns the value of an analog input signal.
-
+    """Read analog is a call that requests the value of an analog input signal.
 
     Examples
     --------
@@ -136,20 +181,34 @@ class ReadAnalog(ROSmsg):
 
     """
 
-    def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
+    def __init__(self, io_name):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        io_name : :obj:`str`
+            Name of the input signal.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'ReadAnalog'
-        self.feedback_level = feedback_level
+        self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
     def parse_feedback(self, result):
+        """Parses the result as a :obj:`float`.
+
+        Return
+        ------
+        :obj:`float`
+            Current value of the input signal.
+        """
         # read input value
         result = result['float_values'][0]
         return result
 
 
 class ReadDigital(ROSmsg):
-    """Read digital is a call that returns the value of an digital input signal.
+    """Read digital is a call that requests the value of a digital input signal.
 
     Examples
     --------
@@ -164,13 +223,27 @@ class ReadDigital(ROSmsg):
 
     """
 
-    def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
+    def __init__(self, io_name):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        io_name : :obj:`str`
+            Name of the input signal.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'ReadDigital'
-        self.feedback_level = feedback_level
+        self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
     def parse_feedback(self, result):
+        """Parses the result as a :obj:`int`.
+
+        Return
+        ------
+        :obj:`int`
+            Current value of the input signal.
+        """
 
         # read input value
         result = int(result['float_values'][0])
@@ -178,7 +251,7 @@ class ReadDigital(ROSmsg):
 
 
 class ReadGroup(ROSmsg):
-    """Read group is a call that returns the value of an digital group input signal.
+    """Read group is a call that requests the value of a digital group input signal.
 
     Examples
     --------
@@ -193,13 +266,27 @@ class ReadGroup(ROSmsg):
 
     """
 
-    def __init__(self, io_name, feedback_level=FeedbackLevel.DONE):
+    def __init__(self, io_name):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        io_name : :obj:`str`
+            Name of the input signal.
+        """
         self.instruction = INSTRUCTION_PREFIX + 'ReadGroup'
-        self.feedback_level = feedback_level
+        self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
     def parse_feedback(self, result):
+        """Parses the result as a :obj:`int`.
+
+        Return
+        ------
+        :obj:`int`
+            Current value of the input signal.
+        """
 
         # read input value
         result = int(result['float_values'][0])

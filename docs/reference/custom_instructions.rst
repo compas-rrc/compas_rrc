@@ -4,7 +4,7 @@ Custom instructions
 -------------------
 
 This library allows to use any RAPID procedure available in the robot controller.
-To do that, first create the RAPID procedure in the ``MASTER`` or ``ROBOT`` task,
+To do that, first create the RAPID procedure in the ``CONTROLLER`` or ``ROBOT`` task,
 then invoke it using :class:`CustomInstruction` specifying instruction
 name and appropriate parameters. If the procedure generates feedback, it will be
 made available as the return value of the call.
