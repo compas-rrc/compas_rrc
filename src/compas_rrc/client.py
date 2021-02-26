@@ -120,7 +120,7 @@ class AbbClient(object):
                                            version=None)
         self.ros.on_ready(self.version_check)
         self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc_driver/RobotMessage', queue_size=None)
-        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage')
+        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage', queue_size=0)
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
         self.futures = {}
