@@ -174,6 +174,9 @@ class MoveToJoints(ROSmsg):
             Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
             the motion planner has executed the instruction fully.
         """
+        if speed <= 0:
+            raise ValueError('Speed must be higher than zero. Current value={}'.format(speed))
+
         self.instruction = INSTRUCTION_PREFIX + 'MoveToJoints'
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -194,6 +197,9 @@ class MoveToJoints(ROSmsg):
 
 class MoveGeneric(ROSmsg):
     def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
+        if speed <= 0:
+            raise ValueError('Speed must be higher than zero. Current value={}'.format(speed))
+
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
