@@ -2,11 +2,11 @@ import threading
 import time
 
 import roslibpy
+from compas_fab.backends import RosClient
 
 from .common import CLIENT_PROTOCOL_VERSION
 from .common import FutureResult
 from .common import InstructionException
-from compas_fab.backends import RosClient
 
 __all__ = ['RosClient', 'AbbClient']
 
