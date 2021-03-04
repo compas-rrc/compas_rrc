@@ -34,7 +34,7 @@ class Noop(ROSmsg):
     .. code-block:: python
 
         # Noop
-        done = abb.send_and_wait(Noop())
+        done = abb.send_and_wait(rrc.Noop())
 
     RAPID Instruction: ``none``
 
@@ -65,7 +65,7 @@ class Debug(ROSmsg):
     .. code-block:: python
 
         # Get joints
-        raw_debug_output = abb.send_and_wait(Debug(GetJoints()))
+        raw_debug_output = abb.send_and_wait(rrc.Debug(rrc.GetJoints()))
 
         # Print received values
         print(raw_debug_output)
@@ -142,7 +142,7 @@ class GetJoints(ROSmsg):
     .. code-block:: python
 
         # Get joints
-        robot_joints, external_axes = abb.send_and_wait(GetJoints())
+        robot_joints, external_axes = abb.send_and_wait(rrc.GetJoints())
 
     RAPID Instruction: ``CJointT``
 
@@ -185,7 +185,7 @@ class GetRobtarget(ROSmsg):
     .. code-block:: python
 
         # Get frame and external axes
-        frame, external_axes = abb.send_and_wait(GetRobtarget())
+        frame, external_axes = abb.send_and_wait(rrc.GetRobtarget())
 
     RAPID Instruction: ``CRobT``
 
@@ -243,7 +243,7 @@ class GetFrame(GetRobtarget):
     .. code-block:: python
 
         # Get frame
-        frame = abb.send_and_wait(GetFrame())
+        frame = abb.send_and_wait(rrc.GetFrame())
 
     RAPID Instruction: ``CRobT``
 
@@ -273,7 +273,7 @@ class SetAcceleration(ROSmsg):
         # Set acceleration
         acc = 100 # Unit [%]
         ramp = 100  # Unit [%]
-        done = abb.send_and_wait(SetAcceleration(acc, ramp))
+        done = abb.send_and_wait(rrc.SetAcceleration(acc, ramp))
 
     RAPID Instruction: ``AccSet``
 
@@ -307,7 +307,7 @@ class SetTool(ROSmsg):
     .. code-block:: python
 
         # Set tool
-        done = abb.send_and_wait(SetTool('tool0'))
+        done = abb.send_and_wait(rrc.SetTool('tool0'))
 
     RAPID Instruction: ``tooldata``
 
@@ -342,7 +342,7 @@ class SetMaxSpeed(ROSmsg):
         # Set max speed
         override = 100 # Unit [%]
         max_tcp = 2500 # Unit [mm/s]
-        done = abb.send_and_wait(SetMaxSpeed(override, max_tcp))
+        done = abb.send_and_wait(rrc.SetMaxSpeed(override, max_tcp))
 
     RAPID Instruction: ``VelSet``
 
@@ -380,7 +380,7 @@ class SetWorkObject(ROSmsg):
     .. code-block:: python
 
         # Set work object
-        done = abb.send_and_wait(SetWorkObject('wobj0'))
+        done = abb.send_and_wait(rrc.SetWorkObject('wobj0'))
 
     RAPID Instruction: ``wobjdata``
 
@@ -413,7 +413,7 @@ class Stop(ROSmsg):
     .. code-block:: python
 
         # Stop
-        done = abb.send_and_wait(Stop())
+        done = abb.send_and_wait(rrc.Stop())
 
     RAPID Instruction: ``Stop``
 
@@ -445,7 +445,7 @@ class WaitTime(ROSmsg):
 
         # Wait time
         time = 1.0 # Unit [s]
-        done = abb.send_and_wait(WaitTime(time))
+        done = abb.send_and_wait(rrc.WaitTime(time))
 
     RAPID Instruction: ``WaitTime``
 

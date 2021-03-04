@@ -26,7 +26,7 @@ class SetDigital(ROSmsg):
         # Set digital output to low or high
         low = 0
         high = 1
-        done = abb.send_and_wait(SetDigital('do_1',low))
+        done = abb.send_and_wait(rrc.SetDigital('do_1',low))
 
     RAPID Instruction: ``SetDO``
 
@@ -65,7 +65,7 @@ class SetAnalog(ROSmsg):
 
         # Set analog output
         value = -3.33
-        done = abb.send_and_wait(SetAnalog('ao_1', value))
+        done = abb.send_and_wait(rrc.SetAnalog('ao_1', value))
 
     RAPID Instruction: ``SetAO``
 
@@ -102,7 +102,7 @@ class SetGroup(ROSmsg):
 
         # Set group output
         value = 33
-        done = abb.send_and_wait(SetGroup('go_1', value))
+        done = abb.send_and_wait(rrc.SetGroup('go_1', value))
 
     RAPID Instruction: ``SetGO``
 
@@ -138,7 +138,7 @@ class PulseDigital(ROSmsg):
 
         # Pulse digital output
         pulse_time = 2.5 # Unit [s]
-        done = abb.send_and_wait(PulseDigital('do_1', pulse_time))
+        done = abb.send_and_wait(rrc.PulseDigital('do_1', pulse_time))
 
     RAPID Instruction: ``PulseDO``
 
@@ -173,7 +173,7 @@ class ReadAnalog(ROSmsg):
     .. code-block:: python
 
         # Read analog
-        analog_input_1 = abb.send_and_wait(ReadAnalog('ai_1'))
+        analog_input_1 = abb.send_and_wait(rrc.ReadAnalog('ai_1'))
 
     RAPID Instruction: ``AInput``
 
@@ -215,7 +215,7 @@ class ReadDigital(ROSmsg):
     .. code-block:: python
 
         # Read digital
-        digital_input_1 = abb.send_and_wait(ReadDigital('di_1'))
+        digital_input_1 = abb.send_and_wait(rrc.ReadDigital('di_1'))
 
     RAPID Instruction: ``DInput``
 
@@ -258,7 +258,7 @@ class ReadGroup(ROSmsg):
     .. code-block:: python
 
         # Read group
-        group_input_1 = abb.send_and_wait(ReadGroup('gi_1'))
+        group_input_1 = abb.send_and_wait(rrc.ReadGroup('gi_1'))
 
     RAPID Instruction: ``GInput``
 

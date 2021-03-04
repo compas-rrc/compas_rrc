@@ -12,7 +12,7 @@ made available as the return value of the call.
 The following example calls a procedure named ``r_X000_GoStartPos``::
 
     # Custom instruction move to start position
-    abb.send(CustomInstruction('r_X000_GoStartPos'))
+    abb.send(rrc.CustomInstruction('r_X000_GoStartPos'))
 
 The RAPID procedure could look like this::
 

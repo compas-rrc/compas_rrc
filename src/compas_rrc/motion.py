@@ -117,7 +117,6 @@ class Zone(object):
     """
 
 
-
 class Motion(object):
     """Represents valid motion types.
 
@@ -140,7 +139,7 @@ class MoveToJoints(ROSmsg):
     .. code-block:: python
 
         # Get joints
-        robot_joints, external_axes = abb.send_and_wait(GetJoints())
+        robot_joints, external_axes = abb.send_and_wait(rrc.GetJoints())
 
         # Print received values
         print(robot_joints, external_axes)
@@ -148,7 +147,7 @@ class MoveToJoints(ROSmsg):
         # Change value and move to new position
         robot_joints.rax_1 += 15
         speed = 100 # Unit [mm/s]
-        done = abb.send_and_wait(MoveToJoints(robot_joints, external_axes, speed, Zone.FINE))
+        done = abb.send_and_wait(rrc.MoveToJoints(robot_joints, external_axes, speed, rrc.Zone.FINE))
 
     RAPID Instruction: ``MoveAbsJ``
 
@@ -219,7 +218,7 @@ class MoveToFrame(MoveGeneric):
     .. code-block:: python
 
         # Get frame
-        frame = abb.send_and_wait(GetFrame())
+        frame = abb.send_and_wait(rrc.GetFrame())
 
         # Print received values
         print(frame)
@@ -227,7 +226,7 @@ class MoveToFrame(MoveGeneric):
         # Change any frame value and move robot to new position
         frame.point[0] += 50
         speed = 100 # Unit [mm/s]
-        done = abb.send_and_wait(MoveToFrame(frame, speed, Zone.FINE, Motion.LINEAR))
+        done = abb.send_and_wait(rrc.MoveToFrame(frame, speed, rrc.Zone.FINE, rrc.Motion.LINEAR))
 
     RAPID Instruction: ``MoveJ`` or ``MoveL``
 
@@ -259,6 +258,7 @@ class MoveToFrame(MoveGeneric):
         self.instruction = INSTRUCTION_PREFIX + instruction
         self.string_values = ['FrameJ'] if motion_type == Motion.JOINT else ['FrameL']
 
+
 class MoveToRobtarget(MoveGeneric):
     """Move to robtarget is a call that moves the robot in cartesian space with explicit external axes values.
 
@@ -267,7 +267,7 @@ class MoveToRobtarget(MoveGeneric):
     .. code-block:: python
 
         # Get frame and external axes
-        frame, external_axes = abb.send_and_wait(GetRobtarget())
+        frame, external_axes = abb.send_and_wait(rrc.GetRobtarget())
 
         # Print received values
         print(frame, external_axes)
@@ -275,7 +275,7 @@ class MoveToRobtarget(MoveGeneric):
         # Change any value and move to new position
         frame.point[0] += 50
         speed = 100 # Unit [mm/s]
-        done = abb.send_and_wait(MoveToRobtarget(frame, external_axes, speed, Zone.FINE))
+        done = abb.send_and_wait(rrc.MoveToRobtarget(frame, external_axes, speed, rrc.Zone.FINE))
 
     RAPID Instruction: ``MoveJ`` or ``MoveL``
 

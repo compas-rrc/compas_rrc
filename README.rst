@@ -31,7 +31,7 @@ First install the pre-requisites in a conda environment:
 
 ::
 
-    conda create -n ENVIRONMENT_NAME compas_fab python=3.8
+    conda create -c conda-forge -n ENVIRONMENT_NAME compas_fab python=3.8
     conda activate ENVIRONMENT_NAME
 
 And then install ``COMPAS RRC``:

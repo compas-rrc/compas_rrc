@@ -26,6 +26,7 @@ different ways of communication:
     :toctree: generated/
     :nosignatures:
 
+    RosClient
     AbbClient
     ExecutionLevel
     FeedbackLevel
@@ -37,14 +38,14 @@ Robot joints and External axes
 The following example shows how to retrieve, update and send the robot joints and external axes::
 
     # Get joints
-    robot_joints, external_axes = abb.send_and_wait(GetJoints())
+    robot_joints, external_axes = abb.send_and_wait(rrc.GetJoints())
 
     # Print received values
     print(robot_joints, external_axes)
 
     # Change any value and move to new position
     robot_joints.rax_1 += 15
-    done = abb.send_and_wait(MoveToJoints(robot_joints, external_axes, 100, Zone.FINE))
+    done = abb.send_and_wait(rrc.MoveToJoints(robot_joints, external_axes, 100, rrc.Zone.FINE))
 
 
 .. autosummary::
@@ -62,7 +63,7 @@ output values::
 
 
     # Get joints
-    raw_debug_output = abb.send_and_wait(Debug(GetJoints()))
+    raw_debug_output = abb.send_and_wait(rrc.Debug(rrc.GetJoints()))
 
     # Print received values
     print(raw_debug_output)

@@ -6,8 +6,9 @@ import roslibpy
 from .common import CLIENT_PROTOCOL_VERSION
 from .common import FutureResult
 from .common import InstructionException
+from compas_fab.backends import RosClient
 
-__all__ = ['AbbClient']
+__all__ = ['RosClient', 'AbbClient']
 
 
 FEEDBACK_ERROR_PREFIX = 'Done FError '
@@ -65,11 +66,11 @@ class AbbClient(object):
     Connection example to a single robot::
 
         # Create Ros Client
-        ros = RosClient()
+        ros = rrc.RosClient()
         ros.run()
 
         # Create ABB Client
-        abb = AbbClient(ros, '/rob1')
+        abb = rrc.AbbClient(ros, '/rob1')
         print('Connected.')
 
         # Close client
@@ -79,19 +80,19 @@ class AbbClient(object):
     Advance connection example to multiple robots::
 
         # Create Ros Client
-        ros = RosClient()
+        ros = rrc.RosClient()
         ros.run()
 
         # Create ABB Clients
-        abb_rob1 = AbbClient(ros, '/rob1')
-        abb_rob2 = AbbClient(ros, '/rob2')
+        abb_rob1 = rrc.AbbClient(ros, '/rob1')
+        abb_rob2 = rrc.AbbClient(ros, '/rob2')
 
         # Clients are connected
         print('Connected.')
 
         # Print Text
-        abb_rob1.send(PrintText('Hello Robot 1'))
-        abb_rob2.send(PrintText('Hello Robot 2'))
+        abb_rob1.send(rrc.PrintText('Hello Robot 1'))
+        abb_rob2.send(rrc.PrintText('Hello Robot 2'))
 
         # Close client
         ros.close()
@@ -99,16 +100,16 @@ class AbbClient(object):
 
     """
 
-    def __init__(self, ros, namespace='/'):
+    def __init__(self, ros, namespace='/rob1'):
         """Initilize a new robot client instance.
 
         Parameters
         ----------
-        ros : :class:`compas_fab.backends.RosClient`
+        ros : :class:`RosClient`
             Instance of a ROS connection.
         namespace : :obj:`str`
             Namespace to allow multiple robots to be controlled through the same ROS instance.
-            Optional. If not specified, it will use the root namespace (``/``).
+            Optional. If not specified, it will use namespace ``/rob1``.
         """
         self.ros = ros
         self.counter = SequenceCounter()
@@ -181,18 +182,18 @@ class AbbClient(object):
         Streaming commands without blocking or waiting for feedback::
 
             # Print path
-            abb.send(MoveToFrame(Frame.worldXY(), 150, Zone.FINE, Motion.LINEAR))
+            abb.send(rrc.MoveToFrame(Frame.worldXY(), 150, rrc.Zone.FINE, rrc.Motion.LINEAR))
 
         Send commands and defer waiting to a future point in time::
 
             # Stop watch
-            done = abb.send_and_wait(StopWatch())
+            done = abb.send_and_wait(rrc.StopWatch())
 
             # Read watch
-            future = abb.send(ReadWatch())
+            future = abb.send(rrc.ReadWatch())
 
             # Move robot to end position
-            abb.send(MoveToJoints(robot_joints_end_position, external_axis_dummy, 1000, Zone.FINE))
+            abb.send(rrc.MoveToJoints(robot_joints_end_position, external_axis_dummy, 1000, rrc.Zone.FINE))
 
             # Read and print printing time
             watch_time = future.result(timeout=3.0)
@@ -243,7 +244,7 @@ class AbbClient(object):
         executed the instruction fully::
 
             # Move robot to start position
-            done = abb.send_and_wait(MoveToJoints(robot_joints_start_position, external_axis_dummy, 1000, Zone.FINE))
+            done = abb.send_and_wait(rrc.MoveToJoints(robot_joints_start_position, external_axis_dummy, 1000, rrc.Zone.FINE))
 
         """
         if instruction.feedback_level == 0:

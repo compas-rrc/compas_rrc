@@ -16,7 +16,7 @@ class CustomInstruction(ROSmsg):
         # Custom instruction
         string_values = ['Custom Text']
         float_values = [42]
-        done = abb.send_and_wait(CustomInstruction('r_RRC_CustomInstruction', string_values, float_values))
+        done = abb.send_and_wait(rrc.CustomInstruction('r_RRC_CustomInstruction', string_values, float_values))
 
     RAPID Instruction: ``All usable``
 

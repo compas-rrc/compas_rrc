@@ -21,7 +21,7 @@ class ReadWatch(ROSmsg):
     .. code-block:: python
 
         # Read watch
-        watch_time = abb.send_and_wait(ReadWatch())  # Unit [s]
+        watch_time = abb.send_and_wait(rrc.ReadWatch())  # Unit [s]
 
     RAPID Instruction: ``ClkRead``
 
@@ -58,7 +58,7 @@ class StartWatch(ROSmsg):
     .. code-block:: python
 
         # Start watch
-        done = abb.send_and_wait(StartWatch())
+        done = abb.send_and_wait(rrc.StartWatch())
 
     RAPID Instruction: ``ClkStart``
 
@@ -89,7 +89,7 @@ class StopWatch(ROSmsg):
     .. code-block:: python
 
         # Stop watch
-        done = abb.send_and_wait(StopWatch())
+        done = abb.send_and_wait(rrc.StopWatch())
 
     RAPID Instruction: ``ClkStop``
 
