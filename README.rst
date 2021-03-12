@@ -44,28 +44,7 @@ And then install ``COMPAS RRC``:
 Contributing
 ------------
 
-Make sure you setup your local development environment correctly:
-
-* Clone the `compas_rrc <https://github.com/compas-rrc/compas_rrc>`_ repository.
-* Install development dependencies and make the project accessible from Rhino:
-
-::
-
-    pip install -r requirements-dev.txt
-    invoke add-to-rhino
-
-**You're ready to start working!**
-
-During development, use tasks on the
-command line to ease recurring operations:
-
-* ``invoke clean``: Clean all generated artifacts.
-* ``invoke check``: Run various code and documentation style checks.
-* ``invoke docs``: Generate documentation.
-* ``invoke test``: Run all tests and checks in one swift command.
-* ``invoke``: Show available tasks.
-
-For more details, check the `Contributor's Guide <CONTRIBUTING.rst>`_.
+Check the `Contributor's Guide <CONTRIBUTING.rst>`_.
 
 Credits
 -------------
