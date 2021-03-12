@@ -2,14 +2,19 @@
 COMPAS RRC
 ==========
 
-Library of instructions for ABB Robots using COMPAS RRC Driver.
+Online control for ABB robots over a simple-to-use Python API.
 
 Main features
 -------------
 
 * Provides a simple way to interact with ABB robots
 * Supports futures and blocking calls
-* Builds on top of COMPAS FAB.
+* Builds on top of COMPAS FAB
+* Supports all RAPID instructions as well as custom procedures
+* Supports EGM activation/deactivation
+* Supports multi-move up to 4 robots
+* Supports commanding multiple controllers in coordination
+* Open up the Python world for ABB robots
 
 **COMPAS RRC** runs on Python 3.x as well as IronPython 2.7.
 
