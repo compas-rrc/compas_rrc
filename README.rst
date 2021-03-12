@@ -41,6 +41,11 @@ And then install ``COMPAS RRC``:
     pip install git+https://@github.com/compas-rrc/compas_rrc.git
 
 
+Getting started
+---------------
+
+You can find additional examples to get your started easily on `the compas_rrc_start repository <https://github.com/compas-rrc/compas_rrc_start>`_.
+
 Contributing
 ------------
 
