@@ -2,7 +2,7 @@
 COMPAS RRC
 ==========
 
-Online control for ABB robots over a simple-to-use Python API.
+Online control for ABB robots over a simple-to-use Python interface.
 
 Main features
 -------------
