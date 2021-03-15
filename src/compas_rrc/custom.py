@@ -3,7 +3,7 @@ from compas_fab.backends.ros.messages import ROSmsg
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 
-__all_ = ['CustomInstruction']
+__all__ = ['CustomInstruction']
 
 
 class CustomInstruction(ROSmsg):

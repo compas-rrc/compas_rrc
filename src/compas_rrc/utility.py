@@ -6,6 +6,8 @@ from compas_rrc.common import ExternalAxes
 from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import RobotJoints
 
+INSTRUCTION_PREFIX = 'r_RRC_'
+
 __all__ = ['Noop',
            'GetFrame',
            'GetJoints',
@@ -17,8 +19,6 @@ __all__ = ['Noop',
            'WaitTime',
            'SetWorkObject',
            'Debug']
-
-INSTRUCTION_PREFIX = 'r_RRC_'
 
 
 def is_rapid_none(val):

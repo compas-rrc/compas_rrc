@@ -6,7 +6,6 @@ from compas_rrc.common import FeedbackLevel
 INSTRUCTION_PREFIX = 'r_RRC_'
 
 __all__ = [
-    'INSTRUCTION_PREFIX',
     'ReadWatch',
     'StartWatch',
     'StopWatch',
