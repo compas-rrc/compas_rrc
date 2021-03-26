@@ -23,6 +23,9 @@ COMPAS RRC
     :target: https://pypi.python.org/pypi/compas_rrc
     :alt: Supported implementations
 
+.. image:: https://zenodo.org/badge/296547476.svg
+   :target: https://zenodo.org/badge/latestdoi/296547476
+
 .. image:: https://img.shields.io/twitter/follow/compas_dev?style=social
    :target: https://twitter.com/compas_dev
    :alt: Twitter Follow
