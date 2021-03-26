@@ -1,5 +1,6 @@
 import compas_rrc as rrc
 
+
 def test_robot_joints():
     j = rrc.RobotJoints()
     assert list(j) == []
@@ -15,6 +16,7 @@ def test_robot_joints():
 
     j = rrc.RobotJoints(iter([30, 10, 0]))
     assert list(j) == [30, 10, 0]
+
 
 def test_external_axes():
     ea = rrc.ExternalAxes()
