@@ -101,7 +101,7 @@ class AbbClient(object):
     """
 
     def __init__(self, ros, namespace='/rob1'):
-        """Initilize a new robot client instance.
+        """Initialize a new robot client instance.
 
         Parameters
         ----------
