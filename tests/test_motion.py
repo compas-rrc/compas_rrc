@@ -22,10 +22,12 @@ def test_move_to_joints():
 
 
 def test_move_to_joints_validation():
-    with pytest.raises(ValueError, match='Only up to 6 joints are supported'):
+    # Only up to 6 joints are supported
+    with pytest.raises(ValueError):
         rrc.MoveToJoints([30, 90, 0, 0, 0, 0, 0, 0], [0, 0, 100], 100, rrc.Zone.FINE)
 
-    with pytest.raises(ValueError, match='Only up to 6 external axes are supported'):
+    # Only up to 6 external axes are supported
+    with pytest.raises(ValueError):
         rrc.MoveToJoints([30, 90], [0, 0, 100, 0, 0, 0, 0], 100, rrc.Zone.FINE)
 
 
@@ -47,5 +49,6 @@ def test_move_to_robtarget():
 
 
 def test_move_to_robtarget_validation():
-    with pytest.raises(ValueError, match='Only up to 6 external axes are supported'):
+    # Only up to 6 external axes are supported
+    with pytest.raises(ValueError):
         rrc.MoveToRobtarget(Frame.worldXY(), [50, 20, 0, 0, 0, 0, 0, 0], 100, rrc.Zone.FINE, rrc.Motion.JOINT)

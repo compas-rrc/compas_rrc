@@ -48,3 +48,19 @@ jobs:
       - name: Run tests
         run: |
           pytest
+  build-ironpython:
+    name: windows-ironpython
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          choco install ironpython --version=2.7.8.1
+          ipy -X:Frames -m ensurepip
+          ipy -X:Frames -m pip install --no-deps compas compas_fab roslibpy
+          ipy -X:Frames -m pip install ironpython-pytest
+      - name: Run tests
+        env:
+          IRONPYTHONPATH: ./src
+        run: |
+          ipy tests/ipy_test_runner.py

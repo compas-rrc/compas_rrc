@@ -1,3 +1,4 @@
+import itertools
 import threading
 
 __all__ = ['CLIENT_PROTOCOL_VERSION',
@@ -99,7 +100,10 @@ class ExternalAxes(object):
         values : :obj:`list`
             List of floats indicating the external axis positions.
         """
-        self.values = list(values)
+        try:
+            self.values = list(itertools.chain.from_iterable(values))
+        except TypeError:
+            self.values = list(values)
 
     # Properties
     @property
@@ -180,7 +184,10 @@ class RobotJoints(object):
     """Represents a configuration for robot joints"""
 
     def __init__(self, *values):
-        self.values = list(values)
+        try:
+            self.values = list(itertools.chain.from_iterable(values))
+        except TypeError:
+            self.values = list(values)
 
     # Properties
     @property
