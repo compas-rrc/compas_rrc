@@ -54,7 +54,7 @@ You can find additional examples to get your started easily on `the compas_rrc_s
 Contributing
 ------------
 
-Check the `Contributor's Guide <CONTRIBUTING.rst>`_.
+Check the `Contributor's Guide <https://github.com/compas-rrc/compas_rrc/blob/main/CONTRIBUTING.rst>`_.
 
 Credits
 -------------
