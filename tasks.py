@@ -150,7 +150,7 @@ def check(ctx):
         ctx.run('python setup.py check --strict --metadata --restructuredtext')
 
         log.write('Checking python imports...')
-        ctx.run('isort --check-only --diff --recursive src tests setup.py')
+        ctx.run('isort --check-only --diff src tests setup.py')
 
         log.write('Checking MANIFEST.in...')
         ctx.run('check-manifest')
