@@ -40,7 +40,7 @@ command line to ease recurring operations:
 * ``invoke clean``: Clean all generated artifacts.
 * ``invoke check``: Run various code and documentation style checks.
 * ``invoke docs``: Generate documentation.
-* ``invoke test``: Run all tests and checks in one swift command.
+* ``invoke test``: Run all tests.
 * ``invoke``: Show available tasks.
 
 
