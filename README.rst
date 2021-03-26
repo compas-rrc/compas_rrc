@@ -2,6 +2,33 @@
 COMPAS RRC
 ==========
 
+.. start-badges
+
+.. image:: https://github.com/compas-rrc/compas_rrc/workflows/build/badge.svg
+    :target: https://github.com/compas-rrc/compas_rrc/actions
+    :alt: Github Actions Build Status
+
+.. image:: https://img.shields.io/github/license/compas-rrc/compas_rrc.svg
+    :target: https://pypi.python.org/pypi/compas_rrc
+    :alt: License
+
+.. image:: https://img.shields.io/pypi/v/compas_rrc.svg
+    :target: https://pypi.python.org/pypi/compas_rrc
+    :alt: PyPI Package latest release
+
+.. image:: https://img.shields.io/conda/vn/conda-forge/compas_rrc.svg
+    :target: https://anaconda.org/conda-forge/compas_rrc
+
+.. image:: https://img.shields.io/pypi/implementation/compas_rrc.svg
+    :target: https://pypi.python.org/pypi/compas_rrc
+    :alt: Supported implementations
+
+.. image:: https://img.shields.io/twitter/follow/compas_dev?style=social
+   :target: https://twitter.com/compas_dev
+   :alt: Twitter Follow
+
+.. end-badges
+
 Online control for ABB robots over a simple-to-use Python interface.
 
 Main features
