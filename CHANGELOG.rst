@@ -2,6 +2,19 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+**Added**
+
+**Changed**
+
+**Fixed**
+
+**Deprecated**
+
+**Removed**
+
 1.1.0
 ----------
 
