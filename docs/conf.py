@@ -66,7 +66,7 @@ package_docs_root = 'https://compas-rrc.github.io/compas_rrc/'
 
 with open(os.path.join(os.path.dirname(__file__), 'doc_versions.txt'), 'r') as f:
     version_names = [version.strip() for version in f.readlines()]
-    package_docs_versions = [(version, '{}{}'.format(package_docs_root, version))
+    package_docs_versions = [(version, '{}{}/'.format(package_docs_root, version))
                              for version in version_names if version]
 
 # on_rtd is whether we are on readthedocs.org
