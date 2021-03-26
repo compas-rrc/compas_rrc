@@ -10,7 +10,7 @@ A typical deployment of RRC uses Docker to simplify the setup:
 .. image:: ../../images/overview-diagram.png
    :class: img-fluid mb-3
 
-For more details, check the `RRC course repository <https://github.com/compas-rrc/compas_rrc_course>`_.
+For more details, check the `RRC start repository <https://github.com/compas-rrc/compas_rrc_start>`_.
 
 Hello World
 -----------

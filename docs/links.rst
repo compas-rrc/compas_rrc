@@ -11,7 +11,7 @@ Relevant links
 * COMPAS RRC Organizations
 
   * `GitHub Organization <https://github.com/compas-rrc/>`_
-  * `Docker Hub Organization <https://hub.docker.com/r/compasrrc/>`_
+  * `Docker Hub Organization <https://hub.docker.com/u/compasrrc/>`_
 
 |
 

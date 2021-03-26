@@ -62,7 +62,7 @@ autodoc_member_order = 'alphabetical'
 autosummary_generate = True
 
 # collect doc versions
-package_docs_root = 'https://compasrrc.github.io/compas_rrc/'
+package_docs_root = 'https://compas-rrc.github.io/compas_rrc/'
 
 with open(os.path.join(os.path.dirname(__file__), 'doc_versions.txt'), 'r') as f:
     version_names = [version.strip() for version in f.readlines()]
