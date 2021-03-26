@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <title>compas_rrc - API Reference</title>
+  
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="" />
+  <meta name="description" content="" />
+
+  <link rel="shortcut icon" href="../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
+
+  
+    <link rel="next" title="Contributor’s Guide" href="../contributing.html" />
+  
+
+  
+    <link rel="prev" title="COMPAS RRC" href="../readme.html" />
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="https://compas-rrc.github.io/compas_rrc/">
+        <img src="../_static/images/compas_icon_white.png" alt="COMPAS RRC" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item active"><a class="nav-link" href="https://compas-rrc.github.io/compas_rrc/">COMPAS RRC</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            1.1.0
+          </a>
+          <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
+            
+              <a class="dropdown-item" href="https://compas-rrc.github.io/compas_rrc/latest">latest</a>
+            
+              <a class="dropdown-item" href="https://compas-rrc.github.io/compas_rrc/1.1.0">1.1.0</a>
+            
+              <a class="dropdown-item" href="https://compas-rrc.github.io/compas_rrc/1.0.0">1.0.0</a>
+            
+          </div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/compas-rrc/compas_rrc" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../index.html">docs</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">API Reference</li>
+          </ol>
+        </nav>
+        
+
+        
+        
+        <div class="section" id="api-reference">
+<h1>API Reference</h1>
+<span class="target" id="module-compas_rrc"></span><p>The API of <code class="docutils literal notranslate"><span class="pre">COMPAS</span> <span class="pre">RRC</span></code> is minimal and very easy to understand.</p>
+<div class="section" id="abb-client">
+<h2>ABB Client</h2>
+<p>This is the primary way to interact with robots. It contains two
+methods that are used for almost all communication:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">send</span></code>: Sends a command without waiting for feedback.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">send_and_wait</span></code>: Sends a command and waits for the robot
+to respond before continuing to the next line of code.</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt id="compas_rrc.AbbClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">AbbClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ros</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Client used to communicate with ABB robots via ROS.</p>
+<p>This client handles all communication over ROS topics, and implements
+blocking behaviors as an application-level construct.</p>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_fab.backends</span> <span class="kn">import</span> <span class="n">RosClient</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_rrc</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ros</span> <span class="o">=</span> <span class="n">RosClient</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">abb</span> <span class="o">=</span> <span class="n">AbbClient</span><span class="p">(</span><span class="n">ros</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">abb</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">abb</span><span class="o">.</span><span class="n">ros</span><span class="o">.</span><span class="n">is_connected</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">abb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.version_check">
+<code class="sig-name descname"><span class="pre">version_check</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.version_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.ensure_protocol_version">
+<code class="sig-name descname"><span class="pre">ensure_protocol_version</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.ensure_protocol_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Starts the event loop in a thread.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.run_forever">
+<code class="sig-name descname"><span class="pre">run_forever</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Starts the event loop and blocks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.close">
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Close the connection to the robot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.terminate">
+<code class="sig-name descname"><span class="pre">terminate</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Terminate the event loop that controls the connection.</p>
+<p>Once terminated, the program must exit, as the underlying event-loop
+cannot be restarted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.send">
+<code class="sig-name descname"><span class="pre">send</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instruction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Sends an instruction to the robot without waiting.</p>
+<p>Instructions can indicate that feedback is required or not. If
+the instruction sent does not require feedback, this method
+returns <code class="docutils literal notranslate"><span class="pre">None</span></code>. However, if the instruction needs
+feedback (i.e. <code class="docutils literal notranslate"><span class="pre">feedback_level</span></code> is greater than zero), the method
+returns a future result object that can be used to wait for completion.</p>
+<dl class="simple">
+<dt>Returns: <a class="reference internal" href="#compas_rrc.FutureResult" title="compas_rrc.FutureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">FutureResult</span></code></a></dt><dd><p>Represent the future value of the feedback request. This method
+will return immediately, and this object can be used to wait or
+react to the feedback whenever it becomes available.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>instruction</strong> – ROS Message representing the instruction to send.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="#compas_rrc.FutureResult" title="compas_rrc.FutureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">FutureResult</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">feedback_level</span></code> is greater than zero,
+the return is a future object that allows to defer waiting for
+results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.send_and_wait">
+<code class="sig-name descname"><span class="pre">send_and_wait</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instruction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.send_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Send instruction and wait for feedback.</p>
+<p>This is a blocking call, it will only return once the client
+send the requested feedback. For this reason, the <code class="docutils literal notranslate"><span class="pre">feedback_level</span></code>
+of the <code class="docutils literal notranslate"><span class="pre">instruction</span></code> parameter needs to be greater than zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instruction</strong> – ROS Message representing the instruction to send.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Timeout in seconds to wait before raising an exception. Optional.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.send_and_subscribe">
+<code class="sig-name descname"><span class="pre">send_and_subscribe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instruction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.send_and_subscribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.AbbClient.feedback_callback">
+<code class="sig-name descname"><span class="pre">feedback_callback</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/client.html#AbbClient.feedback_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.ExecutionLevel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">ExecutionLevel</span></code><a class="reference internal" href="../_modules/compas_rrc/common.html#ExecutionLevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Defines the execution level of an instruction.</p>
+<dl class="py attribute">
+<dt id="compas_rrc.ExecutionLevel.ROBOT">
+<code class="sig-name descname"><span class="pre">ROBOT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.ExecutionLevel.RECEIVER">
+<code class="sig-name descname"><span class="pre">RECEIVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.ExecutionLevel.SENDER">
+<code class="sig-name descname"><span class="pre">SENDER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.ExecutionLevel.MASTER">
+<code class="sig-name descname"><span class="pre">MASTER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">10</span></em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<div class="section" id="handling-feedback">
+<h3>Handling feedback</h3>
+<p>For cases in which you wish to send a command and wait for feedback, the
+easiest option is to use <code class="docutils literal notranslate"><span class="pre">send_and_wait</span></code>, but for fine-grained control of
+when to wait for feedback, the <code class="docutils literal notranslate"><span class="pre">send</span></code> methods returns an object of type
+<a class="reference internal" href="#compas_rrc.FutureResult" title="compas_rrc.FutureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">FutureResult</span></code></a>. The call is non-blocking, so it returns immediatelly
+but when the <code class="docutils literal notranslate"><span class="pre">result()</span></code> method of the future result is invoked, it will block
+until the result is eventually available.</p>
+<dl class="py class">
+<dt id="compas_rrc.FeedbackLevel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">FeedbackLevel</span></code><a class="reference internal" href="../_modules/compas_rrc/common.html#FeedbackLevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents default valid feedback levels.</p>
+<dl class="py attribute">
+<dt id="compas_rrc.FeedbackLevel.NONE">
+<code class="sig-name descname"><span class="pre">NONE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.FeedbackLevel.DONE">
+<code class="sig-name descname"><span class="pre">DONE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.FutureResult">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">FutureResult</span></code><a class="reference internal" href="../_modules/compas_rrc/common.html#FutureResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents a future result value.</p>
+<p>Futures are the result of asynchronous operations
+but allow to explicitely control when to block and wait
+for its completion.</p>
+<dl class="py method">
+<dt id="compas_rrc.FutureResult.result">
+<code class="sig-name descname"><span class="pre">result</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/common.html#FutureResult.result"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Return the feedback value returned by the instruction.</p>
+<p>If the instruction has not yet returned feedback, it will wait
+up to <code class="docutils literal notranslate"><span class="pre">timeout</span></code> seconds. If the <code class="docutils literal notranslate"><span class="pre">timeout</span></code> expires, the method
+will raise an exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.FutureResult._set_result">
+<code class="sig-name descname"><span class="pre">_set_result</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/common.html#FutureResult._set_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="robot-joints-and-external-axes">
+<h2>Robot joints and External axes</h2>
+<dl class="py class">
+<dt id="compas_rrc.RobotJoints">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">RobotJoints</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/common.html#RobotJoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents a configuration for robot joints</p>
+<dl class="py method">
+<dt id="compas_rrc.RobotJoints.rax_1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rax_1</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.RobotJoints.rax_2">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rax_2</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.RobotJoints.rax_3">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rax_3</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.RobotJoints.rax_4">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rax_4</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.RobotJoints.rax_5">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rax_5</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.RobotJoints.rax_6">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rax_6</span></code></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.ExternalAxes">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">ExternalAxes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/common.html#ExternalAxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents a configuration for external axes</p>
+<dl class="py method">
+<dt id="compas_rrc.ExternalAxes.eax_a">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">eax_a</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.ExternalAxes.eax_b">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">eax_b</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.ExternalAxes.eax_c">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">eax_c</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.ExternalAxes.eax_d">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">eax_d</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.ExternalAxes.eax_e">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">eax_e</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="compas_rrc.ExternalAxes.eax_f">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">eax_f</span></code></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="motion-instructions">
+<h2>Motion instructions</h2>
+<dl class="py class">
+<dt id="compas_rrc.MoveToJoints">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">MoveToJoints</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext_axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/motion.html#MoveToJoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Move to configuration is a call that moves the robot with axis values.</p>
+<p>RAPID Instruction: <code class="docutils literal notranslate"><span class="pre">MoveAbsJ</span></code></p>
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToJoints.joints">
+<code class="sig-name descname"><span class="pre">joints</span></code></dt>
+<dd><p>Robot joint positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rrc.common.RobotJoints</span></code> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToJoints.ext_axes">
+<code class="sig-name descname"><span class="pre">ext_axes</span></code></dt>
+<dd><p>External axes positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rrc.common.ExternalAxes</span></code> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToJoints.speed">
+<code class="sig-name descname"><span class="pre">speed</span></code></dt>
+<dd><p>Integer specifying TCP translational speed in mm/s. Min=``0.01``.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToJoints.zone">
+<code class="sig-name descname"><span class="pre">zone</span></code></dt>
+<dd><p>Zone data. Predefined in the robot contrller,
+only Zone <code class="docutils literal notranslate"><span class="pre">fine</span></code> will do a stop point all others are fly by points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#compas_rrc.Zone" title="compas_rrc.Zone"><code class="xref py py-class docutils literal notranslate"><span class="pre">Zone</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToJoints.feedback_level">
+<code class="sig-name descname"><span class="pre">feedback_level</span></code></dt>
+<dd><p>Integer specifying requested feedback level. Default=``0`` (i.e. <code class="docutils literal notranslate"><span class="pre">NONE</span></code>).
+Feedback level is instruction-specific but the value <code class="docutils literal notranslate"><span class="pre">1</span></code> always represents
+completion of the instruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.MoveToFrame">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">MoveToFrame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">motion_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'J'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/motion.html#MoveToFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rrc.motion.MoveGeneric</span></code></p>
+<p>Move to frame is a call that moves the robot in the cartisian space.</p>
+<p>RAPID Instruction: MoveJ or MoveL</p>
+<p>– old Text –
+Represents a move joint instruction.</p>
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToFrame.frame">
+<code class="sig-name descname"><span class="pre">frame</span></code></dt>
+<dd><p>Target frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="(in COMPAS v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToFrame.speed">
+<code class="sig-name descname"><span class="pre">speed</span></code></dt>
+<dd><p>Integer specifying TCP translational speed in mm/s. Min=``0.01``.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToFrame.zone">
+<code class="sig-name descname"><span class="pre">zone</span></code></dt>
+<dd><p>Zone data. Predefined in the robot contrller,
+only Zone <code class="docutils literal notranslate"><span class="pre">fine</span></code> will do a stop point all others are fly by points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#compas_rrc.Zone" title="compas_rrc.Zone"><code class="xref py py-class docutils literal notranslate"><span class="pre">Zone</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToFrame.motion_type">
+<code class="sig-name descname"><span class="pre">motion_type</span></code></dt>
+<dd><p>Motion type. Defaults to Joint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#compas_rrc.Motion" title="compas_rrc.Motion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Motion</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToFrame.feedback_level">
+<code class="sig-name descname"><span class="pre">feedback_level</span></code></dt>
+<dd><p>Integer specifying requested feedback level. Default=``0`` (i.e. <code class="docutils literal notranslate"><span class="pre">NONE</span></code>).
+Feedback level is instruction-specific but the value <code class="docutils literal notranslate"><span class="pre">1</span></code> always represents
+completion of the instruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ABB Documentation - Usage:</p>
+<p>MoveJ is used to move the robot quickly from one point to another when that
+movement does not have to be in a straight line.
+The robot and external axes move to the destination position along a non-linear
+path. All axes reach the destination position at the same time.
+This instruction can only be used in the main task T_ROB1 or, if in a MultiMove
+system, in Motion tasks.</p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.MoveToRobtarget">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">MoveToRobtarget</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext_axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">motion_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'J'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/motion.html#MoveToRobtarget"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rrc.motion.MoveGeneric</span></code></p>
+<p>Move to frame is a call that moves the robot in the cartisian space.</p>
+<p>RAPID Instruction: <code class="docutils literal notranslate"><span class="pre">MoveJ</span></code> or <code class="docutils literal notranslate"><span class="pre">MoveL</span></code></p>
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToRobtarget.frame">
+<code class="sig-name descname"><span class="pre">frame</span></code></dt>
+<dd><p>Target frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="(in COMPAS v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToRobtarget.ext_axes">
+<code class="sig-name descname"><span class="pre">ext_axes</span></code></dt>
+<dd><p>External axes positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rrc.common.ExternalAxes</span></code> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToRobtarget.speed">
+<code class="sig-name descname"><span class="pre">speed</span></code></dt>
+<dd><p>Integer specifying TCP translational speed in mm/s. Min=``0.01``.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToRobtarget.zone">
+<code class="sig-name descname"><span class="pre">zone</span></code></dt>
+<dd><p>Zone data. Predefined in the robot controller,
+only Zone <code class="docutils literal notranslate"><span class="pre">fine</span></code> will do a stop point all others are fly by points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#compas_rrc.Zone" title="compas_rrc.Zone"><code class="xref py py-class docutils literal notranslate"><span class="pre">Zone</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToRobtarget.motion_type">
+<code class="sig-name descname"><span class="pre">motion_type</span></code></dt>
+<dd><p>Motion type. Defaults to Joint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#compas_rrc.Motion" title="compas_rrc.Motion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Motion</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.MoveToRobtarget.feedback_level">
+<code class="sig-name descname"><span class="pre">feedback_level</span></code></dt>
+<dd><p>Integer specifying requested feedback level. Default=``0`` (i.e. <code class="docutils literal notranslate"><span class="pre">NONE</span></code>).
+Feedback level is instruction-specific but the value <code class="docutils literal notranslate"><span class="pre">1</span></code> always represents
+completion of the instruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.Motion">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">Motion</span></code><a class="reference internal" href="../_modules/compas_rrc/motion.html#Motion"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Describes the valid motion types.</p>
+<dl class="py attribute">
+<dt id="compas_rrc.Motion.LINEAR">
+<code class="sig-name descname"><span class="pre">LINEAR</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'L'</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Motion.JOINT">
+<code class="sig-name descname"><span class="pre">JOINT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'J'</span></em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.Zone">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">Zone</span></code><a class="reference internal" href="../_modules/compas_rrc/motion.html#Zone"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Describes the valid zone data definitions.</p>
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.FINE">
+<code class="sig-name descname"><span class="pre">FINE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">-1</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z0">
+<code class="sig-name descname"><span class="pre">Z0</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z1">
+<code class="sig-name descname"><span class="pre">Z1</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z5">
+<code class="sig-name descname"><span class="pre">Z5</span></code><em class="property"> <span class="pre">=</span> <span class="pre">5</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z10">
+<code class="sig-name descname"><span class="pre">Z10</span></code><em class="property"> <span class="pre">=</span> <span class="pre">10</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z15">
+<code class="sig-name descname"><span class="pre">Z15</span></code><em class="property"> <span class="pre">=</span> <span class="pre">15</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z20">
+<code class="sig-name descname"><span class="pre">Z20</span></code><em class="property"> <span class="pre">=</span> <span class="pre">20</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z30">
+<code class="sig-name descname"><span class="pre">Z30</span></code><em class="property"> <span class="pre">=</span> <span class="pre">30</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z40">
+<code class="sig-name descname"><span class="pre">Z40</span></code><em class="property"> <span class="pre">=</span> <span class="pre">40</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z50">
+<code class="sig-name descname"><span class="pre">Z50</span></code><em class="property"> <span class="pre">=</span> <span class="pre">50</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z60">
+<code class="sig-name descname"><span class="pre">Z60</span></code><em class="property"> <span class="pre">=</span> <span class="pre">60</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z80">
+<code class="sig-name descname"><span class="pre">Z80</span></code><em class="property"> <span class="pre">=</span> <span class="pre">80</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z100">
+<code class="sig-name descname"><span class="pre">Z100</span></code><em class="property"> <span class="pre">=</span> <span class="pre">100</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z150">
+<code class="sig-name descname"><span class="pre">Z150</span></code><em class="property"> <span class="pre">=</span> <span class="pre">150</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="compas_rrc.Zone.Z200">
+<code class="sig-name descname"><span class="pre">Z200</span></code><em class="property"> <span class="pre">=</span> <span class="pre">200</span></em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="get-current-status">
+<h2>Get Current Status</h2>
+<dl class="py class">
+<dt id="compas_rrc.GetFrame">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">GetFrame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/utility.html#GetFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rrc.utility.GetRobtarget</span></code></p>
+<p>Query the current frame of the robot.</p>
+<p>RAPID Instruction: <code class="docutils literal notranslate"><span class="pre">GetRobT</span></code></p>
+<dl class="py method">
+<dt id="compas_rrc.GetFrame.parse_feedback">
+<code class="sig-name descname"><span class="pre">parse_feedback</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/utility.html#GetFrame.parse_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.GetJoints">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">GetJoints</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/utility.html#GetJoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Get joints is a call that queries the axis values of the robot.</p>
+<p>RAPID Instruction: GetJointT</p>
+<dl class="py method">
+<dt id="compas_rrc.GetJoints.parse_feedback">
+<code class="sig-name descname"><span class="pre">parse_feedback</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/utility.html#GetJoints.parse_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.GetRobtarget">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">GetRobtarget</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/utility.html#GetRobtarget"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Query the current robtarget (defined as frame + external axes) of the robot.</p>
+<p>RAPID Instruction: <code class="docutils literal notranslate"><span class="pre">GetRobT</span></code></p>
+<dl class="py method">
+<dt id="compas_rrc.GetRobtarget.parse_feedback">
+<code class="sig-name descname"><span class="pre">parse_feedback</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/utility.html#GetRobtarget.parse_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="input-output">
+<h2>Input/Output</h2>
+<dl class="py class">
+<dt id="compas_rrc.ReadAnalog">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">ReadAnalog</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#ReadAnalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Read analog is a call that returns the value of an analog input signal.</p>
+<p>RAPID Instruction: ReadAi</p>
+<dl class="py method">
+<dt id="compas_rrc.ReadAnalog.parse_feedback">
+<code class="sig-name descname"><span class="pre">parse_feedback</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#ReadAnalog.parse_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.ReadDigital">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">ReadDigital</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#ReadDigital"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Read digital is a call that returns the value of an digital input signal.</p>
+<p>RAPID Instruction: ReadDi</p>
+<dl class="py method">
+<dt id="compas_rrc.ReadDigital.parse_feedback">
+<code class="sig-name descname"><span class="pre">parse_feedback</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#ReadDigital.parse_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.ReadGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">ReadGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#ReadGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Read group is a call that returns the value of an digital group input signal.</p>
+<p>RAPID Instruction: ReadGi</p>
+<dl class="py method">
+<dt id="compas_rrc.ReadGroup.parse_feedback">
+<code class="sig-name descname"><span class="pre">parse_feedback</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#ReadGroup.parse_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.SetAnalog">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">SetAnalog</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#SetAnalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Set analog is a call that sets the value of an analog output signal (float).</p>
+<p>RAPID Instruction: SetAo</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.SetDigital">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">SetDigital</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#SetDigital"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Set digital is a call that sets the value of an digital output signal (0 or 1).</p>
+<p>RAPID Instruction: SetDo</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.SetGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">SetGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#SetGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Set group is a call that sets the value of an digital group output signal (Integer Value, depending on the size of the group ).</p>
+<p>RAPID Instruction: SetGo</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="compas_rrc.PulseDigital">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">PulseDigital</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pulse_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/io.html#PulseDigital"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Pulse digital is a call that sets the value to high of an digital output signal for a certain time.</p>
+<p>RAPID Instruction: PulseDo</p>
+</dd></dl>
+
+</div>
+<div class="section" id="custom-instructions">
+<h2>Custom instructions</h2>
+<p>This library has support for non-standard instructions. Simply pass
+an instance of <a class="reference internal" href="#compas_rrc.CustomInstruction" title="compas_rrc.CustomInstruction"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomInstruction</span></code></a> specifying an instruction
+name, and this will be evaluated and executed on the robot’s side,
+if a RAPID procedure with that name exists on the controller.</p>
+<dl class="py class">
+<dt id="compas_rrc.CustomInstruction">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">CustomInstruction</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/project.html#CustomInstruction"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>Custom instruction is a call that calls a custom RAPID instruction. The name has to match to a <code class="docutils literal notranslate"><span class="pre">RAPID</span></code> procedure.</p>
+<p>RAPID Instruction: CustomInstruction</p>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-instructions">
+<h2>Utility instructions</h2>
+<dl class="py class">
+<dt id="compas_rrc.Noop">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">Noop</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rrc/utility.html#Noop"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.ros.messages.std_msgs.ROSmsg</span></code></p>
+<p>No-op is a call without any effect.</p>
+<p>RAPID Instruction: Dummy</p>
+</dd></dl>
+
+</div>
+</div>
+
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation">
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+          <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../readme.html">COMPAS RRC</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../contributing.html">Contributor’s Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../architecture.html">Software Architecture</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../authors.html">Authors</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+          </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">API Reference</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#abb-client">ABB Client</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#handling-feedback">Handling feedback</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#robot-joints-and-external-axes">Robot joints and External axes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#motion-instructions">Motion instructions</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#get-current-status">Get Current Status</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#input-output">Input/Output</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#custom-instructions">Custom instructions</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#utility-instructions">Utility instructions</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+        <a href="../readme.html" title="COMPAS RRC" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
+          <div class="nav-title flex-grow-1 align-self-center">
+            <div class="nav-direction small font-weight-light">Previous</div>
+            COMPAS RRC
+          </div>
+        </a>
+      
+
+      
+        <a href="../contributing.html" title="Contributor’s Guide" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+          <div class="nav-title footer-link flex-grow-1 align-self-center">
+            <div class="nav-direction small font-weight-light">Next</div>
+            Contributor’s Guide
+          </div>
+          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
+        </a>
+      
+    </nav>  
+  </footer>
+  <!-- footer -->
+  <!-- below -->
+  <div class="below py-5" style="background-color: #222;">
+    <div class="container">
+      <div class="row flex-column">
+      <div class="col-12 col-md-6 mx-md-auto text-center">
+        <h4 class="pb-3 below-text">COMPAS</h4>
+        <p class="below-text">
+          A computational framework for collaboration and research
+          in Architecture, Engineering, Fabrication, and Construction.
+        </p>
+        <nav class="nav justify-content-center pb-3">
+          <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </nav>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col text-center">
+        <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- below -->
+  <!-- scripts -->
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+  URL_ROOT          : '',
+  VERSION           : '1.1.0',
+  COLLAPSE_INDEX    : false,
+  FILE_SUFFIX       : '.html',
+  HAS_SOURCE        : 'false',
+  SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../_static/underscore.js"></script>
+  <script src="../_static/doctools.js"></script>
+  <script src="../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+    $(".language-default code").addClass("python");
+    $(".language-python code").addClass("python");
+    $(".language-bash code").addClass("bash");
+    $(".language-cpp code").addClass("cpp");
+    $(".language-json code").addClass("json");
+    $(".language-none code").addClass("plaintext");
+
+    hljs.initHighlighting();
+    anchors.add();
+
+    $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+    }).addClass("active");
+
+  });
+
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+  <!-- scripts -->
+  
+  
+</body>
+</html>
