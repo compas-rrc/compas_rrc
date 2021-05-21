@@ -1,5 +1,9 @@
 import itertools
+import math
 import threading
+
+from compas.robots import Configuration
+from compas.robots import Joint
 
 __all__ = ['CLIENT_PROTOCOL_VERSION',
            'FeedbackLevel',
@@ -10,8 +14,13 @@ __all__ = ['CLIENT_PROTOCOL_VERSION',
            'ExternalAxes',
            'RobotJoints']
 
-
 CLIENT_PROTOCOL_VERSION = 2
+
+
+def _convert_unit(value, type_):
+    if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
+        return math.radians(value)
+    return value / 1000
 
 
 class FeedbackLevel(object):
@@ -179,6 +188,25 @@ class ExternalAxes(object):
     def __iter__(self):
         return iter(self.values)
 
+    # Convenience methods
+    def to_configuration(self, joint_types, joint_names=None):
+        """Convert the ExternalAxes to a :class:`compas.robots.Configuration`.
+
+        Parameters
+        ----------
+        joint_types : obj:`list`
+            List of integers representing the joint types of the corresponding external axes values.
+        joint_names : obj:`list`
+            List of strings representing the joint names of the corresponding external axes values. Optional.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+
+        """
+        joint_values = [_convert_unit(value, type_) for value, type_ in zip(self.values, joint_types)]
+        return Configuration(joint_values, joint_types, joint_names)
+
 
 class RobotJoints(object):
     """Represents a configuration for robot joints"""
@@ -256,3 +284,22 @@ class RobotJoints(object):
 
     def __iter__(self):
         return iter(self.values)
+
+    # Convenience methods
+    def to_configuration(self, joint_types, joint_names=None):
+        """Convert the RobotJoints to a :class:`compas.robots.Configuration`.
+
+        Parameters
+        ----------
+        joint_types : obj:`list`
+            List of integers representing the joint types of the corresponding internal axes values.
+        joint_names : obj:`list`
+            List of strings representing the joint names of the corresponding internal axes values. Optional.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+
+        """
+        joint_values = [_convert_unit(value, type_) for value, type_ in zip(self.values, joint_types)]
+        return Configuration(joint_values, joint_types, joint_names)

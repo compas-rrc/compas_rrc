@@ -166,7 +166,7 @@ class GetJoints(ROSmsg):
         :class:`RobotJoints`, :class:`ExternalAxes`
             Current joints and external axes of the robot.
         """
-        # read robot jonts
+        # read robot joints
         robot_joints = [result['float_values'][i] for i in range(0, 6)]
 
         # read external axes
