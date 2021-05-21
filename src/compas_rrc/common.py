@@ -14,6 +14,7 @@ __all__ = ['CLIENT_PROTOCOL_VERSION',
            'ExternalAxes',
            'RobotJoints']
 
+
 CLIENT_PROTOCOL_VERSION = 2
 
 
