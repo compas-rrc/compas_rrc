@@ -194,18 +194,37 @@ class ExternalAxes(object):
 
         Parameters
         ----------
-        joint_types : obj:`list`
+        joint_types : :obj:`list`
             List of integers representing the joint types of the corresponding external axes values.
-        joint_names : obj:`list`
+        joint_names : :obj:`list`
             List of strings representing the joint names of the corresponding external axes values. Optional.
 
         Returns
         -------
         :class:`compas.robots.Configuration`
-
         """
         joint_values = [_convert_unit(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
+
+    @classmethod
+    def from_configuration(cls, configuration, joint_names=None):
+        """Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`.
+
+        Parameters
+        ----------
+        configuration : :class:`compas.robots.Configuration`
+            The configuration from which to create the ``ExternalAxes`` instance.
+        joint_names : :obj:`list`
+            An optional list of joint names from the ``configuration`` whose corresponding
+            values will fill the ``ExternalAxes`` values.
+
+        Returns
+        -------
+        :class:`compas_rrc.ExternalAxes`
+        """
+        if joint_names:
+            return cls(configuration[name] for name in joint_names)
+        return cls(configuration.joint_values)
 
 
 class RobotJoints(object):
@@ -291,15 +310,34 @@ class RobotJoints(object):
 
         Parameters
         ----------
-        joint_types : obj:`list`
+        joint_types : :obj:`list`
             List of integers representing the joint types of the corresponding internal axes values.
-        joint_names : obj:`list`
+        joint_names : :obj:`list`
             List of strings representing the joint names of the corresponding internal axes values. Optional.
 
         Returns
         -------
         :class:`compas.robots.Configuration`
-
         """
         joint_values = [_convert_unit(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
+
+    @classmethod
+    def from_configuration(cls, configuration, joint_names=None):
+        """Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`.
+
+        Parameters
+        ----------
+        configuration : :class:`compas.robots.Configuration`
+            The configuration from which to create the ``RobotJoints`` instance.
+        joint_names : :obj:`list`
+            An optional list of joint names from the ``configuration`` whose corresponding
+            values will fill the ``RobotJoints`` values.
+
+        Returns
+        -------
+        :class:`compas_rrc.RobotJoints`
+        """
+        if joint_names:
+            return cls(configuration[name] for name in joint_names)
+        return cls(configuration.joint_values)
