@@ -1,18 +1,28 @@
 import math
 
+from compas.geometry import allclose
 from compas.robots import Configuration
 import compas_rrc as rrc
 
 
 def test__convert_units():
-    v = rrc.common._convert_unit(180, 0)
+    v = rrc.common._convert_unit_to_meters_radians(180, 0)
     assert v == math.pi
 
-    v = rrc.common._convert_unit(-180, 1)
+    v = rrc.common._convert_unit_to_meters_radians(-180, 1)
     assert v == -math.pi
 
-    v = rrc.common._convert_unit(2545, 2)
+    v = rrc.common._convert_unit_to_meters_radians(2545, 2)
     assert v == 2.545
+
+    v = rrc.common._convert_unit_to_mm_degrees(math.pi, 0)
+    assert v == 180
+
+    v = rrc.common._convert_unit_to_mm_degrees(-math.pi, 1)
+    assert v == -180
+
+    v = rrc.common._convert_unit_to_mm_degrees(2.545, 2)
+    assert v == 2545
 
 
 def test_robot_joints():
@@ -41,15 +51,21 @@ def test_robot_joints():
     assert c.joint_values == [math.pi/6, -math.pi/4, 0.1]
     assert len(c.joint_names) == 0
 
-    config = Configuration([0, 1, 2, 3, 4, 5], [0, 0, 0, 0, 0, 0])
+    config = Configuration([2*math.pi, math.pi, math.pi/2, math.pi/3, math.pi/4, math.pi/6], [0, 0, 0, 0, 0, 0])
     rj = rrc.RobotJoints.from_configuration_primitive(config)
-    assert rj.rax_1 == 0
-    assert rj.rax_6 == 5
+    assert allclose(rj.values, [360, 180, 90, 60, 45, 30])
 
-    config = Configuration([0, 1, 2, 3, 4, 5, 6], [0, 0, 0, 0, 0, 0, 0], ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+    config = Configuration(
+        [0, 2*math.pi, math.pi, math.pi/2, math.pi/3, math.pi/4, math.pi/6 ],
+        [0, 0, 0, 0, 0, 0, 0],
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
     rj = rrc.RobotJoints.from_configuration_primitive(config, ['b', 'c', 'd', 'e', 'f', 'g'])
-    assert rj.rax_1 == 1
-    assert rj.rax_6 == 6
+    assert allclose(rj.values, [360, 180, 90, 60, 45, 30])
+
+    j = rrc.RobotJoints(30, 10, 0)
+    config = j.to_configuration_primitive([0, 0, 0])
+    new_j = rrc.RobotJoints.from_configuration_primitive(config)
+    assert allclose(j.values, new_j.values)
 
 
 def test_external_axes():
@@ -78,12 +94,18 @@ def test_external_axes():
     assert c.joint_values == [math.pi/6, -math.pi/4, 0.1]
     assert len(c.joint_names) == 0
 
-    config = Configuration([0, 1, 2, 3, 4, 5], [0, 0, 0, 0, 0, 0])
+    config = Configuration([2*math.pi, math.pi, math.pi/2, math.pi/3, math.pi/4, math.pi/6], [0, 0, 0, 0, 0, 0])
     rj = rrc.ExternalAxes.from_configuration_primitive(config)
-    assert rj.eax_a == 0
-    assert rj.eax_f == 5
+    assert allclose(rj.values, [360, 180, 90, 60, 45, 30])
 
-    config = Configuration([0, 1, 2, 3, 4, 5, 6], [0, 0, 0, 0, 0, 0, 0], ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+    config = Configuration(
+        [0, 2*math.pi, math.pi, math.pi/2, math.pi/3, math.pi/4, math.pi/6 ],
+        [0, 0, 0, 0, 0, 0, 0],
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
     rj = rrc.ExternalAxes.from_configuration_primitive(config, ['b', 'c', 'd', 'e', 'f', 'g'])
-    assert rj.eax_a == 1
-    assert rj.eax_f == 6
+    assert allclose(rj.values, [360, 180, 90, 60, 45, 30])
+
+    j = rrc.RobotJoints(30, 10, 0)
+    config = j.to_configuration_primitive([0, 0, 0])
+    new_j = rrc.ExternalAxes.from_configuration_primitive(config)
+    assert allclose(j.values, new_j.values)

@@ -17,10 +17,16 @@ __all__ = ['CLIENT_PROTOCOL_VERSION',
 CLIENT_PROTOCOL_VERSION = 2
 
 
-def _convert_unit(value, type_):
+def _convert_unit_to_meters_radians(value, type_):
     if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
         return math.radians(value)
     return value / 1000
+
+
+def _convert_unit_to_mm_degrees(value, type_):
+    if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
+        return math.degrees(value)
+    return value * 1000
 
 
 class FeedbackLevel(object):
@@ -203,7 +209,7 @@ class ExternalAxes(object):
         -------
         :class:`compas.robots.Configuration`
         """
-        joint_values = [_convert_unit(value, type_) for value, type_ in zip(self.values, joint_types)]
+        joint_values = [_convert_unit_to_meters_radians(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
 
     def to_configuration(self, robot, group=None):
@@ -242,8 +248,10 @@ class ExternalAxes(object):
         :class:`compas_rrc.ExternalAxes`
         """
         if joint_names:
-            return cls(configuration[name] for name in joint_names)
-        return cls(configuration.joint_values)
+            joint_values = [_convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names]
+        else:
+            joint_values = [_convert_unit_to_mm_degrees(value, type_) for value, type_ in zip(configuration.joint_values, configuration.joint_types)]
+        return cls(joint_values)
 
     @classmethod
     def from_configuration(cls, configuration, robot=None, group=None):
@@ -359,7 +367,7 @@ class RobotJoints(object):
         -------
         :class:`compas.robots.Configuration`
         """
-        joint_values = [_convert_unit(value, type_) for value, type_ in zip(self.values, joint_types)]
+        joint_values = [_convert_unit_to_meters_radians(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
 
     def to_configuration(self, robot, group=None):
@@ -398,8 +406,10 @@ class RobotJoints(object):
         :class:`compas_rrc.RobotJoints`
         """
         if joint_names:
-            return cls(configuration[name] for name in joint_names)
-        return cls(configuration.joint_values)
+            joint_values = [_convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names]
+        else:
+            joint_values = [_convert_unit_to_mm_degrees(value, type_) for value, type_ in zip(configuration.joint_values, configuration.joint_types)]
+        return cls(joint_values)
 
     @classmethod
     def from_configuration(cls, configuration, robot=None, group=None):
