@@ -117,13 +117,13 @@
 <span class="k">def</span> <span class="nf">_convert_unit_to_meters_radians</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">type_</span> <span class="ow">in</span> <span class="p">{</span><span class="n">Joint</span><span class="o">.</span><span class="n">REVOLUTE</span><span class="p">,</span> <span class="n">Joint</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">}:</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">value</span> <span class="o">/</span> <span class="mi">1000</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">/</span> <span class="mf">1000.</span>
 
 
 <span class="k">def</span> <span class="nf">_convert_unit_to_mm_degrees</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">type_</span> <span class="ow">in</span> <span class="p">{</span><span class="n">Joint</span><span class="o">.</span><span class="n">REVOLUTE</span><span class="p">,</span> <span class="n">Joint</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">}:</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mf">1000.</span>
 
 
 <div class="viewcode-block" id="FeedbackLevel"><a class="viewcode-back" href="../../reference/generated/compas_rrc.FeedbackLevel.html#compas_rrc.FeedbackLevel">[docs]</a><span class="k">class</span> <span class="nc">FeedbackLevel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
