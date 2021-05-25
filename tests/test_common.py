@@ -32,22 +32,22 @@ def test_robot_joints():
     assert list(j) == [30, 10, 0]
 
     j = rrc.RobotJoints(30, 45, 0)
-    c = j.to_configuration([0, 1, 2], ['j1', 'j2', 'j3'])
+    c = j.to_configuration_primitive([0, 1, 2], ['j1', 'j2', 'j3'])
     assert c.joint_values == [math.pi/6, math.pi/4, 0.0]
     assert c.joint_names == ['j1', 'j2', 'j3']
 
     j = rrc.RobotJoints(30, -45, 100)
-    c = j.to_configuration([0, 1, 2])
+    c = j.to_configuration_primitive([0, 1, 2])
     assert c.joint_values == [math.pi/6, -math.pi/4, 0.1]
     assert len(c.joint_names) == 0
 
     config = Configuration([0, 1, 2, 3, 4, 5], [0, 0, 0, 0, 0, 0])
-    rj = rrc.RobotJoints.from_configuration(config)
+    rj = rrc.RobotJoints.from_configuration_primitive(config)
     assert rj.rax_1 == 0
     assert rj.rax_6 == 5
 
     config = Configuration([0, 1, 2, 3, 4, 5, 6], [0, 0, 0, 0, 0, 0, 0], ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
-    rj = rrc.RobotJoints.from_configuration(config, ['b', 'c', 'd', 'e', 'f', 'g'])
+    rj = rrc.RobotJoints.from_configuration_primitive(config, ['b', 'c', 'd', 'e', 'f', 'g'])
     assert rj.rax_1 == 1
     assert rj.rax_6 == 6
 
@@ -69,21 +69,21 @@ def test_external_axes():
     assert list(ea) == [30, 10, 0]
 
     j = rrc.ExternalAxes(30, 45, 0)
-    c = j.to_configuration([0, 1, 2], ['j1', 'j2', 'j3'])
+    c = j.to_configuration_primitive([0, 1, 2], ['j1', 'j2', 'j3'])
     assert c.joint_values == [math.pi/6, math.pi/4, 0.0]
     assert c.joint_names == ['j1', 'j2', 'j3']
 
     j = rrc.ExternalAxes(30, -45, 100)
-    c = j.to_configuration([0, 1, 2])
+    c = j.to_configuration_primitive([0, 1, 2])
     assert c.joint_values == [math.pi/6, -math.pi/4, 0.1]
     assert len(c.joint_names) == 0
 
     config = Configuration([0, 1, 2, 3, 4, 5], [0, 0, 0, 0, 0, 0])
-    rj = rrc.ExternalAxes.from_configuration(config)
+    rj = rrc.ExternalAxes.from_configuration_primitive(config)
     assert rj.eax_a == 0
     assert rj.eax_f == 5
 
     config = Configuration([0, 1, 2, 3, 4, 5, 6], [0, 0, 0, 0, 0, 0, 0], ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
-    rj = rrc.ExternalAxes.from_configuration(config, ['b', 'c', 'd', 'e', 'f', 'g'])
+    rj = rrc.ExternalAxes.from_configuration_primitive(config, ['b', 'c', 'd', 'e', 'f', 'g'])
     assert rj.eax_a == 1
     assert rj.eax_f == 6

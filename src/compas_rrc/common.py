@@ -188,8 +188,8 @@ class ExternalAxes(object):
     def __iter__(self):
         return iter(self.values)
 
-    # Convenience methods
-    def to_configuration(self, joint_types, joint_names=None):
+    # Conversion methods
+    def to_configuration_primitive(self, joint_types, joint_names=None):
         """Convert the ExternalAxes to a :class:`compas.robots.Configuration`.
 
         Parameters
@@ -206,8 +206,27 @@ class ExternalAxes(object):
         joint_values = [_convert_unit(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
 
+    def to_configuration(self, robot, group=None):
+        """Convert the ExternalAxes to a :class:`compas.robots.Configuration`.
+
+        Parameters
+        ----------
+        robot : :class:`compas_fab.robots.Robot`
+            The robot to be configured.
+        group : :obj:`str`
+            The name of the group of joints to be included in the ``Configuration``. Optional.
+            Defaults to the ``robot``'s main group name.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+        """
+        joint_types = robot.get_configurable_joint_types(group)
+        joint_names = robot.get_configurable_joint_names(group)
+        return self.to_configuration_primitive(joint_types, joint_names)
+
     @classmethod
-    def from_configuration(cls, configuration, joint_names=None):
+    def from_configuration_primitive(cls, configuration, joint_names=None):
         """Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`.
 
         Parameters
@@ -225,6 +244,27 @@ class ExternalAxes(object):
         if joint_names:
             return cls(configuration[name] for name in joint_names)
         return cls(configuration.joint_values)
+
+    @classmethod
+    def from_configuration(cls, configuration, robot=None, group=None):
+        """Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`.
+
+        Parameters
+        ----------
+        configuration : :class:`compas.robots.Configuration`
+            The configuration from which to create the ``ExternalAxes`` instance.
+        robot : :class:`compas_fab.robots.Robot`
+            The robot to be configured.  Optional.
+        group : :obj:`str`
+            The name of the group of joints to be included in the ``ExternalAxes``. Optional.
+            Defaults to the ``robot``'s main group name.
+
+        Returns
+        -------
+        :class:`compas_rrc.ExternalAxes`
+        """
+        joint_names = robot.get_configurable_joint_names(group) if robot else []
+        return cls.from_configuration_primitive(configuration, joint_names)
 
 
 class RobotJoints(object):
@@ -304,8 +344,8 @@ class RobotJoints(object):
     def __iter__(self):
         return iter(self.values)
 
-    # Convenience methods
-    def to_configuration(self, joint_types, joint_names=None):
+    # Conversion methods
+    def to_configuration_primitive(self, joint_types, joint_names=None):
         """Convert the RobotJoints to a :class:`compas.robots.Configuration`.
 
         Parameters
@@ -322,8 +362,27 @@ class RobotJoints(object):
         joint_values = [_convert_unit(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
 
+    def to_configuration(self, robot, group=None):
+        """Convert the RobotJoints to a :class:`compas.robots.Configuration`.
+
+        Parameters
+        ----------
+        robot : :class:`compas_fab.robots.Robot`
+            The robot to be configured.
+        group : :obj:`str`
+            The name of the group of joints to be included in the ``Configuration``. Optional.
+            Defaults to the ``robot``'s main group name.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+        """
+        joint_types = robot.get_configurable_joint_types(group)
+        joint_names = robot.get_configurable_joint_names(group)
+        return self.to_configuration_primitive(joint_types, joint_names)
+
     @classmethod
-    def from_configuration(cls, configuration, joint_names=None):
+    def from_configuration_primitive(cls, configuration, joint_names=None):
         """Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`.
 
         Parameters
@@ -341,3 +400,24 @@ class RobotJoints(object):
         if joint_names:
             return cls(configuration[name] for name in joint_names)
         return cls(configuration.joint_values)
+
+    @classmethod
+    def from_configuration(cls, configuration, robot=None, group=None):
+        """Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`.
+
+        Parameters
+        ----------
+        configuration : :class:`compas.robots.Configuration`
+            The configuration from which to create the ``ExternalAxes`` instance.
+        robot : :class:`compas_fab.robots.Robot`
+            The robot to be configured.  Optional.
+        group : :obj:`str`
+            The name of the group of joints to be included in the ``ExternalAxes``. Optional.
+            Defaults to the ``robot``'s main group name.
+
+        Returns
+        -------
+        :class:`compas_rrc.RobotJoints`
+        """
+        joint_names = robot.get_configurable_joint_names(group) if robot else []
+        return cls.from_configuration_primitive(configuration, joint_names)
