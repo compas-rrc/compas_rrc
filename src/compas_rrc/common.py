@@ -1,5 +1,9 @@
 import itertools
+import math
 import threading
+
+from compas.robots import Configuration
+from compas.robots import Joint
 
 __all__ = ['CLIENT_PROTOCOL_VERSION',
            'FeedbackLevel',
@@ -10,8 +14,19 @@ __all__ = ['CLIENT_PROTOCOL_VERSION',
            'ExternalAxes',
            'RobotJoints']
 
-
 CLIENT_PROTOCOL_VERSION = 2
+
+
+def _convert_unit_to_meters_radians(value, type_):
+    if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
+        return math.radians(value)
+    return value / 1000.
+
+
+def _convert_unit_to_mm_degrees(value, type_):
+    if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
+        return math.degrees(value)
+    return value * 1000.
 
 
 class FeedbackLevel(object):
@@ -179,6 +194,90 @@ class ExternalAxes(object):
     def __iter__(self):
         return iter(self.values)
 
+    # Conversion methods
+    def to_configuration_primitive(self, joint_types, joint_names=None):
+        """Convert the ExternalAxes to a :class:`compas.robots.Configuration`, including the unit conversion
+        from mm and degrees to meters and radians.
+
+        Parameters
+        ----------
+        joint_types : :obj:`list`
+            List of integers representing the joint types of the corresponding external axes values.
+        joint_names : :obj:`list`
+            List of strings representing the joint names of the corresponding external axes values. Optional.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+        """
+        joint_values = [_convert_unit_to_meters_radians(value, type_) for value, type_ in zip(self.values, joint_types)]
+        return Configuration(joint_values, joint_types, joint_names)
+
+    def to_configuration(self, robot, group=None):
+        """Convert the ExternalAxes to a :class:`compas.robots.Configuration`, including the unit conversion
+        from mm and degrees to meters and radians.
+
+        Parameters
+        ----------
+        robot : :class:`compas_fab.robots.Robot`
+            The robot to be configured.
+        group : :obj:`str`
+            The name of the group of joints to be included in the ``Configuration``. Optional.
+            Defaults to the ``robot``'s main group name.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+        """
+        joint_types = robot.get_configurable_joint_types(group)
+        joint_names = robot.get_configurable_joint_names(group)
+        return self.to_configuration_primitive(joint_types, joint_names)
+
+    @classmethod
+    def from_configuration_primitive(cls, configuration, joint_names=None):
+        """Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`, including the unit
+        conversion from meters and radians to mm and degrees.
+
+        Parameters
+        ----------
+        configuration : :class:`compas.robots.Configuration`
+            The configuration from which to create the ``ExternalAxes`` instance.
+        joint_names : :obj:`list`
+            An optional list of joint names from the ``configuration`` whose corresponding
+            values will fill the ``ExternalAxes`` values.
+
+        Returns
+        -------
+        :class:`compas_rrc.ExternalAxes`
+        """
+        if joint_names:
+            joint_values = [_convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names]
+        else:
+            joint_values = [_convert_unit_to_mm_degrees(value, type_) for value, type_ in zip(configuration.joint_values, configuration.joint_types)]
+        return cls(joint_values)
+
+    @classmethod
+    def from_configuration(cls, configuration, robot=None, group=None):
+        """Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`, including the unit
+        conversion from meters and radians to mm and degrees.
+
+        Parameters
+        ----------
+        configuration : :class:`compas.robots.Configuration`
+            The configuration from which to create the ``ExternalAxes`` instance.
+        robot : :class:`compas_fab.robots.Robot`
+            The robot to be configured.  Optional.
+        group : :obj:`str`
+            The name of the group of joints to be included in the ``ExternalAxes``. Optional.
+            Defaults to the ``robot``'s main group name.
+
+        Returns
+        -------
+        :class:`compas_rrc.ExternalAxes`
+        """
+        joint_names = robot.get_configurable_joint_names(group) if robot else []
+        return cls.from_configuration_primitive(configuration, joint_names)
+
 
 class RobotJoints(object):
     """Represents a configuration for robot joints"""
@@ -256,3 +355,87 @@ class RobotJoints(object):
 
     def __iter__(self):
         return iter(self.values)
+
+    # Conversion methods
+    def to_configuration_primitive(self, joint_types, joint_names=None):
+        """Convert the RobotJoints to a :class:`compas.robots.Configuration`, including the unit conversion
+        from mm and degrees to meters and radians.
+
+        Parameters
+        ----------
+        joint_types : :obj:`list`
+            List of integers representing the joint types of the corresponding internal axes values.
+        joint_names : :obj:`list`
+            List of strings representing the joint names of the corresponding internal axes values. Optional.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+        """
+        joint_values = [_convert_unit_to_meters_radians(value, type_) for value, type_ in zip(self.values, joint_types)]
+        return Configuration(joint_values, joint_types, joint_names)
+
+    def to_configuration(self, robot, group=None):
+        """Convert the RobotJoints to a :class:`compas.robots.Configuration`, including the unit conversion
+        from mm and degrees to meters and radians.
+
+        Parameters
+        ----------
+        robot : :class:`compas_fab.robots.Robot`
+            The robot to be configured.
+        group : :obj:`str`
+            The name of the group of joints to be included in the ``Configuration``. Optional.
+            Defaults to the ``robot``'s main group name.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+        """
+        joint_types = robot.get_configurable_joint_types(group)
+        joint_names = robot.get_configurable_joint_names(group)
+        return self.to_configuration_primitive(joint_types, joint_names)
+
+    @classmethod
+    def from_configuration_primitive(cls, configuration, joint_names=None):
+        """Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`, including the unit
+        conversion from meters and radians to mm and degrees.
+
+        Parameters
+        ----------
+        configuration : :class:`compas.robots.Configuration`
+            The configuration from which to create the ``RobotJoints`` instance.
+        joint_names : :obj:`list`
+            An optional list of joint names from the ``configuration`` whose corresponding
+            values will fill the ``RobotJoints`` values.
+
+        Returns
+        -------
+        :class:`compas_rrc.RobotJoints`
+        """
+        if joint_names:
+            joint_values = [_convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names]
+        else:
+            joint_values = [_convert_unit_to_mm_degrees(value, type_) for value, type_ in zip(configuration.joint_values, configuration.joint_types)]
+        return cls(joint_values)
+
+    @classmethod
+    def from_configuration(cls, configuration, robot=None, group=None):
+        """Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`, including the unit
+        conversion from meters and radians to mm and degrees.
+
+        Parameters
+        ----------
+        configuration : :class:`compas.robots.Configuration`
+            The configuration from which to create the ``ExternalAxes`` instance.
+        robot : :class:`compas_fab.robots.Robot`
+            The robot to be configured.  Optional.
+        group : :obj:`str`
+            The name of the group of joints to be included in the ``ExternalAxes``. Optional.
+            Defaults to the ``robot``'s main group name.
+
+        Returns
+        -------
+        :class:`compas_rrc.RobotJoints`
+        """
+        joint_names = robot.get_configurable_joint_names(group) if robot else []
+        return cls.from_configuration_primitive(configuration, joint_names)
