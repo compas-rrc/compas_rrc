@@ -20,13 +20,13 @@ CLIENT_PROTOCOL_VERSION = 2
 def _convert_unit_to_meters_radians(value, type_):
     if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
         return math.radians(value)
-    return value / 1000
+    return value / 1000.
 
 
 def _convert_unit_to_mm_degrees(value, type_):
     if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
         return math.degrees(value)
-    return value * 1000
+    return value * 1000.
 
 
 class FeedbackLevel(object):
