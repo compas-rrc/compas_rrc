@@ -7,7 +7,7 @@ Unreleased
 
 **Added**
 
-* Added `to_configuration` and `to_configuration_primtiive` to `compas_rrc.ExternalAxes` and `compas_rrc.RobotJoints`
+* Added `to_configuration` and `to_configuration_primitive` to `compas_rrc.ExternalAxes` and `compas_rrc.RobotJoints`
 
 **Changed**
 
