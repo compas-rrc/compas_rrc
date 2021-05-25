@@ -23,7 +23,7 @@
   
 
   
-    <link rel="prev" title="RobotJoints.__init__" href="compas_rrc.RobotJoints.__init__.html" />
+    <link rel="prev" title="RobotJoints.to_configuration_primitive" href="compas_rrc.RobotJoints.to_configuration_primitive.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -100,11 +100,11 @@
 
         
         
-        <div class="detail section" id="externalaxes">
+        <section class="detail" id="externalaxes">
 <h1>ExternalAxes</h1>
 <dl class="py class">
-<dt id="compas_rrc.ExternalAxes">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rrc.</span></code><code class="sig-name descname"><span class="pre">ExternalAxes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rrc/common.html#ExternalAxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rrc.ExternalAxes">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rrc.</span></span><span class="sig-name descname"><span class="pre">ExternalAxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rrc/common.html#ExternalAxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Represents a configuration for external axes.</p>
 <p class="rubric">Methods</p>
@@ -117,11 +117,23 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.ExternalAxes.__init__.html#compas_rrc.ExternalAxes.__init__" title="compas_rrc.ExternalAxes.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*values)</p></td>
 <td><p>Initialize a new object with the specified values for external axes.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.ExternalAxes.from_configuration.html#compas_rrc.ExternalAxes.from_configuration" title="compas_rrc.ExternalAxes.from_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_configuration</span></code></a>(configuration[, robot, group])</p></td>
+<td><p>Create an instance of <code class="docutils literal notranslate"><span class="pre">ExternalAxes</span></code> from a <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Configuration.html#compas.robots.Configuration" title="(in COMPAS v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a>, including the unit conversion from meters and radians to mm and degrees.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.ExternalAxes.from_configuration_primitive.html#compas_rrc.ExternalAxes.from_configuration_primitive" title="compas_rrc.ExternalAxes.from_configuration_primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_configuration_primitive</span></code></a>(configuration)</p></td>
+<td><p>Create an instance of <code class="docutils literal notranslate"><span class="pre">ExternalAxes</span></code> from a <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Configuration.html#compas.robots.Configuration" title="(in COMPAS v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a>, including the unit conversion from meters and radians to mm and degrees.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.ExternalAxes.to_configuration.html#compas_rrc.ExternalAxes.to_configuration" title="compas_rrc.ExternalAxes.to_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_configuration</span></code></a>(robot[, group])</p></td>
+<td><p>Convert the ExternalAxes to a <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Configuration.html#compas.robots.Configuration" title="(in COMPAS v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a>, including the unit conversion from mm and degrees to meters and radians.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.ExternalAxes.to_configuration_primitive.html#compas_rrc.ExternalAxes.to_configuration_primitive" title="compas_rrc.ExternalAxes.to_configuration_primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_configuration_primitive</span></code></a>(joint_types[, …])</p></td>
+<td><p>Convert the ExternalAxes to a <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Configuration.html#compas.robots.Configuration" title="(in COMPAS v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a>, including the unit conversion from mm and degrees to meters and radians.</p></td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -169,11 +181,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_rrc.RobotJoints.__init__.html" title="RobotJoints.__init__" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_rrc.RobotJoints.to_configuration_primitive.html" title="RobotJoints.to_configuration_primitive" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            RobotJoints.__init__
+            RobotJoints.to_configuration_primitive
           </div>
         </a>
       

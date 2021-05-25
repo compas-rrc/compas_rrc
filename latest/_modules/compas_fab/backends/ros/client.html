@@ -101,6 +101,7 @@
 
 <span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">RobotModel</span>
 <span class="kn">from</span> <span class="nn">roslibpy</span> <span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">roslibpy</span> <span class="kn">import</span> <span class="n">Param</span>
 <span class="kn">from</span> <span class="nn">roslibpy</span> <span class="kn">import</span> <span class="n">Ros</span>
 <span class="kn">from</span> <span class="nn">roslibpy.actionlib</span> <span class="kn">import</span> <span class="n">ActionClient</span>
 <span class="kn">from</span> <span class="nn">roslibpy.actionlib</span> <span class="kn">import</span> <span class="n">Goal</span>
@@ -238,7 +239,8 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">RosClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">is_secure</span><span class="p">)</span>
 
         <span class="n">planner_backend_type</span> <span class="o">=</span> <span class="n">PLANNER_BACKENDS</span><span class="p">[</span><span class="n">planner_backend</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">planner</span> <span class="o">=</span> <span class="n">planner_backend_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">planner</span> <span class="o">=</span> <span class="n">planner_backend_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ros_distro</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
@@ -247,6 +249,14 @@
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ros_distro</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieves the ROS version to which the client is connected (eg. kinetic)&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ros_distro</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ros_distro</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;/rosdistro&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ros_distro</span>
 
 <div class="viewcode-block" id="RosClient.load_robot"><a class="viewcode-back" href="../../../../reference/generated/compas_rrc.RosClient.load_robot.html#compas_rrc.RosClient.load_robot">[docs]</a>    <span class="k">def</span> <span class="nf">load_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">load_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">urdf_param_name</span><span class="o">=</span><span class="s1">&#39;/robot_description&#39;</span><span class="p">,</span> <span class="n">srdf_param_name</span><span class="o">=</span><span class="s1">&#39;/robot_description_semantic&#39;</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_cache_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load an entire robot instance -including model and semantics- directly from ROS.</span>
@@ -316,10 +326,10 @@
             <span class="n">timeout</span> <span class="o">=</span> <span class="n">timesteps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">2</span>
 
         <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">num_joints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">configurations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">num_joints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">configurations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">joint_values</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">config</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">configurations</span><span class="p">,</span> <span class="n">timesteps</span><span class="p">):</span>
-            <span class="n">pt</span> <span class="o">=</span> <span class="n">RosMsgJointTrajectoryPoint</span><span class="p">(</span><span class="n">positions</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">velocities</span><span class="o">=</span><span class="p">[</span>
-                                      <span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">num_joints</span><span class="p">,</span> <span class="n">time_from_start</span><span class="o">=</span><span class="n">Time</span><span class="p">(</span><span class="n">secs</span><span class="o">=</span><span class="p">(</span><span class="n">time</span><span class="p">)))</span>
+            <span class="n">pt</span> <span class="o">=</span> <span class="n">RosMsgJointTrajectoryPoint</span><span class="p">(</span><span class="n">positions</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">joint_values</span><span class="p">,</span> <span class="n">velocities</span><span class="o">=</span><span class="p">[</span>
+                                      <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_joints</span><span class="p">,</span> <span class="n">time_from_start</span><span class="o">=</span><span class="n">Time</span><span class="p">(</span><span class="n">secs</span><span class="o">=</span><span class="p">(</span><span class="n">time</span><span class="p">)))</span>
             <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
 
         <span class="n">joint_trajectory</span> <span class="o">=</span> <span class="n">RosMsgJointTrajectory</span><span class="p">(</span>
