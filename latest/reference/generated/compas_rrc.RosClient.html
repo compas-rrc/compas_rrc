@@ -105,7 +105,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rrc.RosClient">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rrc.</span></span><span class="sig-name descname"><span class="pre">RosClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9090</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_secure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planner_backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'moveit'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_fab/backends/ros/client.html#RosClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">roslibpy.ros.Ros</span></code>, <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/generated/compas_fab.backends.interfaces.ClientInterface.html#compas_fab.backends.interfaces.ClientInterface" title="(in COMPAS FAB v0.18.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.interfaces.client.ClientInterface</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">roslibpy.ros.Ros</span></code>, <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/generated/compas_fab.backends.interfaces.ClientInterface.html#compas_fab.backends.interfaces.ClientInterface" title="(in COMPAS FAB v0.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.interfaces.client.ClientInterface</span></code></a></p>
 <p>Interface to use ROS as backend via the <strong>rosbridge</strong>.</p>
 <p>The connection is managed by <code class="docutils literal notranslate"><span class="pre">roslibpy</span></code>.</p>
 <p><a class="reference internal" href="#compas_rrc.RosClient" title="compas_rrc.RosClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">RosClient</span></code></a> is a context manager type, so it’s best
@@ -119,7 +119,7 @@ resource deallocation.</p>
 <li><p><strong>is_secure</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> to indicate it should use a secure web socket, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>planner_backend</strong> (<em>str</em>) – Name of the planner backend plugin to use. The plugin must be a sub-class of
 <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.PlannerInterface</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;moveit&quot;</span></code>,
-making use of <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/reference/generated/compas_fab.backends.MoveItPlanner.html#compas_fab.backends.MoveItPlanner" title="(in COMPAS FAB v0.18.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.MoveItPlanner</span></code></a>.</p></li>
+making use of <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/reference/generated/compas_fab.backends.MoveItPlanner.html#compas_fab.backends.MoveItPlanner" title="(in COMPAS FAB v0.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_fab.backends.MoveItPlanner</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -132,7 +132,7 @@ making use of <a class="reference external" href="https://gramaziokohler.github.
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For more examples, check out the <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/examples/03_backends_ros/01_ros_examples.html#ros-examples" title="(in COMPAS FAB v0.18.2)"><span class="xref std std-ref">ROS examples page</span></a>.</p>
+<p>For more examples, check out the <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/examples/03_backends_ros/01_ros_examples.html#ros-examples" title="(in COMPAS FAB v0.19.1)"><span class="xref std std-ref">ROS examples page</span></a>.</p>
 </div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -142,7 +142,7 @@ making use of <a class="reference external" href="https://gramaziokohler.github.
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.RosClient.__init__.html#compas_rrc.RosClient.__init__" title="compas_rrc.RosClient.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([host, port, is_secure, …])</p></td>
-<td><p>Initialize self.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.RosClient.add_attached_collision_mesh.html#compas_rrc.RosClient.add_attached_collision_mesh" title="compas_rrc.RosClient.add_attached_collision_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_attached_collision_mesh</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Forwards call to appropriate method in the planner.</p></td>
@@ -327,6 +327,7 @@ making use of <a class="reference external" href="https://gramaziokohler.github.
 <li class="nav-item"><a class="nav-link reference internal" href="../../architecture.html">Software Architecture</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../authors.html">Authors</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
 </ul>
 
           </div>
