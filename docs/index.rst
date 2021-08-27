@@ -21,6 +21,7 @@ Contents
    architecture
    authors
    changelog
+   citing
 
 Indices and tables
 ==================
