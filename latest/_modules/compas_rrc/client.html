@@ -228,6 +228,22 @@
 <div class="viewcode-block" id="AbbClient.version_check"><a class="viewcode-back" href="../../reference/generated/compas_rrc.AbbClient.version_check.html#compas_rrc.AbbClient.version_check">[docs]</a>    <span class="k">def</span> <span class="nf">version_check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if the protocol version on the server matches the protocol version on the client.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_server_protocol_check</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_protocol_check</span><span class="p">[</span><span class="s1">&#39;param&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="c1"># No version is usually caused by wrong namespace in the connection, check that and raise correct error</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_protocol_check</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ros</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span>
+
+            <span class="n">detected_namespaces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">tentative_namespaces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/robot_state_port&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">param</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/protocol_version&#39;</span><span class="p">):</span>
+                    <span class="n">namespace</span> <span class="o">=</span> <span class="n">param</span><span class="p">[:</span><span class="n">param</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)]</span>
+                    <span class="k">if</span> <span class="n">namespace</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tentative_namespaces</span><span class="p">:</span>
+                        <span class="n">tentative_namespaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">detected_namespaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cannot find the specified namespace. Detected namespaces=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">detected_namespaces</span><span class="p">)))</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_server_protocol_check</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AbbClient.ensure_protocol_version"><a class="viewcode-back" href="../../reference/generated/compas_rrc.AbbClient.ensure_protocol_version.html#compas_rrc.AbbClient.ensure_protocol_version">[docs]</a>    <span class="k">def</span> <span class="nf">ensure_protocol_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -508,10 +524,6 @@
     hljs.initHighlighting();
     anchors.add();
 
-    $('.nav-versions .dropdown-item').filter(function(i, ver) {
-      return window.location.href.startsWith(ver.href);
-    }).addClass("active");
-
   });
 
 
@@ -524,6 +536,13 @@
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
       });
+
+      var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
+        return window.location.href.startsWith(ver.href);
+      });
+      selected_version.addClass('active');
+      $("#bd-versions").text(selected_version.text());
+
     })
   }
   </script>
