@@ -131,6 +131,22 @@ class AbbClient(object):
     def version_check(self):
         """Check if the protocol version on the server matches the protocol version on the client."""
         self._server_protocol_check['version'] = self._server_protocol_check['param'].get()
+        # No version is usually caused by wrong namespace in the connection, check that and raise correct error
+        if self._server_protocol_check['version'] is None:
+            params = self.ros.get_params()
+
+            detected_namespaces = set()
+            tentative_namespaces = set()
+            for param in params:
+                if param.endswith('/robot_state_port') or param.endswith('/protocol_version'):
+                    namespace = param[:param.rindex('/')]
+                    if namespace not in tentative_namespaces:
+                        tentative_namespaces.add(namespace)
+                    else:
+                        detected_namespaces.add(namespace)
+
+            raise Exception('Cannot find the specified namespace. Detected namespaces={}'.format(sorted(detected_namespaces)))
+
         self._server_protocol_check['event'].set()
 
     def ensure_protocol_version(self):
