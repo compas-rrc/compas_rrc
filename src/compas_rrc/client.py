@@ -24,6 +24,7 @@ def _get_response_key(message):
 
 class SequenceCounter(object):
     """An atomic, thread-safe sequence increament counter."""
+    ROLLOVER_THRESHOLD = 1000000
 
     def __init__(self, start=0):
         """Initialize a new counter to given initial value."""
@@ -36,6 +37,8 @@ class SequenceCounter(object):
         """
         with self._lock:
             self._value += num
+            if self._value > SequenceCounter.ROLLOVER_THRESHOLD:
+                self._value = 1
             return self._value
 
     @property
