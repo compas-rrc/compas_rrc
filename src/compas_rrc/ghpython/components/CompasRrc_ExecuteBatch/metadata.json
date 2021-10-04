@@ -32,7 +32,7 @@
             },
             {
                 "name": "results",
-                "description": "Feedback received from the batch of instructions, or a future result objects if the option to wait for completion is deactivated."
+                "description": "Feedback received from the batch of instructions, or future result objects if the option to wait for completion is deactivated."
             }
         ]
     }
