@@ -28,9 +28,9 @@ class CompasRrcMoveToFrame(component):
 
         frame = coerce_frame(frame)
         feedback = feedback or rrc.FeedbackLevel.NONE
-        ins = rrc.MoveToFrame(frame, speed, zone, motion_type=self.motion_type, feedback_level=feedback)
+        instruction = rrc.MoveToFrame(frame, speed, zone, motion_type=self.motion_type, feedback_level=feedback)
 
-        return (ins)
+        return instruction
 
     def OnTextMenuClick(self, _sender, _args):
         try:

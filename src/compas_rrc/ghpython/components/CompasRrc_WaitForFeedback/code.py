@@ -22,4 +22,4 @@ class CompasRrcWaitForFeedback(component):
         # So this should be fixed and accumulate the total waited time.
         results = [future.result(timeout=timeout) for future in results]
 
-        return (results)
+        return results

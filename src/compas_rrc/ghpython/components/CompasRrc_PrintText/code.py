@@ -12,6 +12,6 @@ class CompasRrcPrintText(component):
             return (None)
 
         feedback = feedback or rrc.FeedbackLevel.NONE
-        ins = rrc.PrintText(text, feedback_level=feedback)
+        instruction = rrc.PrintText(text, feedback_level=feedback)
 
-        return (ins)
+        return instruction

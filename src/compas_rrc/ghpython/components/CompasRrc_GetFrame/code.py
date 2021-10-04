@@ -8,4 +8,4 @@ import compas_rrc as rrc
 
 class CompasRrcGetFrame(component):
     def RunScript(self):
-        return (rrc.GetFrame())
+        return rrc.GetFrame()

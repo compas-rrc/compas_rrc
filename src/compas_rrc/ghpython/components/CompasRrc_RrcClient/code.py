@@ -21,4 +21,4 @@ class CompasRrcClient(component):
         rrc_client = rrc.AbbClient(ros_client, **kwargs)
         self.Message = 'RRC Client ready'
 
-        return (rrc_client)
+        return rrc_client
