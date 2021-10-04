@@ -1,0 +1,21 @@
+
+{
+    "name": "Get Frame",
+    "nickname": "Get Frame",
+    "category": "COMPAS RRC",
+    "subcategory": "Utility instructions",
+    "description": "Request the current frame of the robot.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [],
+        "outputParameters": [
+            {
+                "name": "ins",
+                "description": "Instruction instance."
+            }
+        ]
+    }
+}

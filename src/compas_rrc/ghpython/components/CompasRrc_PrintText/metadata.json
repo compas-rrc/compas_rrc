@@ -1,0 +1,31 @@
+
+{
+    "name": "Print Text",
+    "nickname": "Print",
+    "category": "COMPAS RRC",
+    "subcategory": "Utility instructions",
+    "description": "Print text on the flex pendant.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+            {
+                "name": "text",
+                "description": "Text to print on the flex pendant."
+            },
+            {
+                "name": "feedback",
+                "description": "Feedback level. Defaults to NONE.",
+                "typeHintID": "int"
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "ins",
+                "description": "Instruction instance."
+            }
+        ]
+    }
+}

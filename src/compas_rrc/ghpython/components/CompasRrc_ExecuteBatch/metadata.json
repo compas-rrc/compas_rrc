@@ -1,0 +1,39 @@
+{
+    "name": "Execute Batch",
+    "nickname": "Execute",
+    "category": "COMPAS RRC",
+    "subcategory": "Execute",
+    "description": "Execute a batch of instructions.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+            {
+                "name": "rrc_client",
+                "description": "The RRC client."
+            },
+            {
+                "name": "instructions",
+                "description": "List or tree of instructions to be executed as a batch",
+                "scriptParamAccess": "list"
+            },
+            {
+                "name": "run",
+                "description": "If True, executes the batch of instruction on the robot.",
+                "typeHintID": "bool"
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "done",
+                "description": "Confirmation that the instructions have been executed on the robot."
+            },
+            {
+                "name": "results",
+                "description": "Feedback received from the batch of instructions, or a future result objects if the option to wait for completion is deactivated."
+            }
+        ]
+    }
+}

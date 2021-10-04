@@ -1,0 +1,30 @@
+
+{
+    "name": "RRC Client",
+    "nickname": "RRC",
+    "category": "COMPAS RRC",
+    "subcategory": "Connect",
+    "description": "Create an RRC client.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+            {
+                "name": "ros_client",
+                "description": "The ROS client."
+            },
+            {
+                "name": "namespace",
+                "description": "Namespace to allow multiple robots to be controlled through the same ROS instance. Optional. If not specified, it will use /rob1."
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "rrc_client",
+                "description": "The RRC client."
+            }
+        ]
+    }
+}
