@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <title>compas_rrc - compas_rrc.utility</title>
+  
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="" />
+  <meta name="description" content="" />
+
+  <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+  
+
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="https://compas-rrc.github.io/compas_rrc/">
+        <img src="../../_static/images/compas_icon_white.png" alt="COMPAS RRC" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item active"><a class="nav-link" href="https://compas-rrc.github.io/compas_rrc/">COMPAS RRC</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            1.1.0
+          </a>
+          <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
+            
+              <a class="dropdown-item" href="https://compas-rrc.github.io/compas_rrc/latest/">latest</a>
+            
+              <a class="dropdown-item" href="https://compas-rrc.github.io/compas_rrc/1.1.0/">1.1.0</a>
+            
+              <a class="dropdown-item" href="https://compas-rrc.github.io/compas_rrc/1.0.0/">1.0.0</a>
+            
+          </div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/compas-rrc/compas_rrc" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">compas_rrc.utility</li>
+          </ol>
+        </nav>
+        
+
+        
+        
+        <h1>Source code for compas_rrc.utility</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span> <span class="nn">compas_fab.backends.ros.messages</span> <span class="kn">import</span> <span class="n">ROSmsg</span>
+
+<span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExecutionLevel</span>
+<span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExternalAxes</span>
+<span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">FeedbackLevel</span>
+<span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">RobotJoints</span>
+
+<span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;r_RRC_&#39;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Noop&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;GetFrame&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;GetJoints&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;GetRobtarget&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;SetAcceleration&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;SetTool&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;SetMaxSpeed&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Stop&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;WaitTime&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;SetWorkObject&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Debug&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">is_rapid_none</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;In RAPID, None values are expressed as 9E+9, they end up as 8999999488 in Python&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8999999488</span>
+
+
+<div class="viewcode-block" id="Noop"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Noop.html#compas_rrc.Noop">[docs]</a><span class="k">class</span> <span class="nc">Noop</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;No-op is a call without any effect. But like all other instructions it makes a roundtrip from the user code to the robot and back.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Noop</span>
+<span class="sd">        done = abb.send_and_wait(rrc.Noop())</span>
+
+<span class="sd">    RAPID Instruction: ``none``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Noop.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Noop.__init__.html#compas_rrc.Noop.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        feedback_level : :obj:`int`</span>
+<span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;Noop&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div></div>
+
+
+<div class="viewcode-block" id="Debug"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Debug.html#compas_rrc.Debug">[docs]</a><span class="k">class</span> <span class="nc">Debug</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Activate debug mode on any instruction by wrapping it.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Get joints</span>
+<span class="sd">        raw_debug_output = abb.send_and_wait(rrc.Debug(rrc.GetJoints()))</span>
+
+<span class="sd">        # Print received values</span>
+<span class="sd">        print(raw_debug_output)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Debug.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Debug.__init__.html#compas_rrc.Debug.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">debug_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new debug instruction wrapping another instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        instruction : :class:`ROSmsg`</span>
+<span class="sd">            Any instruction inheriting from ROS message.</span>
+<span class="sd">        debug_parser : callable</span>
+<span class="sd">            Function to be used for parsing the feedback. Optional.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span> <span class="o">=</span> <span class="n">instruction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_parser</span> <span class="o">=</span> <span class="n">debug_parser</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">msg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Raw message.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">msg</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">instruction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Name of the instruction.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">instruction</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sequence_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sequence identifier.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">sequence_id</span>
+
+    <span class="nd">@sequence_id</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sequence_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">sequence_id</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">feedback_level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Feedback level.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">feedback_level</span>
+
+    <span class="nd">@feedback_level</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">feedback_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">exec_level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execution level.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">exec_level</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">string_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of string values.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">string_values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">float_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of float values.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">float_values</span>
+
+<div class="viewcode-block" id="Debug.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Debug.parse_feedback.html#compas_rrc.Debug.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_parser</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_parser</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div></div>
+
+
+<div class="viewcode-block" id="GetJoints"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.html#compas_rrc.GetJoints">[docs]</a><span class="k">class</span> <span class="nc">GetJoints</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get joints is a call that requests the joint values (:class:`RobotJoints`) and the external axes (:class:`ExternalAxes`) of the robot.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Get joints</span>
+<span class="sd">        robot_joints, external_axes = abb.send_and_wait(rrc.GetJoints())</span>
+
+<span class="sd">    RAPID Instruction: ``CJointT``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GetJoints.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.__init__.html#compas_rrc.GetJoints.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;GetJoints&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DONE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="GetJoints.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.parse_feedback.html#compas_rrc.GetJoints.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parses the result as :class:`RobotJoints` and :class:`ExternalAxes`.</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        ------</span>
+<span class="sd">        :class:`RobotJoints`, :class:`ExternalAxes`</span>
+<span class="sd">            Current joints and external axes of the robot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># read robot joints</span>
+        <span class="n">robot_joints</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+
+        <span class="c1"># read external axes</span>
+        <span class="n">external_axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_rapid_none</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])]</span>
+
+        <span class="c1"># write result</span>
+        <span class="k">return</span> <span class="n">RobotJoints</span><span class="p">(</span><span class="o">*</span><span class="n">robot_joints</span><span class="p">),</span> <span class="n">ExternalAxes</span><span class="p">(</span><span class="o">*</span><span class="n">external_axes</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GetRobtarget"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.html#compas_rrc.GetRobtarget">[docs]</a><span class="k">class</span> <span class="nc">GetRobtarget</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Instruction to request the current robtarget defined as frame (:class:`compas.geometry.Frame`)</span>
+<span class="sd">    and external axes (:class:`ExternalAxes`) of the robot.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Get frame and external axes</span>
+<span class="sd">        frame, external_axes = abb.send_and_wait(rrc.GetRobtarget())</span>
+
+<span class="sd">    RAPID Instruction: ``CRobT``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GetRobtarget.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.__init__.html#compas_rrc.GetRobtarget.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;GetRobtarget&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DONE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="GetRobtarget.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.parse_feedback.html#compas_rrc.GetRobtarget.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parses the result as a :class:`compas.geometry.Frame` and :class:`ExternalAxes`.</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        ------</span>
+<span class="sd">        :class:`compas.geometry.Frame`, :class:`ExternalAxes`</span>
+<span class="sd">            Current frame and external axes of the robot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># read pos</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
+
+        <span class="c1"># read orient</span>
+        <span class="n">orient_q1</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">orient_q2</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">orient_q3</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">orient_q4</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">orientation</span> <span class="o">=</span> <span class="p">[</span><span class="n">orient_q1</span><span class="p">,</span> <span class="n">orient_q2</span><span class="p">,</span> <span class="n">orient_q3</span><span class="p">,</span> <span class="n">orient_q4</span><span class="p">]</span>
+
+        <span class="c1"># read gantry joints</span>
+        <span class="n">external_axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_rapid_none</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])]</span>
+
+        <span class="c1"># write result</span>
+
+        <span class="c1"># As compas frame</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">from_quaternion</span><span class="p">(</span><span class="n">orientation</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+
+        <span class="c1"># End</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">ExternalAxes</span><span class="p">(</span><span class="o">*</span><span class="n">external_axes</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GetFrame"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetFrame.html#compas_rrc.GetFrame">[docs]</a><span class="k">class</span> <span class="nc">GetFrame</span><span class="p">(</span><span class="n">GetRobtarget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Instruction to request the current frame (:class:`compas.geometry.Frame`) of the robot.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Get frame</span>
+<span class="sd">        frame = abb.send_and_wait(rrc.GetFrame())</span>
+
+<span class="sd">    RAPID Instruction: ``CRobT``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GetFrame.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetFrame.parse_feedback.html#compas_rrc.GetFrame.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parses the result as a :class:`compas.geometry.Frame`.</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        ------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            Current frame of the robot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">frame</span><span class="p">,</span> <span class="n">_ext_axes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">GetFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">parse_feedback</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">frame</span></div></div>
+
+
+<div class="viewcode-block" id="SetAcceleration"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetAcceleration.html#compas_rrc.SetAcceleration">[docs]</a><span class="k">class</span> <span class="nc">SetAcceleration</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set acceleration is a call that sets the acc- and deceleration of the robot.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Set acceleration</span>
+<span class="sd">        acc = 100 # Unit [%]</span>
+<span class="sd">        ramp = 100  # Unit [%]</span>
+<span class="sd">        done = abb.send_and_wait(rrc.SetAcceleration(acc, ramp))</span>
+
+<span class="sd">    RAPID Instruction: ``AccSet``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SetAcceleration.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetAcceleration.__init__.html#compas_rrc.SetAcceleration.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        acc : :obj:`float`</span>
+<span class="sd">            Acceleration or deceleration expressed in percentage of the system parameters of the robot.</span>
+<span class="sd">        ramp : :obj:`float`</span>
+<span class="sd">            The rate at which acceleration or deceleration changes expressed in percentage.</span>
+<span class="sd">        feedback_level : :obj:`int`</span>
+<span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;SetAcceleration&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">acc</span><span class="p">,</span> <span class="n">ramp</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SetTool"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetTool.html#compas_rrc.SetTool">[docs]</a><span class="k">class</span> <span class="nc">SetTool</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set tool is a call that sets a predefined tool in the robot as active.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Set tool</span>
+<span class="sd">        done = abb.send_and_wait(rrc.SetTool(&#39;tool0&#39;))</span>
+
+<span class="sd">    RAPID Instruction: ``tooldata``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SetTool.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetTool.__init__.html#compas_rrc.SetTool.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_name</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tool_name : :obj:`str`</span>
+<span class="sd">            Name of the tool as defined in RAPID.</span>
+<span class="sd">        feedback_level : :obj:`int`</span>
+<span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;SetTool&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">tool_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div></div>
+
+
+<div class="viewcode-block" id="SetMaxSpeed"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetMaxSpeed.html#compas_rrc.SetMaxSpeed">[docs]</a><span class="k">class</span> <span class="nc">SetMaxSpeed</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set max speed is a call that sets the override and maximal tool center point (TCP) speed from the robot.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Set max speed</span>
+<span class="sd">        override = 100 # Unit [%]</span>
+<span class="sd">        max_tcp = 2500 # Unit [mm/s]</span>
+<span class="sd">        done = abb.send_and_wait(rrc.SetMaxSpeed(override, max_tcp))</span>
+
+<span class="sd">    RAPID Instruction: ``VelSet``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SetMaxSpeed.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetMaxSpeed.__init__.html#compas_rrc.SetMaxSpeed.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">override</span><span class="p">,</span> <span class="n">max_tcp</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        override : :obj:`float`</span>
+<span class="sd">            Internal speed override expressed in percentage. This override is additional to the one that</span>
+<span class="sd">            can be defined on the robot panel. It is recommended to use only one of them, preferably the</span>
+<span class="sd">            one on the robot panel, and leave this to 100%.</span>
+<span class="sd">        max_tcp : :obj:`float`</span>
+<span class="sd">            Maximum tool center point (TCP) speed expressed in mm/sec. All instructions following a ``SetMaxSpeed``</span>
+<span class="sd">            are affected by it.</span>
+<span class="sd">        feedback_level : :obj:`int`</span>
+<span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;SetMaxSpeed&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">override</span><span class="p">,</span> <span class="n">max_tcp</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SetWorkObject"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetWorkObject.html#compas_rrc.SetWorkObject">[docs]</a><span class="k">class</span> <span class="nc">SetWorkObject</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set work object is a call that sets a predefined work object in the robot as active.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Set work object</span>
+<span class="sd">        done = abb.send_and_wait(rrc.SetWorkObject(&#39;wobj0&#39;))</span>
+
+<span class="sd">    RAPID Instruction: ``wobjdata``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SetWorkObject.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetWorkObject.__init__.html#compas_rrc.SetWorkObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wobj_name</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wobj_name : :obj:`str`</span>
+<span class="sd">            Name of the work object as defined in RAPID.</span>
+<span class="sd">        feedback_level : :obj:`int`</span>
+<span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;SetWorkObject&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">wobj_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div></div>
+
+
+<div class="viewcode-block" id="Stop"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Stop.html#compas_rrc.Stop">[docs]</a><span class="k">class</span> <span class="nc">Stop</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stop is a function to stop the associated motion task of the robot.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Stop</span>
+<span class="sd">        done = abb.send_and_wait(rrc.Stop())</span>
+
+<span class="sd">    RAPID Instruction: ``Stop``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Stop.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Stop.__init__.html#compas_rrc.Stop.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        feedback_level : :obj:`int`</span>
+<span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;Stop&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div></div>
+
+
+<div class="viewcode-block" id="WaitTime"><a class="viewcode-back" href="../../reference/generated/compas_rrc.WaitTime.html#compas_rrc.WaitTime">[docs]</a><span class="k">class</span> <span class="nc">WaitTime</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wait time is a call that will wait on the robot task for a certain time.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Wait time</span>
+<span class="sd">        time = 1.0 # Unit [s]</span>
+<span class="sd">        done = abb.send_and_wait(rrc.WaitTime(time))</span>
+
+<span class="sd">    RAPID Instruction: ``WaitTime``</span>
+
+<span class="sd">    .. include:: ../abb-reference.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WaitTime.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.WaitTime.__init__.html#compas_rrc.WaitTime.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time : :obj:`float`</span>
+<span class="sd">            Duration of the wait expressed in seconds.</span>
+<span class="sd">        feedback_level : :obj:`int`</span>
+<span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;WaitTime&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="p">]</span></div></div>
+</code></pre></div>
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation">
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+          <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../readme.html">COMPAS RRC</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../reference/index.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../links.html">Relevant links</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../contributing.html">Contributor’s Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../architecture.html">Software Architecture</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../authors.html">Authors</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+</ul>
+
+          </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+
+      
+    </nav>  
+  </footer>
+  <!-- footer -->
+  <!-- below -->
+  <div class="below py-5" style="background-color: #222;">
+    <div class="container">
+      <div class="row flex-column">
+      <div class="col-12 col-md-6 mx-md-auto text-center">
+        <h4 class="pb-3 below-text">COMPAS</h4>
+        <p class="below-text">
+          A computational framework for collaboration and research
+          in Architecture, Engineering, Fabrication, and Construction.
+        </p>
+        <nav class="nav justify-content-center pb-3">
+          <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </nav>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col text-center">
+        <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- below -->
+  <!-- scripts -->
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+  URL_ROOT          : '',
+  VERSION           : '1.1.0',
+  COLLAPSE_INDEX    : false,
+  FILE_SUFFIX       : '.html',
+  HAS_SOURCE        : 'false',
+  SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../_static/underscore.js"></script>
+  <script src="../../_static/doctools.js"></script>
+  <script src="../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+    $(".language-default code").addClass("python");
+    $(".language-python code").addClass("python");
+    $(".language-bash code").addClass("bash");
+    $(".language-cpp code").addClass("cpp");
+    $(".language-json code").addClass("json");
+    $(".language-none code").addClass("plaintext");
+
+    hljs.initHighlighting();
+    anchors.add();
+
+  });
+
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
+      });
+
+      var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
+        return window.location.href.startsWith(ver.href);
+      });
+      selected_version.addClass('active');
+      $("#bd-versions").text(selected_version.text());
+
+    })
+  }
+  </script>
+  <!-- scripts -->
+  
+  
+</body>
+</html>
