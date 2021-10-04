@@ -2,10 +2,9 @@
 from __future__ import print_function
 
 import contextlib
-import glob
 import os
 import sys
-from shutil import copytree
+import tempfile
 from shutil import rmtree
 
 from invoke import Exit
@@ -62,7 +61,7 @@ def help(ctx):
     'docs': 'True to generate documentation, otherwise False',
     'bytecode': 'True to clean up compiled python files, otherwise False.',
     'builds': 'True to clean up build/packaging artifacts, otherwise False.'})
-def clean(ctx, docs=True, bytecode=True, builds=True):
+def clean(ctx, docs=True, bytecode=True, builds=True, ghuser=True):
     """Cleans the local copy from compiled artifacts."""
     if builds:
         ctx.run('python setup.py clean')
@@ -89,6 +88,9 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
     if builds:
         folders.append('build/')
         folders.append('src/compas_rrc.egg-info/')
+
+    if ghuser:
+        folders.append('src/compas_rrc/ghpython/components/ghuser')
 
     for folder in folders:
         rmtree(os.path.join(BASE_FOLDER, folder), ignore_errors=True)
@@ -169,6 +171,30 @@ def test(ctx, checks=False, doctests=False):
             ctx.run('pytest --doctest-modules')
         else:
             ctx.run('pytest')
+
+
+@task(help={
+      'gh_io_folder': 'Folder where GH_IO.dll is located. Defaults to the Rhino 6.0 installation folder (platform-specific).',
+      'ironpython': 'Command for running the IronPython executable. Defaults to `ipy`.'})
+def build_ghuser_components(ctx, gh_io_folder=None, ironpython=None):
+    """Build Grasshopper user objects from source"""
+    clean(ctx, docs=False, bytecode=False, builds=False, ghuser=True)
+    with chdir(BASE_FOLDER):
+        with tempfile.TemporaryDirectory('actions.ghcomponentizer') as action_dir:
+            source_dir = os.path.abspath('src/compas_rrc/ghpython/components')
+            target_dir = os.path.join(source_dir, 'ghuser')
+            ctx.run('git clone https://github.com/compas-dev/compas-actions.ghpython_components.git {}'.format(action_dir))
+            if not gh_io_folder:
+                import compas_ghpython
+                gh_io_folder = compas_ghpython.get_grasshopper_plugin_path('6.0')
+
+            if not ironpython:
+                ironpython = 'ipy'
+
+            gh_io_folder = os.path.abspath(gh_io_folder)
+            componentizer_script = os.path.join(action_dir, 'componentize.py')
+
+            ctx.run('{} {} {} {} --ghio "{}"'.format(ironpython, componentizer_script, source_dir, target_dir, gh_io_folder))
 
 
 @task
