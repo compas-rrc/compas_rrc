@@ -15,7 +15,8 @@ class CompasRrcClient(component):
             return (None)
 
         kwargs = {}
-        if namespace: kwargs['namespace'] = namespace
+        if namespace:
+            kwargs['namespace'] = namespace
 
         rrc_client = rrc.AbbClient(ros_client, **kwargs)
         self.Message = 'RRC Client ready'
