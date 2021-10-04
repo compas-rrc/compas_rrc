@@ -20,7 +20,7 @@ class CompasRrcMoveToFrame(component):
             return (None)
 
         if not speed or speed < 0.01:
-            add_warning('Speed must be greated or equals to 0.01 mm/s')
+            add_warning('Speed must be greater or equal to 0.01 mm/s.')
             return (None)
 
         if not zone:
