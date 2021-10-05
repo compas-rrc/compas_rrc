@@ -21,11 +21,11 @@ class CompasRrcExecuteBatch(component):
         if not rrc_client:
             add_warning('rrc_client is not assigned. The component did not run.')
             self.Message = ''
-            return (False, None)
+            return False, None
 
         if len(instructions) == 0:
             self.Message = 'No instructions'
-            return (False, None)
+            return False, None
 
         run_key = create_id(self, 'run_status')
         res_key = create_id(self, 'results')
@@ -61,7 +61,7 @@ class CompasRrcExecuteBatch(component):
 
         done = st.get(run_key)
         results = st.get(res_key)
-        return (done, results)
+        return done, results
 
     def OnTextMenuClick(self, _sender, _args):
         try:

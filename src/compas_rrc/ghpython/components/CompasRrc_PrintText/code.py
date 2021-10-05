@@ -9,7 +9,7 @@ import compas_rrc as rrc
 class CompasRrcPrintText(component):
     def RunScript(self, text, feedback):
         if not text:
-            return (None)
+            return None
 
         feedback = feedback or rrc.FeedbackLevel.NONE
         instruction = rrc.PrintText(text, feedback_level=feedback)

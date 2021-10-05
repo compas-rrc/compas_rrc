@@ -9,7 +9,7 @@ import compas_rrc as rrc
 class CompasRrcWaitForFeedback(component):
     def RunScript(self, results, timeout):
         if not results:
-            return (None)
+            return None
 
         for future in results:
             if not isinstance(future, rrc.FutureResult):

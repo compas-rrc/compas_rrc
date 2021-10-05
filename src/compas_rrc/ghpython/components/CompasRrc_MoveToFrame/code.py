@@ -17,11 +17,11 @@ class CompasRrcMoveToFrame(component):
     def RunScript(self, frame, speed, zone, feedback):
         if not frame:
             add_warning('Frame is not defined. The component did not run.')
-            return (None)
+            return None
 
         if not speed or speed < 0.01:
             add_warning('Speed must be greater or equal to 0.01 mm/s.')
-            return (None)
+            return None
 
         if not zone:
             zone = rrc.Zone.FINE

@@ -12,7 +12,7 @@ class CompasRrcClient(component):
         if not ros_client:
             add_warning('ros_client is not assigned. The component did not run.')
             self.Message = ''
-            return (None)
+            return None
 
         kwargs = {}
         if namespace:
