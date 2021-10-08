@@ -29,6 +29,7 @@ class CompasRrcMoveToFrame(component):
         frame = coerce_frame(frame)
         feedback = feedback or rrc.FeedbackLevel.NONE
         instruction = rrc.MoveToFrame(frame, speed, zone, motion_type=self.motion_type, feedback_level=feedback)
+        self.Message = '{} Motion'.format('Joint' if self.motion_type == rrc.Motion.JOINT else 'Linear')
 
         return instruction
 
