@@ -1,6 +1,6 @@
 contributing.rst:37: [redirected with Found] http://docs.pyinvoke.org/ to http://docs.pyinvoke.org/en/stable/
-contributing.rst:34: [redirected permanently] https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests to https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
 links.rst:16: [redirected permanently] https://forum.compas-framework.org/c/compas-rrc/ to https://forum.compas-framework.org/c/compas-rrc/49
+contributing.rst:34: [redirected permanently] https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests to https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
 readme.rst:3: [redirected permanently] https://pypi.python.org/pypi/compas_rrc to https://pypi.org/project/compas-rrc/
 contributing.rst:53: [redirected with Found] https://www.sphinx-doc.org/ to https://www.sphinx-doc.org/en/master/
 readme.rst:3: [redirected with Found] https://zenodo.org/badge/296547476.svg to https://zenodo.org/badge/doi/10.5281/zenodo.4639419.svg
