@@ -1,7 +1,7 @@
 
 {
     "name": "Move To Frame",
-    "nickname": "Move",
+    "nickname": "To Frame",
     "category": "COMPAS RRC",
     "subcategory": "Motion instructions",
     "description": "Move robot to the specified frame in cartesian space.",
