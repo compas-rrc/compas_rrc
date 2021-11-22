@@ -56,6 +56,18 @@ The following example shows how to retrieve, update and send the robot joints an
     RobotJoints
     ExternalAxes
 
+System instructions
+-------------------
+
+Besides the normal instructions, RRC can send and receive system-level instructions to the
+controller.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    SystemStop
+
 Debugging instructions
 ----------------------
 
@@ -137,6 +149,9 @@ from compas_rrc.watch import (
     StartWatch,
     StopWatch
 )
+from compas_rrc.system import (
+    SystemStop,
+)
 
 __all_plugins__ = ['compas_rrc.__install']
 __all__ = [
@@ -184,4 +199,5 @@ __all__ = [
     'ReadWatch',
     'StartWatch',
     'StopWatch',
+    'SystemStop',
 ]

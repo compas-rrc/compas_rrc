@@ -5,6 +5,7 @@ import roslibpy
 from compas_fab.backends import RosClient
 
 from .common import CLIENT_PROTOCOL_VERSION
+from .common import SystemInstruction
 from .common import FutureResult
 from .common import InstructionException
 
@@ -116,6 +117,7 @@ class AbbClient(object):
         """
         self.ros = ros
         self.counter = SequenceCounter()
+        self.system_counter = SequenceCounter()
         if not namespace.endswith('/'):
             namespace += '/'
         self._version_checked = False
@@ -123,10 +125,19 @@ class AbbClient(object):
                                            param=roslibpy.Param(ros, namespace + 'protocol_version'),
                                            version=None)
         self.ros.on_ready(self.version_check)
+
+        # Main communication channel
         self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc_driver/RobotMessage', queue_size=None)
         self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage', queue_size=0)
         self.feedback.subscribe(self.feedback_callback)
         self.topic.advertise()
+
+        # System communication channel
+        self.system_topic = roslibpy.Topic(ros, namespace + 'robot_command_system', 'compas_rrc_driver/RobotMessage', queue_size=None)
+        self.system_feedback = roslibpy.Topic(ros, namespace + 'robot_response_system', 'compas_rrc_driver/RobotMessage', queue_size=0)
+        self.system_feedback.subscribe(self.feedback_callback)
+        self.system_topic.advertise()
+
         self.futures = {}
 
         self.ros.on('closing', self._disconnect_topics)
@@ -220,17 +231,24 @@ class AbbClient(object):
 
         """
         self.ensure_protocol_version()
-        instruction.sequence_id = self.counter.increment()
-
-        key = _get_key(instruction)
         result = None
+
+        if not isinstance(instruction, SystemInstruction):
+            counter = self.counter
+            topic = self.topic
+        else:
+            counter = self.system_counter
+            topic = self.system_topic
+
+        instruction.sequence_id = counter.increment()
+        key = _get_key(instruction)
 
         if instruction.feedback_level > 0:
             result = FutureResult()
             parser = instruction.parse_feedback if hasattr(instruction, 'parse_feedback') else None
             self.futures[key] = dict(result=result, parser=parser)
 
-        self.topic.publish(roslibpy.Message(instruction.msg))
+        topic.publish(roslibpy.Message(instruction.msg))
 
         return result
 
@@ -287,6 +305,9 @@ class AbbClient(object):
             This feature is currently only usable with custom instructions.
 
         """
+        if isinstance(instruction, SystemInstruction):
+            raise InstructionException("Not supported for now")
+
         self.ensure_protocol_version()
         instruction.sequence_id = self.counter.increment()
 

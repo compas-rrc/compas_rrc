@@ -10,6 +10,7 @@ __all__ = ['CLIENT_PROTOCOL_VERSION',
            'ExecutionLevel',
            'InstructionException',
            'TimeoutException',
+           'SystemInstruction',
            'FutureResult',
            'ExternalAxes',
            'RobotJoints']
@@ -67,6 +68,12 @@ class InstructionException(Exception):
 
 class TimeoutException(Exception):
     """Timeout exception caused during execution of an instruction."""
+    pass
+
+
+class SystemInstruction(object):
+    """Represents a system-level instruction. Different controllers handle
+    system instructions differently, in the case of ABB, they are channeled over WebServices."""
     pass
 
 
