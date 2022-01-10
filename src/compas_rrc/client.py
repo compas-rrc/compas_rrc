@@ -243,7 +243,10 @@ class AbbClient(object):
         instruction.sequence_id = counter.increment()
         key = _get_key(instruction)
 
-        if instruction.feedback_level > 0:
+        # NOTE: create a base class for all instructions (system and standard)
+        # and add a method .produces_feedback() (or similar) that determines
+        # the conditions under which the instruction will need the future result handling
+        if instruction.feedback_level > 0 or instruction.feedback_level == -1:
             result = FutureResult()
             parser = instruction.parse_feedback if hasattr(instruction, 'parse_feedback') else None
             self.futures[key] = dict(result=result, parser=parser)
@@ -285,7 +288,10 @@ class AbbClient(object):
 
         """
         if instruction.feedback_level == 0:
-            instruction.feedback_level = 1
+            if instruction.execution_level == -1:
+                instruction.feedback_level = -1
+            else:
+                instruction.feedback_level = 1
 
         future = self.send(instruction)
         return future.result(timeout)

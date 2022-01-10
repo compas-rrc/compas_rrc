@@ -67,6 +67,7 @@ controller.
     :nosignatures:
 
     SystemStop
+    SystemCustomInstruction
 
 Debugging instructions
 ----------------------
@@ -151,6 +152,7 @@ from compas_rrc.watch import (
 )
 from compas_rrc.system import (
     SystemStop,
+    SystemCustomInstruction,
 )
 
 __all_plugins__ = ['compas_rrc.__install']
@@ -200,4 +202,5 @@ __all__ = [
     'StartWatch',
     'StopWatch',
     'SystemStop',
+    'SystemCustomInstruction',
 ]

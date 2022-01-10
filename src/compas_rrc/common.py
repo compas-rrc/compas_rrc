@@ -35,6 +35,7 @@ class FeedbackLevel(object):
 
     .. autoattribute:: NONE
     .. autoattribute:: DONE
+    .. autoattribute:: DATA
     """
     NONE = 0
     """Indicates no feedback is requested from the robot."""
@@ -43,6 +44,9 @@ class FeedbackLevel(object):
     """Indicates completion feedback is requested from the robot. Completion feedback means
     the robot has executed the procedure. See :meth:`AbbClient.send_and_wait` for more details.
     """
+
+    DATA = -1
+    """Indicates all feedback data is requested from the robot."""
 
 
 class ExecutionLevel(object):
@@ -57,6 +61,8 @@ class ExecutionLevel(object):
     CONTROLLER = 10
     """Execute instruction on the ``controller`` task (only usable with custom instructions)."""
 
+    DRIVER = -1
+    """Execute instruction outside of the robot controller, and inside the ROS environment."""
 
 class InstructionException(Exception):
     """Exception caused during/after the execution of an instruction."""
