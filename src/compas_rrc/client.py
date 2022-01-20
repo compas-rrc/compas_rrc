@@ -288,7 +288,7 @@ class AbbClient(object):
 
         """
         if instruction.feedback_level == 0:
-            if instruction.execution_level == -1:
+            if instruction.exec_level == -1:
                 instruction.feedback_level = -1
             else:
                 instruction.feedback_level = 1
