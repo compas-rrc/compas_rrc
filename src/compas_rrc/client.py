@@ -16,11 +16,19 @@ FEEDBACK_ERROR_PREFIX = 'Done FError '
 
 
 def _get_key(message):
-    return 'msg:{}'.format(message.sequence_id)
+    prefix = 'msg'
+    if isinstance(message, SystemInstruction):
+        prefix = 'sys'
+
+    return '{}:{}'.format(prefix, message.sequence_id)
 
 
 def _get_response_key(message):
-    return 'msg:{}'.format(message['feedback_id'])
+    prefix = 'msg'
+    if isinstance(message, SystemInstruction):
+        prefix = 'sys'
+
+    return '{}:{}'.format(prefix, message['feedback_id'])
 
 
 class SequenceCounter(object):
