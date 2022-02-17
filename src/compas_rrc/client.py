@@ -1,3 +1,4 @@
+import functools
 import threading
 import time
 
@@ -5,9 +6,9 @@ import roslibpy
 from compas_fab.backends import RosClient
 
 from .common import CLIENT_PROTOCOL_VERSION
-from .common import SystemInstruction
 from .common import FutureResult
 from .common import InstructionException
+from .common import SystemInstruction
 
 __all__ = ['RosClient', 'AbbClient']
 
@@ -16,18 +17,11 @@ FEEDBACK_ERROR_PREFIX = 'Done FError '
 
 
 def _get_key(message):
-    prefix = 'msg'
-    if isinstance(message, SystemInstruction):
-        prefix = 'sys'
-
+    prefix = 'sys' if isinstance(message, SystemInstruction) else 'msg'
     return '{}:{}'.format(prefix, message.sequence_id)
 
 
-def _get_response_key(message):
-    prefix = 'msg'
-    if isinstance(message, SystemInstruction):
-        prefix = 'sys'
-
+def _get_response_key(message, prefix):
     return '{}:{}'.format(prefix, message['feedback_id'])
 
 
@@ -137,13 +131,13 @@ class AbbClient(object):
         # Main communication channel
         self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc_driver/RobotMessage', queue_size=None)
         self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage', queue_size=0)
-        self.feedback.subscribe(self.feedback_callback)
+        self.feedback.subscribe(functools.partial(self.feedback_callback, key_prefix='msg'))
         self.topic.advertise()
 
         # System communication channel
         self.system_topic = roslibpy.Topic(ros, namespace + 'robot_command_system', 'compas_rrc_driver/RobotMessage', queue_size=None)
         self.system_feedback = roslibpy.Topic(ros, namespace + 'robot_response_system', 'compas_rrc_driver/RobotMessage', queue_size=0)
-        self.system_feedback.subscribe(self.feedback_callback)
+        self.system_feedback.subscribe(functools.partial(self.feedback_callback, key_prefix='sys'))
         self.system_topic.advertise()
 
         self.futures = {}
@@ -332,9 +326,9 @@ class AbbClient(object):
 
         self.topic.publish(roslibpy.Message(instruction.msg))
 
-    def feedback_callback(self, message):
+    def feedback_callback(self, message, key_prefix):
         """Internal method."""
-        response_key = _get_response_key(message)
+        response_key = _get_response_key(message, key_prefix)
         future = self.futures.get(response_key, None)
 
         if future:
