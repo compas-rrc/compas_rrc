@@ -66,8 +66,15 @@ controller.
     :toctree: generated/
     :nosignatures:
 
-    SystemStop
+    GetControllerState
+    GetSpeedRatio
+    GetTaskExecutionState
+    GetTasks
     SystemCustomInstruction
+    SystemGetDigital
+    SystemSetDigital
+    SystemStart
+    SystemStop
 
 Debugging instructions
 ----------------------
@@ -151,8 +158,15 @@ from compas_rrc.watch import (
     StopWatch
 )
 from compas_rrc.system import (
-    SystemStop,
+    GetControllerState,
+    GetSpeedRatio,
+    GetTaskExecutionState,
+    GetTasks,
     SystemCustomInstruction,
+    SystemGetDigital,
+    SystemSetDigital,
+    SystemStart,
+    SystemStop,
 )
 
 __all_plugins__ = ['compas_rrc.__install']
@@ -201,6 +215,14 @@ __all__ = [
     'ReadWatch',
     'StartWatch',
     'StopWatch',
-    'SystemStop',
+    # system instructions
+    'GetControllerState',
+    'GetSpeedRatio',
+    'GetTaskExecutionState',
+    'GetTasks',
     'SystemCustomInstruction',
+    'SystemGetDigital',
+    'SystemSetDigital',
+    'SystemStart',
+    'SystemStop',
 ]
