@@ -15,6 +15,7 @@ Contents
    :maxdepth: 1
 
    readme
+   getting_started
    reference/index
    links
    contributing
