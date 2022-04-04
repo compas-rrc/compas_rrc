@@ -1,0 +1,41 @@
+
+{
+    "name": "Move To Frame",
+    "nickname": "To Frame",
+    "category": "COMPAS RRC",
+    "subcategory": "Motion instructions",
+    "description": "Move robot to the specified frame in cartesian space.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+            {
+                "name": "frame",
+                "description": "Target frame."
+            },
+            {
+                "name": "speed",
+                "description": "Integer specifying TCP translational speed in mm/s.",
+                "typeHintID": "int"
+            },
+            {
+                "name": "zone",
+                "description": "Zone data, either an integer or Zone.FINE. Defaults to Zone.FINE.",
+                "typeHintID": "int"
+            },
+            {
+                "name": "feedback",
+                "description": "Feedback level. Defaults to DONE. Use together with Zone.FINE to ensure the motion planner has executed the instruction fully.",
+                "typeHintID": "int"
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "ins",
+                "description": "Instruction instance."
+            }
+        ]
+    }
+}

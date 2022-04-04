@@ -1,0 +1,32 @@
+
+{
+    "name": "Wait for feedback",
+    "nickname": "Wait",
+    "category": "COMPAS RRC",
+    "subcategory": "Execute",
+    "description": "Wait until the feedback of all instructions has been received.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+            {
+                "name": "results",
+                "description": "Future result objects are returned by the Execute component when used in non-wait mode.",
+                "scriptParamAccess": "list"
+            },
+            {
+                "name": "timeout",
+                "description": "Timeout in seconds to wait for feedback to arrive before raising an exception. Defaults to 5 seconds.",
+                "typeHintID": "float"
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "results",
+                "description": "Feedback received from the instructions."
+            }
+        ]
+    }
+}

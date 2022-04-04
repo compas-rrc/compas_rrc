@@ -138,7 +138,10 @@ from compas_rrc.watch import (
     StopWatch
 )
 
-__all_plugins__ = ['compas_rrc.__install']
+__all_plugins__ = [
+    'compas_rrc.rhino.install',
+    'compas_rrc.ghpython.install'
+]
 __all__ = [
     '__url__',
     '__version__',
