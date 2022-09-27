@@ -71,8 +71,12 @@ controller.
     GetTaskExecutionState
     GetTasks
     SystemCustomInstruction
+    SystemGetAnalog
+    SystemSetAnalog
     SystemGetDigital
     SystemSetDigital
+    SystemGetGroup
+    SystemSetGroup
     SystemStart
     SystemStop
 
@@ -163,8 +167,12 @@ from compas_rrc.system import (
     GetTaskExecutionState,
     GetTasks,
     SystemCustomInstruction,
+    SystemGetAnalog,
+    SystemSetAnalog,
     SystemGetDigital,
     SystemSetDigital,
+    SystemGetGroup,
+    SystemSetGroup,
     SystemStart,
     SystemStop,
 )
@@ -221,8 +229,12 @@ __all__ = [
     'GetTaskExecutionState',
     'GetTasks',
     'SystemCustomInstruction',
+    'SystemGetAnalog',
+    'SystemSetAnalog',
     'SystemGetDigital',
     'SystemSetDigital',
+    'SystemGetGroup',
+    'SystemSetGroup',
     'SystemStart',
     'SystemStop',
 ]

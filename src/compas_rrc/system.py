@@ -14,6 +14,8 @@ __all__ = [
     'SystemCustomInstruction',
     'SystemGetDigital',
     'SystemSetDigital',
+    'SystemGetAnalog',
+    'SystemSetAnalog',
     'SystemStart',
     'SystemStop',
 ]
@@ -57,7 +59,7 @@ class SystemSetDigital(BaseSystemInstruction):
         if signal_value not in (0, 1):
             raise ValueError('Signal value must be 0 or 1')
 
-        self.instruction = 'set_digital_io'
+        self.instruction = 'set_signal'
         self.string_values = [signal_name]
         self.float_values = [signal_value]
 
@@ -65,11 +67,47 @@ class SystemSetDigital(BaseSystemInstruction):
 class SystemGetDigital(BaseSystemInstruction):
     def __init__(self, signal_name, feedback_level=FeedbackLevel.DATA):
         super(SystemGetDigital, self).__init__(feedback_level)
-        self.instruction = 'get_digital_io'
+        self.instruction = 'get_signal'
+        self.string_values = [signal_name]
+
+    def parse_feedback(self, response):
+        return int(response['float_values'][0])
+
+
+class SystemSetAnalog(BaseSystemInstruction):
+    def __init__(self, signal_name, signal_value, feedback_level=FeedbackLevel.DATA):
+        super(SystemSetAnalog, self).__init__(feedback_level)
+        self.instruction = 'set_signal'
+        self.string_values = [signal_name]
+        self.float_values = [signal_value]
+
+
+class SystemGetAnalog(BaseSystemInstruction):
+    def __init__(self, signal_name, feedback_level=FeedbackLevel.DATA):
+        super(SystemGetAnalog, self).__init__(feedback_level)
+        self.instruction = 'get_signal'
         self.string_values = [signal_name]
 
     def parse_feedback(self, response):
         return response['float_values'][0]
+
+
+class SystemSetGroup(BaseSystemInstruction):
+    def __init__(self, signal_name, signal_value, feedback_level=FeedbackLevel.DATA):
+        super(SystemSetGroup, self).__init__(feedback_level)
+        self.instruction = 'set_signal'
+        self.string_values = [signal_name]
+        self.float_values = [signal_value]
+
+
+class SystemGetGroup(BaseSystemInstruction):
+    def __init__(self, signal_name, feedback_level=FeedbackLevel.DATA):
+        super(SystemGetGroup, self).__init__(feedback_level)
+        self.instruction = 'get_signal'
+        self.string_values = [signal_name]
+
+    def parse_feedback(self, response):
+        return int(response['float_values'][0])
 
 
 class GetControllerState(BaseSystemInstruction):
