@@ -8,7 +8,7 @@ from compas_fab.backends import RosClient
 from .common import CLIENT_PROTOCOL_VERSION
 from .common import FutureResult
 from .common import InstructionException
-from .common import SystemInstruction
+from .common import Interfaces
 
 __all__ = ['RosClient', 'AbbClient']
 
@@ -17,7 +17,7 @@ FEEDBACK_ERROR_PREFIX = 'Done FError '
 
 
 def _get_key(message):
-    prefix = 'sys' if isinstance(message, SystemInstruction) else 'msg'
+    prefix = 'sys' if message.meta['interface'] == Interfaces.SYS else 'msg'
     return '{}:{}'.format(prefix, message.sequence_id)
 
 
@@ -118,8 +118,12 @@ class AbbClient(object):
             Optional. If not specified, it will use namespace ``/rob1``.
         """
         self.ros = ros
-        self.counter = SequenceCounter()
-        self.system_counter = SequenceCounter()
+
+        # Interface-specific counters
+        self.counters = {}
+        self.counters[Interfaces.APP] = SequenceCounter()
+        self.counters[Interfaces.SYS] = SequenceCounter()
+
         if not namespace.endswith('/'):
             namespace += '/'
         self._version_checked = False
@@ -128,17 +132,22 @@ class AbbClient(object):
                                            version=None)
         self.ros.on_ready(self.version_check)
 
+        # Interface-specific communication channels
+        self.topics = {}
+        self.feedback_topics = {}
+
         # Main communication channel
-        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc_driver/RobotMessage', queue_size=None)
-        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage', queue_size=0)
-        self.feedback.subscribe(functools.partial(self.feedback_callback, key_prefix='msg'))
-        self.topic.advertise()
+        self.topics[Interfaces.APP] = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc_driver/RobotMessage', queue_size=None)
+        self.feedback_topics[Interfaces.APP] = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage', queue_size=0)
+        self.feedback_topics[Interfaces.APP].subscribe(functools.partial(self.feedback_callback, key_prefix='msg'))
 
         # System communication channel
-        self.system_topic = roslibpy.Topic(ros, namespace + 'robot_command_system', 'compas_rrc_driver/RobotMessage', queue_size=None)
-        self.system_feedback = roslibpy.Topic(ros, namespace + 'robot_response_system', 'compas_rrc_driver/RobotMessage', queue_size=0)
-        self.system_feedback.subscribe(functools.partial(self.feedback_callback, key_prefix='sys'))
-        self.system_topic.advertise()
+        self.topics[Interfaces.SYS] = roslibpy.Topic(ros, namespace + 'robot_command_system', 'compas_rrc_driver/RobotMessage', queue_size=None)
+        self.feedback_topics[Interfaces.SYS] = roslibpy.Topic(ros, namespace + 'robot_response_system', 'compas_rrc_driver/RobotMessage', queue_size=0)
+        self.feedback_topics[Interfaces.SYS].subscribe(functools.partial(self.feedback_callback, key_prefix='sys'))
+
+        for topic in self.topics.values():
+            topic.advertise()
 
         self.futures = {}
 
@@ -180,11 +189,13 @@ class AbbClient(object):
         self._version_checked = True
 
     def _disconnect_topics(self):
-        self.topic.unadvertise()
-        self.feedback.unsubscribe()
+        for topic in self.topics.values():
+            topic.unadvertise()
+        for topic in self.feedback_topics.values():
+            topic.unadvertise()
         time.sleep(0.5)
 
-    def send(self, instruction):
+    def send(self, instruction, interface=Interfaces.APP):
         """Sends an instruction to the robot without waiting.
 
         Instructions can indicate that feedback is required or not. If
@@ -200,6 +211,8 @@ class AbbClient(object):
         ----------
         instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
             ROS Message representing the instruction to send.
+        interface :class:`compas_rrc.Interfaces`
+            Select the interface over which the instruction will be sent. Defaults to ``Interfaces.APP``.
 
         Returns
         -------
@@ -235,12 +248,10 @@ class AbbClient(object):
         self.ensure_protocol_version()
         result = None
 
-        if not isinstance(instruction, SystemInstruction):
-            counter = self.counter
-            topic = self.topic
-        else:
-            counter = self.system_counter
-            topic = self.system_topic
+        instruction.select_interface(interface)
+
+        counter = self.counters[interface]
+        topic = self.topics[interface]
 
         instruction.sequence_id = counter.increment()
         key = _get_key(instruction)
@@ -253,11 +264,11 @@ class AbbClient(object):
             parser = instruction.parse_feedback if hasattr(instruction, 'parse_feedback') else None
             self.futures[key] = dict(result=result, parser=parser)
 
-        topic.publish(roslibpy.Message(instruction.msg))
+        topic.publish(instruction.to_message())
 
         return result
 
-    def send_and_wait(self, instruction, timeout=None):
+    def send_and_wait(self, instruction, timeout=None, interface=Interfaces.APP):
         """Send instruction and wait for feedback.
 
         This is a blocking call, it will only return once the robot
@@ -271,6 +282,8 @@ class AbbClient(object):
             ROS Message representing the instruction to send.
         timeout : :obj:`int`
             Timeout in seconds to wait before raising an exception. Optional.
+        interface :class:`compas_rrc.Interfaces`
+            Select the interface over which the instruction will be sent. Defaults to ``Interfaces.APP``.
 
         Returns
         -------
@@ -295,10 +308,10 @@ class AbbClient(object):
             else:
                 instruction.feedback_level = 1
 
-        future = self.send(instruction)
+        future = self.send(instruction, interface)
         return future.result(timeout)
 
-    def send_and_subscribe(self, instruction, callback):
+    def send_and_subscribe(self, instruction, callback, interface=Interfaces.APP):
         """Send instruction and activate a service on the robot to stream feedback at a regular inverval.
 
         Parameters
@@ -307,24 +320,27 @@ class AbbClient(object):
             ROS Message representing the instruction to send.
         callback
             Python function to be invoked every time a new value is made available.
+        interface :class:`compas_rrc.Interfaces`
+            Select the interface over which the instruction will be sent.
+            Currently only ``Interfaces.APP`` is supported.
 
         Notes
         -----
             This feature is currently only usable with custom instructions.
 
         """
-        if isinstance(instruction, SystemInstruction):
+        if interface != Interfaces.APP:
             raise InstructionException("Not supported for now")
 
         self.ensure_protocol_version()
-        instruction.sequence_id = self.counter.increment()
+        instruction.sequence_id = self.counters[interface].increment()
 
         key = _get_key(instruction)
 
         parser = instruction.parse_feedback if hasattr(instruction, 'parse_feedback') else None
         self.futures[key] = dict(callback=callback, parser=parser)
 
-        self.topic.publish(roslibpy.Message(instruction.msg))
+        self.topics[interface].publish(instruction.to_message())
 
     def feedback_callback(self, message, key_prefix):
         """Internal method."""
