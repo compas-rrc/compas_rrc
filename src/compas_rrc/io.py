@@ -1,7 +1,9 @@
 from compas_fab.backends.ros.messages import ROSmsg
 
+from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.common import Interfaces
 
 INSTRUCTION_PREFIX = 'r_RRC_'
 
@@ -165,7 +167,7 @@ class PulseDigital(ROSmsg):
         self.float_values = [pulse_time]
 
 
-class ReadAnalog(ROSmsg):
+class ReadAnalog(BaseInstruction):
     """Read analog is a call that requests the value of an analog input signal.
 
     Examples
@@ -189,7 +191,11 @@ class ReadAnalog(ROSmsg):
         io_name : :obj:`str`
             Name of the input signal.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'ReadAnalog'
+        super(ReadAnalog, self).__init__({
+            Interfaces.APP: INSTRUCTION_PREFIX + 'ReadAnalog',
+            Interfaces.SYS: "get_signal"
+        })
+
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -207,7 +213,7 @@ class ReadAnalog(ROSmsg):
         return result
 
 
-class ReadDigital(ROSmsg):
+class ReadDigital(BaseInstruction):
     """Read digital is a call that requests the value of a digital input signal.
 
     Examples
@@ -231,7 +237,11 @@ class ReadDigital(ROSmsg):
         io_name : :obj:`str`
             Name of the input signal.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'ReadDigital'
+        super(ReadDigital, self).__init__({
+            Interfaces.APP: INSTRUCTION_PREFIX + 'ReadDigital',
+            Interfaces.SYS: "get_signal"
+        })
+
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
