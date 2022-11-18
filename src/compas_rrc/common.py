@@ -99,9 +99,13 @@ class TimeoutException(Exception):
 class BaseInstruction(ROSmsg):
     """Base class fora all instructions."""
 
-    def __init__(self, instruction_names):
+    def __init__(self, instruction_names, default_interface=Interfaces.APP):
         super(BaseInstruction, self).__init__()
-        self.meta = dict(instruction_names=instruction_names, interface=Interfaces.APP)
+        self.meta = dict(instruction_names=instruction_names, interface=default_interface)
+        self.feedback_level = FeedbackLevel.NONE
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = []
+        self.float_values = []
 
     def select_interface(self, interface_name):
         """Select the interace over which the instruction will be sent.
@@ -117,10 +121,21 @@ class BaseInstruction(ROSmsg):
         self.instruction = self.meta['instruction_names'].get(interface_name)
 
         if not self.instruction:
-            raise ValueError("Instruction does not support selected interface ('{}')".format(self.interface))
+            raise ValueError("Instruction does not support selected interface: '{}'".format(interface_name))
 
     def supports_interface(self, interface_name):
-        """Determines if a specific interface is supported by this instruction."""
+        """Determines if a specific interface is supported by this instruction.
+
+        Parameters
+        ----------
+        interface_name : :obj:`str`
+            Name of the interface.
+
+        Returns
+        -------
+        :obj:`bool`
+            Indicate whether the interface is supported.
+        """
         return interface_name in self.meta['instruction_names']
 
     def to_message(self):

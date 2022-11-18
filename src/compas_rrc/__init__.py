@@ -56,29 +56,25 @@ The following example shows how to retrieve, update and send the robot joints an
     RobotJoints
     ExternalAxes
 
-System instructions
--------------------
+# System instructions
+# -------------------
 
-Besides the normal instructions, RRC can send and receive system-level instructions to the
-controller.
+# Besides the normal instructions, RRC can send and receive system-level instructions to the
+# controller.
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+# .. autosummary::
+#     :toctree: generated/
+#     :nosignatures:
 
-    GetControllerState
-    GetSpeedRatio
-    GetTaskExecutionState
-    GetTasks
-    SystemCustomInstruction
-    SystemGetAnalog
-    SystemSetAnalog
-    SystemGetDigital
-    SystemSetDigital
-    SystemGetGroup
-    SystemSetGroup
-    SystemStart
-    SystemStop
+#     GetControllerState
+#     GetSpeedRatio
+#     GetTaskExecutionState
+#     GetTasks
+#     SystemCustomInstruction
+#     SystemGetVariable
+#     SystemSetVariable
+#     SystemStart
+#     SystemStop
 
 Debugging instructions
 ----------------------
@@ -153,28 +149,15 @@ from compas_rrc.utility import (
     SetMaxSpeed,
     SetTool,
     SetWorkObject,
+    StartApp,
     Stop,
+    StopApp,
     WaitTime
 )
 from compas_rrc.watch import (
     ReadWatch,
     StartWatch,
     StopWatch
-)
-from compas_rrc.system import (
-    GetControllerState,
-    GetSpeedRatio,
-    GetTaskExecutionState,
-    GetTasks,
-    SystemCustomInstruction,
-    SystemGetAnalog,
-    SystemSetAnalog,
-    SystemGetDigital,
-    SystemSetDigital,
-    SystemGetGroup,
-    SystemSetGroup,
-    SystemStart,
-    SystemStop,
 )
 
 __all_plugins__ = ['compas_rrc.__install']
@@ -214,9 +197,11 @@ __all__ = [
     'GetJoints',
     'GetRobtarget',
     'SetAcceleration',
-    'SetTool',
     'SetMaxSpeed',
+    'SetTool',
+    'StartApp',
     'Stop',
+    'StopApp',
     'WaitTime',
     'SetWorkObject',
     'Debug',
@@ -224,17 +209,13 @@ __all__ = [
     'StartWatch',
     'StopWatch',
     # system instructions
-    'GetControllerState',
-    'GetSpeedRatio',
-    'GetTaskExecutionState',
-    'GetTasks',
-    'SystemCustomInstruction',
-    'SystemGetAnalog',
-    'SystemSetAnalog',
-    'SystemGetDigital',
-    'SystemSetDigital',
-    'SystemGetGroup',
-    'SystemSetGroup',
-    'SystemStart',
-    'SystemStop',
+    # 'GetControllerState',
+    # 'GetSpeedRatio',
+    # 'GetTaskExecutionState',
+    # 'GetTasks',
+    # 'SystemCustomInstruction',
+    # 'SystemGetVariable',
+    # 'SystemSetVariable',
+    # 'SystemStart',
+    # 'SystemStop',
 ]

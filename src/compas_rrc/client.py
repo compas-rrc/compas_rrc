@@ -195,7 +195,7 @@ class AbbClient(object):
             topic.unadvertise()
         time.sleep(0.5)
 
-    def send(self, instruction, interface=Interfaces.APP):
+    def send(self, instruction, interface=None):
         """Sends an instruction to the robot without waiting.
 
         Instructions can indicate that feedback is required or not. If
@@ -209,10 +209,11 @@ class AbbClient(object):
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.BaseInstruction`
+            Instance of an instruction to send.
         interface :class:`compas_rrc.Interfaces`
-            Select the interface over which the instruction will be sent. Defaults to ``Interfaces.APP``.
+            Select the interface over which the instruction will be sent.
+            Defaults to ``Interfaces.APP`` unless the instruction has another default.
 
         Returns
         -------
@@ -248,6 +249,7 @@ class AbbClient(object):
         self.ensure_protocol_version()
         result = None
 
+        interface = interface or instruction.meta.get('interface') or Interfaces.APP
         instruction.select_interface(interface)
 
         counter = self.counters[interface]
@@ -268,7 +270,7 @@ class AbbClient(object):
 
         return result
 
-    def send_and_wait(self, instruction, timeout=None, interface=Interfaces.APP):
+    def send_and_wait(self, instruction, timeout=None, interface=None):
         """Send instruction and wait for feedback.
 
         This is a blocking call, it will only return once the robot
@@ -278,12 +280,13 @@ class AbbClient(object):
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.BaseInstruction`
+            Instance of an instruction to send.
         timeout : :obj:`int`
             Timeout in seconds to wait before raising an exception. Optional.
         interface :class:`compas_rrc.Interfaces`
-            Select the interface over which the instruction will be sent. Defaults to ``Interfaces.APP``.
+            Select the interface over which the instruction will be sent.
+            Defaults to ``Interfaces.APP`` unless the instruction has another default.
 
         Returns
         -------
@@ -311,13 +314,13 @@ class AbbClient(object):
         future = self.send(instruction, interface)
         return future.result(timeout)
 
-    def send_and_subscribe(self, instruction, callback, interface=Interfaces.APP):
+    def send_and_subscribe(self, instruction, callback, interface=None):
         """Send instruction and activate a service on the robot to stream feedback at a regular inverval.
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.BaseInstruction`
+            Instance of an instruction to send.
         callback
             Python function to be invoked every time a new value is made available.
         interface :class:`compas_rrc.Interfaces`
@@ -329,6 +332,7 @@ class AbbClient(object):
             This feature is currently only usable with custom instructions.
 
         """
+        interface = interface or instruction.meta.get('interface') or Interfaces.APP
         if interface != Interfaces.APP:
             raise InstructionException("Not supported for now")
 

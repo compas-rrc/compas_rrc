@@ -1,9 +1,11 @@
 from compas.geometry import Frame
 from compas_fab.backends.ros.messages import ROSmsg
 
+from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import ExternalAxes
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.common import Interfaces
 from compas_rrc.common import RobotJoints
 
 INSTRUCTION_PREFIX = 'r_RRC_'
@@ -16,6 +18,8 @@ __all__ = ['Noop',
            'SetTool',
            'SetMaxSpeed',
            'Stop',
+           'StartApp',
+           'StopApp',
            'WaitTime',
            'SetWorkObject',
            'Debug']
@@ -468,3 +472,19 @@ class WaitTime(ROSmsg):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = [time]
+
+
+class StartApp(BaseInstruction):
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        super(StartApp, self).__init__({
+            Interfaces.SYS: 'start'
+        }, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level
+
+
+class StopApp(BaseInstruction):
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        super(StopApp, self).__init__({
+            Interfaces.SYS: 'stop'
+        }, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level

@@ -63,7 +63,9 @@ Utility
 
     Noop
     PrintText
+    StartApp
     Stop
+    StopApp
     WaitTime
 
 Watch
