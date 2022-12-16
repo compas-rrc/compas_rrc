@@ -1,12 +1,16 @@
 autopep8
+black
 bump2version>=1.0
 check-manifest>=0.36
+compas_invocations
+doc8
 flake8
 invoke>=0.14
 isort
+m2r2
 pylint
 pytest
-sphinx_compas_theme>=0.9
+sphinx_compas_theme >=0.15.18
 sphinx>=1.6
 twine
 -e .
