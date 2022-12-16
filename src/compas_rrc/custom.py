@@ -3,7 +3,7 @@ from compas_fab.backends.ros.messages import ROSmsg
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 
-__all__ = ['CustomInstruction']
+__all__ = ["CustomInstruction"]
 
 
 class CustomInstruction(ROSmsg):
@@ -24,7 +24,14 @@ class CustomInstruction(ROSmsg):
 
     """
 
-    def __init__(self, name, string_values=[], float_values=[], feedback_level=FeedbackLevel.NONE, execution_level=ExecutionLevel.ROBOT):
+    def __init__(
+        self,
+        name,
+        string_values=[],
+        float_values=[],
+        feedback_level=FeedbackLevel.NONE,
+        execution_level=ExecutionLevel.ROBOT,
+    ):
         """Create a new instance of the instruction.
 
         Parameters
