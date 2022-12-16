@@ -17,7 +17,9 @@ __all__ = ['Noop',
            'SetAcceleration',
            'SetTool',
            'SetMaxSpeed',
+           'GetVariable',
            'Stop',
+           'ResetApp',
            'StartApp',
            'StopApp',
            'WaitTime',
@@ -488,3 +490,33 @@ class StopApp(BaseInstruction):
             Interfaces.SYS: 'stop'
         }, default_interface=Interfaces.SYS)
         self.feedback_level = feedback_level
+
+
+class ResetApp(BaseInstruction):
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        super(ResetApp, self).__init__({
+            Interfaces.SYS: 'reset_program_pointer'
+        }, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level
+
+
+class GetVariable(BaseInstruction):
+    def __init__(self, variable_name, task_name, feedback_level=FeedbackLevel.DATA):
+        super(GetVariable, self).__init__({
+            Interfaces.SYS: 'get_variable'
+        }, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level
+        self.string_values = [variable_name, task_name]
+        self.float_values = []
+
+    def parse_feedback(self, result):
+        """Parses the value of the variable.
+
+        Return
+        ------
+        obj
+            Value of the variable (the type depends on its type on the robot program).
+        """
+        value = result['string_values'][0]
+        print("Variable of type {}, value={}".format(type(value), value))
+        return value
