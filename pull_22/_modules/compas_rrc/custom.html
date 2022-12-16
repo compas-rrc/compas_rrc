@@ -100,7 +100,7 @@
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExecutionLevel</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">FeedbackLevel</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CustomInstruction&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CustomInstruction&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="CustomInstruction"><a class="viewcode-back" href="../../reference/generated/compas_rrc.CustomInstruction.html#compas_rrc.CustomInstruction">[docs]</a><span class="k">class</span> <span class="nc">CustomInstruction</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
@@ -121,7 +121,14 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CustomInstruction.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.CustomInstruction.__init__.html#compas_rrc.CustomInstruction.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">string_values</span><span class="o">=</span><span class="p">[],</span> <span class="n">float_values</span><span class="o">=</span><span class="p">[],</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">execution_level</span><span class="o">=</span><span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomInstruction.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.CustomInstruction.__init__.html#compas_rrc.CustomInstruction.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">string_values</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">float_values</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+        <span class="n">execution_level</span><span class="o">=</span><span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>

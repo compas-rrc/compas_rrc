@@ -100,12 +100,12 @@
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExecutionLevel</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">FeedbackLevel</span>
 
-<span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;r_RRC_&#39;</span>
+<span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;r_RRC_&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;ReadWatch&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;StartWatch&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;StopWatch&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;ReadWatch&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;StartWatch&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;StopWatch&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -127,7 +127,7 @@
 
 <div class="viewcode-block" id="ReadWatch.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadWatch.__init__.html#compas_rrc.ReadWatch.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;ReadWatch&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;ReadWatch&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DONE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -142,7 +142,7 @@
 <span class="sd">            Current value of the watch in seconds.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># read input value</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div></div>
 
 
@@ -170,7 +170,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;StartWatch&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;StartWatch&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -201,7 +201,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;StopWatch&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;StopWatch&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>

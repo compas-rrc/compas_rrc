@@ -105,21 +105,23 @@
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">Interfaces</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">RobotJoints</span>
 
-<span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;r_RRC_&#39;</span>
+<span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;r_RRC_&quot;</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Noop&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;GetFrame&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;GetJoints&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;GetRobtarget&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;SetAcceleration&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;SetTool&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;SetMaxSpeed&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;Stop&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;StartApp&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;StopApp&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;WaitTime&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;SetWorkObject&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;Debug&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Noop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GetFrame&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GetJoints&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GetRobtarget&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SetAcceleration&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SetTool&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SetMaxSpeed&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Stop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;StartApp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;StopApp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WaitTime&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SetWorkObject&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Debug&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">is_rapid_none</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
@@ -151,7 +153,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;Noop&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;Noop&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -253,7 +255,7 @@
 
 <div class="viewcode-block" id="GetJoints.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.__init__.html#compas_rrc.GetJoints.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;GetJoints&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;GetJoints&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DONE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -268,10 +270,12 @@
 <span class="sd">            Current joints and external axes of the robot.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># read robot joints</span>
-        <span class="n">robot_joints</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+        <span class="n">robot_joints</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
 
         <span class="c1"># read external axes</span>
-        <span class="n">external_axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_rapid_none</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])]</span>
+        <span class="n">external_axes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_rapid_none</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="p">]</span>
 
         <span class="c1"># write result</span>
         <span class="k">return</span> <span class="n">RobotJoints</span><span class="p">(</span><span class="o">*</span><span class="n">robot_joints</span><span class="p">),</span> <span class="n">ExternalAxes</span><span class="p">(</span><span class="o">*</span><span class="n">external_axes</span><span class="p">)</span></div></div>
@@ -296,7 +300,7 @@
 
 <div class="viewcode-block" id="GetRobtarget.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.__init__.html#compas_rrc.GetRobtarget.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;GetRobtarget&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;GetRobtarget&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DONE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -312,20 +316,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># read pos</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
 
         <span class="c1"># read orient</span>
-        <span class="n">orient_q1</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">orient_q2</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
-        <span class="n">orient_q3</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span>
-        <span class="n">orient_q4</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">orient_q1</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">orient_q2</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">orient_q3</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">orient_q4</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span>
         <span class="n">orientation</span> <span class="o">=</span> <span class="p">[</span><span class="n">orient_q1</span><span class="p">,</span> <span class="n">orient_q2</span><span class="p">,</span> <span class="n">orient_q3</span><span class="p">,</span> <span class="n">orient_q4</span><span class="p">]</span>
 
         <span class="c1"># read gantry joints</span>
-        <span class="n">external_axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_rapid_none</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;float_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])]</span>
+        <span class="n">external_axes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_rapid_none</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;float_values&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="p">]</span>
 
         <span class="c1"># write result</span>
 
@@ -393,7 +399,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;SetAcceleration&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;SetAcceleration&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -426,7 +432,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;SetTool&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;SetTool&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">tool_name</span><span class="p">]</span>
@@ -466,7 +472,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;SetMaxSpeed&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;SetMaxSpeed&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -499,7 +505,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;SetWorkObject&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;SetWorkObject&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">wobj_name</span><span class="p">]</span>
@@ -530,7 +536,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;Stop&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;Stop&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -564,7 +570,7 @@
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;WaitTime&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;WaitTime&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -573,17 +579,13 @@
 
 <div class="viewcode-block" id="StartApp"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StartApp.html#compas_rrc.StartApp">[docs]</a><span class="k">class</span> <span class="nc">StartApp</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
 <div class="viewcode-block" id="StartApp.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StartApp.__init__.html#compas_rrc.StartApp.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">StartApp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
-            <span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s1">&#39;start&#39;</span>
-        <span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StartApp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s2">&quot;start&quot;</span><span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span></div></div>
 
 
 <div class="viewcode-block" id="StopApp"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StopApp.html#compas_rrc.StopApp">[docs]</a><span class="k">class</span> <span class="nc">StopApp</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
 <div class="viewcode-block" id="StopApp.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StopApp.__init__.html#compas_rrc.StopApp.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">StopApp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
-            <span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s1">&#39;stop&#39;</span>
-        <span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StopApp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s2">&quot;stop&quot;</span><span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span></div></div>
 </code></pre></div>
         
