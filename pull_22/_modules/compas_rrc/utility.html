@@ -108,19 +108,21 @@
 <span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;r_RRC_&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;Noop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Debug&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GetFrame&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GetJoints&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GetRobtarget&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GetVariable&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Noop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ResetApp&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SetAcceleration&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SetTool&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SetMaxSpeed&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Stop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SetTool&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SetWorkObject&quot;</span><span class="p">,</span>
     <span class="s2">&quot;StartApp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Stop&quot;</span><span class="p">,</span>
     <span class="s2">&quot;StopApp&quot;</span><span class="p">,</span>
     <span class="s2">&quot;WaitTime&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SetWorkObject&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Debug&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -587,6 +589,36 @@
 <div class="viewcode-block" id="StopApp.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StopApp.__init__.html#compas_rrc.StopApp.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">StopApp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s2">&quot;stop&quot;</span><span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span></div></div>
+
+
+<div class="viewcode-block" id="ResetApp"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ResetApp.html#compas_rrc.ResetApp">[docs]</a><span class="k">class</span> <span class="nc">ResetApp</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
+<div class="viewcode-block" id="ResetApp.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ResetApp.__init__.html#compas_rrc.ResetApp.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResetApp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
+            <span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s1">&#39;reset_program_pointer&#39;</span>
+        <span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span></div></div>
+
+
+<div class="viewcode-block" id="GetVariable"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.html#compas_rrc.GetVariable">[docs]</a><span class="k">class</span> <span class="nc">GetVariable</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
+<div class="viewcode-block" id="GetVariable.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.__init__.html#compas_rrc.GetVariable.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GetVariable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
+            <span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s1">&#39;get_variable&#39;</span>
+        <span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="GetVariable.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.parse_feedback.html#compas_rrc.GetVariable.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parses the value of the variable.</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        ------</span>
+<span class="sd">        obj</span>
+<span class="sd">            Value of the variable (the type depends on its type on the robot program).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;string_values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variable of type </span><span class="si">{}</span><span class="s2">, value=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">value</span></div></div>
 </code></pre></div>
         
       </main>
