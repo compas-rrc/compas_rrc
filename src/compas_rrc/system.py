@@ -1,10 +1,9 @@
-import json
+# import json
 
-from compas_fab.backends.ros.messages import ROSmsg
+# from compas_fab.backends.ros.messages import ROSmsg
 
-from compas_rrc.common import ExecutionLevel
-from compas_rrc.common import FeedbackLevel
-from compas_rrc.common import BaseInstruction
+# from compas_rrc.common import ExecutionLevel
+# from compas_rrc.common import FeedbackLevel
 
 __all__ = [
     # 'GetControllerState',
@@ -19,27 +18,24 @@ __all__ = [
 ]
 
 
-class BaseSystemInstruction(ROSmsg, SystemInstruction):
-    def __init__(self, feedback_level=FeedbackLevel.DATA, execution_level=ExecutionLevel.DRIVER):
-        super(BaseSystemInstruction, self).__init__()
-        self.feedback_level = feedback_level
-        self.exec_level = execution_level
-        self.string_values = []
-        self.float_values = []
+# class BaseSystemInstruction(ROSmsg, SystemInstruction):
+#     def __init__(self, feedback_level=FeedbackLevel.DATA, execution_level=ExecutionLevel.DRIVER):
+#         super(BaseSystemInstruction, self).__init__()
+#         self.feedback_level = feedback_level
+#         self.exec_level = execution_level
+#         self.string_values = []
+#         self.float_values = []
 
 
-class SystemCustomInstruction(BaseSystemInstruction):
-    def __init__(self, name, method='GET', data=None, feedback_level=FeedbackLevel.DATA):
-        super(SystemCustomInstruction, self).__init__(feedback_level)
-        if data is not None:
-            method = 'POST'
-        self.instruction = json.dumps(dict(path=name, method=method, data=data))
+# class SystemCustomInstruction(BaseSystemInstruction):
+#     def __init__(self, name, method="GET", data=None, feedback_level=FeedbackLevel.DATA):
+#         super(SystemCustomInstruction, self).__init__(feedback_level)
+#         if data is not None:
+#             method = "POST"
+#         self.instruction = json.dumps(dict(path=name, method=method, data=data))
 
-    def parse_feedback(self, response):
-        return json.loads(response['feedback'])
-
-
-
+#     def parse_feedback(self, response):
+#         return json.loads(response["feedback"])
 
 
 # class SystemGetVariable(BaseSystemInstruction):

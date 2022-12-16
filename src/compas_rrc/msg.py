@@ -3,11 +3,9 @@ from compas_fab.backends.ros.messages import ROSmsg
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 
-INSTRUCTION_PREFIX = 'r_RRC_'
+INSTRUCTION_PREFIX = "r_RRC_"
 
-__all__ = [
-    'PrintText'
-]
+__all__ = ["PrintText"]
 
 
 class PrintText(ROSmsg):
@@ -38,7 +36,7 @@ class PrintText(ROSmsg):
         """
         if len(text) > 80:
             raise ValueError("text can only be up to 80 chars")
-        self.instruction = INSTRUCTION_PREFIX + 'PrintText'
+        self.instruction = INSTRUCTION_PREFIX + "PrintText"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [text]

@@ -8,23 +8,25 @@ from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import Interfaces
 from compas_rrc.common import RobotJoints
 
-INSTRUCTION_PREFIX = 'r_RRC_'
+INSTRUCTION_PREFIX = "r_RRC_"
 
-__all__ = ['Noop',
-           'GetFrame',
-           'GetJoints',
-           'GetRobtarget',
-           'SetAcceleration',
-           'SetTool',
-           'SetMaxSpeed',
-           'GetVariable',
-           'Stop',
-           'ResetApp',
-           'StartApp',
-           'StopApp',
-           'WaitTime',
-           'SetWorkObject',
-           'Debug']
+__all__ = [
+    "Debug",
+    "GetFrame",
+    "GetJoints",
+    "GetRobtarget",
+    "GetVariable",
+    "Noop",
+    "ResetApp",
+    "SetAcceleration",
+    "SetMaxSpeed",
+    "SetTool",
+    "SetWorkObject",
+    "StartApp",
+    "Stop",
+    "StopApp",
+    "WaitTime",
+]
 
 
 def is_rapid_none(val):
@@ -56,7 +58,7 @@ class Noop(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'Noop'
+        self.instruction = INSTRUCTION_PREFIX + "Noop"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -158,7 +160,7 @@ class GetJoints(ROSmsg):
 
     def __init__(self):
         """Create a new instance of the instruction."""
-        self.instruction = INSTRUCTION_PREFIX + 'GetJoints'
+        self.instruction = INSTRUCTION_PREFIX + "GetJoints"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -173,10 +175,12 @@ class GetJoints(ROSmsg):
             Current joints and external axes of the robot.
         """
         # read robot joints
-        robot_joints = [result['float_values'][i] for i in range(0, 6)]
+        robot_joints = [result["float_values"][i] for i in range(0, 6)]
 
         # read external axes
-        external_axes = [result['float_values'][i] for i in range(6, 12) if not is_rapid_none(result['float_values'][i])]
+        external_axes = [
+            result["float_values"][i] for i in range(6, 12) if not is_rapid_none(result["float_values"][i])
+        ]
 
         # write result
         return RobotJoints(*robot_joints), ExternalAxes(*external_axes)
@@ -201,7 +205,7 @@ class GetRobtarget(ROSmsg):
 
     def __init__(self):
         """Create a new instance of the instruction."""
-        self.instruction = INSTRUCTION_PREFIX + 'GetRobtarget'
+        self.instruction = INSTRUCTION_PREFIX + "GetRobtarget"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -217,20 +221,22 @@ class GetRobtarget(ROSmsg):
         """
 
         # read pos
-        x = result['float_values'][0]
-        y = result['float_values'][1]
-        z = result['float_values'][2]
+        x = result["float_values"][0]
+        y = result["float_values"][1]
+        z = result["float_values"][2]
         pos = [x, y, z]
 
         # read orient
-        orient_q1 = result['float_values'][3]
-        orient_q2 = result['float_values'][4]
-        orient_q3 = result['float_values'][5]
-        orient_q4 = result['float_values'][6]
+        orient_q1 = result["float_values"][3]
+        orient_q2 = result["float_values"][4]
+        orient_q3 = result["float_values"][5]
+        orient_q4 = result["float_values"][6]
         orientation = [orient_q1, orient_q2, orient_q3, orient_q4]
 
         # read gantry joints
-        external_axes = [result['float_values'][i] for i in range(7, 13) if not is_rapid_none(result['float_values'][i])]
+        external_axes = [
+            result["float_values"][i] for i in range(7, 13) if not is_rapid_none(result["float_values"][i])
+        ]
 
         # write result
 
@@ -298,7 +304,7 @@ class SetAcceleration(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetAcceleration'
+        self.instruction = INSTRUCTION_PREFIX + "SetAcceleration"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -331,7 +337,7 @@ class SetTool(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetTool'
+        self.instruction = INSTRUCTION_PREFIX + "SetTool"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [tool_name]
@@ -371,7 +377,7 @@ class SetMaxSpeed(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetMaxSpeed'
+        self.instruction = INSTRUCTION_PREFIX + "SetMaxSpeed"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -404,7 +410,7 @@ class SetWorkObject(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetWorkObject'
+        self.instruction = INSTRUCTION_PREFIX + "SetWorkObject"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [wobj_name]
@@ -435,7 +441,7 @@ class Stop(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'Stop'
+        self.instruction = INSTRUCTION_PREFIX + "Stop"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -469,7 +475,7 @@ class WaitTime(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'WaitTime'
+        self.instruction = INSTRUCTION_PREFIX + "WaitTime"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -478,17 +484,13 @@ class WaitTime(ROSmsg):
 
 class StartApp(BaseInstruction):
     def __init__(self, feedback_level=FeedbackLevel.DATA):
-        super(StartApp, self).__init__({
-            Interfaces.SYS: 'start'
-        }, default_interface=Interfaces.SYS)
+        super(StartApp, self).__init__({Interfaces.SYS: "start"}, default_interface=Interfaces.SYS)
         self.feedback_level = feedback_level
 
 
 class StopApp(BaseInstruction):
     def __init__(self, feedback_level=FeedbackLevel.DATA):
-        super(StopApp, self).__init__({
-            Interfaces.SYS: 'stop'
-        }, default_interface=Interfaces.SYS)
+        super(StopApp, self).__init__({Interfaces.SYS: "stop"}, default_interface=Interfaces.SYS)
         self.feedback_level = feedback_level
 
 

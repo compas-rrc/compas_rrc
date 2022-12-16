@@ -3,14 +3,14 @@ from compas_fab.backends.ros.messages import ROSmsg
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 
-INSTRUCTION_PREFIX = 'r_RRC_'
+INSTRUCTION_PREFIX = "r_RRC_"
 
 __all__ = [
-    'Zone',
-    'Motion',
-    'MoveToJoints',
-    'MoveToFrame',
-    'MoveToRobtarget',
+    "Zone",
+    "Motion",
+    "MoveToJoints",
+    "MoveToFrame",
+    "MoveToRobtarget",
 ]
 
 
@@ -123,10 +123,11 @@ class Motion(object):
     .. autoattribute:: LINEAR
     .. autoattribute:: JOINT
     """
-    LINEAR = 'L'
+
+    LINEAR = "L"
     """Moves the robot linearly to the specified position."""
 
-    JOINT = 'J'
+    JOINT = "J"
     """Moves the robot not linearly to the specified position by coordinating all joints to start and end together.
     This type of motion can be faster than LINEAR motion."""
 
@@ -175,20 +176,20 @@ class MoveToJoints(ROSmsg):
             the motion planner has executed the instruction fully.
         """
         if speed <= 0:
-            raise ValueError('Speed must be higher than zero. Current value={}'.format(speed))
+            raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
-        self.instruction = INSTRUCTION_PREFIX + 'MoveToJoints'
+        self.instruction = INSTRUCTION_PREFIX + "MoveToJoints"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
         joints = joints or []
         if len(joints) > 6:
-            raise ValueError('Only up to 6 joints are supported')
+            raise ValueError("Only up to 6 joints are supported")
         joints_pad = [0.0] * (6 - len(joints))
 
         ext_axes = ext_axes or []
         if len(ext_axes) > 6:
-            raise ValueError('Only up to 6 external axes are supported')
+            raise ValueError("Only up to 6 external axes are supported")
 
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
         self.string_values = []
@@ -198,7 +199,7 @@ class MoveToJoints(ROSmsg):
 class MoveGeneric(ROSmsg):
     def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         if speed <= 0:
-            raise ValueError('Speed must be higher than zero. Current value={}'.format(speed))
+            raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
@@ -208,7 +209,7 @@ class MoveGeneric(ROSmsg):
 
         ext_axes = ext_axes or []
         if len(ext_axes) > 6:
-            raise ValueError('Only up to 6 external axes are supported')
+            raise ValueError("Only up to 6 external axes are supported")
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
 
         self.string_values = []
@@ -260,9 +261,9 @@ class MoveToFrame(MoveGeneric):
             the motion planner has executed the instruction fully.
         """
         super(MoveToFrame, self).__init__(frame, [], speed, zone, feedback_level)
-        instruction = 'MoveTo'
+        instruction = "MoveTo"
         self.instruction = INSTRUCTION_PREFIX + instruction
-        self.string_values = ['FrameJ'] if motion_type == Motion.JOINT else ['FrameL']
+        self.string_values = ["FrameJ"] if motion_type == Motion.JOINT else ["FrameL"]
 
 
 class MoveToRobtarget(MoveGeneric):
@@ -311,6 +312,6 @@ class MoveToRobtarget(MoveGeneric):
             the motion planner has executed the instruction fully.
         """
         super(MoveToRobtarget, self).__init__(frame, ext_axes, speed, zone, feedback_level)
-        instruction = 'MoveTo'
+        instruction = "MoveTo"
         self.instruction = INSTRUCTION_PREFIX + instruction
-        self.string_values = ['J'] if motion_type == Motion.JOINT else ['L']
+        self.string_values = ["J"] if motion_type == Motion.JOINT else ["L"]

@@ -8,16 +8,18 @@ from compas.robots import Joint
 from compas_fab.backends.ros.messages import ROSmsg
 
 
-__all__ = ["CLIENT_PROTOCOL_VERSION",
-           "FeedbackLevel",
-           "ExecutionLevel",
-           "InstructionException",
-           "TimeoutException",
-           "Interfaces"
-           "BaseInstruction",
-           "FutureResult",
-           "ExternalAxes",
-           "RobotJoints"]
+__all__ = [
+    "CLIENT_PROTOCOL_VERSION",
+    "FeedbackLevel",
+    "ExecutionLevel",
+    "InstructionException",
+    "TimeoutException",
+    "Interfaces",
+    "BaseInstruction",
+    "FutureResult",
+    "ExternalAxes",
+    "RobotJoints",
+]
 
 CLIENT_PROTOCOL_VERSION = 2
 
@@ -25,13 +27,13 @@ CLIENT_PROTOCOL_VERSION = 2
 def _convert_unit_to_meters_radians(value, type_):
     if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
         return math.radians(value)
-    return value / 1000.
+    return value / 1000.0
 
 
 def _convert_unit_to_mm_degrees(value, type_):
     if type_ in {Joint.REVOLUTE, Joint.CONTINUOUS}:
         return math.degrees(value)
-    return value * 1000.
+    return value * 1000.0
 
 
 class FeedbackLevel(object):
@@ -41,6 +43,7 @@ class FeedbackLevel(object):
     .. autoattribute:: DONE
     .. autoattribute:: DATA
     """
+
     NONE = 0
     """Indicates no feedback is requested from the robot."""
 
@@ -59,6 +62,7 @@ class Interfaces(object):
     .. autoattribute:: APP
     .. autoattribute:: SYS
     """
+
     APP = "app"
     """Default interface. Uses the primary TCP/IP communication channels."""
 
@@ -68,12 +72,14 @@ class Interfaces(object):
     SUPPORTED_INTERFACES = (APP, SYS)
     """Tuple of currently-supported interfaces."""
 
+
 class ExecutionLevel(object):
     """Defines the execution level of an instruction.
 
     .. autoattribute:: ROBOT
     .. autoattribute:: CONTROLLER
     """
+
     ROBOT = 0
     """Execute instruction on the robot task."""
 
@@ -83,16 +89,18 @@ class ExecutionLevel(object):
     DRIVER = -1
     """Execute instruction outside of the robot controller, and inside the ROS environment."""
 
+
 class InstructionException(Exception):
     """Exception caused during/after the execution of an instruction."""
 
     def __init__(self, message, result):
-        super(InstructionException, self).__init__('{}, RRC Reply={}'.format(message, result))
+        super(InstructionException, self).__init__("{}, RRC Reply={}".format(message, result))
         self.result = result
 
 
 class TimeoutException(Exception):
     """Timeout exception caused during execution of an instruction."""
+
     pass
 
 
@@ -117,8 +125,8 @@ class BaseInstruction(ROSmsg):
         """
         if interface_name not in Interfaces.SUPPORTED_INTERFACES:
             raise ValueError("Interface not supported: {}".format(interface_name))
-        self.meta['interface'] = interface_name
-        self.instruction = self.meta['instruction_names'].get(interface_name)
+        self.meta["interface"] = interface_name
+        self.instruction = self.meta["instruction_names"].get(interface_name)
 
         if not self.instruction:
             raise ValueError("Instruction does not support selected interface: '{}'".format(interface_name))
@@ -136,7 +144,7 @@ class BaseInstruction(ROSmsg):
         :obj:`bool`
             Indicate whether the interface is supported.
         """
-        return interface_name in self.meta['instruction_names']
+        return interface_name in self.meta["instruction_names"]
 
     def to_message(self):
         """Convert the instruction to a roslibpy Message instance.
@@ -146,10 +154,9 @@ class BaseInstruction(ROSmsg):
         :class:`roslibpy.Message`
         """
         msg = self.msg
-        msg.pop('meta')
+        msg.pop("meta")
 
         return roslibpy.Message(msg)
-
 
 
 class FutureResult(object):
@@ -173,7 +180,7 @@ class FutureResult(object):
         """
         if not self.done:
             if not self.event.wait(timeout):
-                raise TimeoutException('Timeout: future result not available')
+                raise TimeoutException("Timeout: future result not available")
 
         if isinstance(self.value, Exception):
             raise self.value
@@ -259,7 +266,7 @@ class ExternalAxes(object):
 
     # List accessors
     def __repr__(self):
-        return 'ExternalAxes({})'.format([round(i, 2) for i in self.values])
+        return "ExternalAxes({})".format([round(i, 2) for i in self.values])
 
     def __len__(self):
         return len(self.values)
@@ -333,9 +340,14 @@ class ExternalAxes(object):
         :class:`compas_rrc.ExternalAxes`
         """
         if joint_names:
-            joint_values = [_convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names]
+            joint_values = [
+                _convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names
+            ]
         else:
-            joint_values = [_convert_unit_to_mm_degrees(value, type_) for value, type_ in zip(configuration.joint_values, configuration.joint_types)]
+            joint_values = [
+                _convert_unit_to_mm_degrees(value, type_)
+                for value, type_ in zip(configuration.joint_values, configuration.joint_types)
+            ]
         return cls(joint_values)
 
     @classmethod
@@ -421,7 +433,7 @@ class RobotJoints(object):
 
     # List accessors
     def __repr__(self):
-        return 'RobotJoints({})'.format([round(i, 2) for i in self.values])
+        return "RobotJoints({})".format([round(i, 2) for i in self.values])
 
     def __len__(self):
         return len(self.values)
@@ -495,9 +507,14 @@ class RobotJoints(object):
         :class:`compas_rrc.RobotJoints`
         """
         if joint_names:
-            joint_values = [_convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names]
+            joint_values = [
+                _convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names
+            ]
         else:
-            joint_values = [_convert_unit_to_mm_degrees(value, type_) for value, type_ in zip(configuration.joint_values, configuration.joint_types)]
+            joint_values = [
+                _convert_unit_to_mm_degrees(value, type_)
+                for value, type_ in zip(configuration.joint_values, configuration.joint_types)
+            ]
         return cls(joint_values)
 
     @classmethod

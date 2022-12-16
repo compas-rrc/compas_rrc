@@ -3,12 +3,12 @@ from compas_fab.backends.ros.messages import ROSmsg
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 
-INSTRUCTION_PREFIX = 'r_RRC_'
+INSTRUCTION_PREFIX = "r_RRC_"
 
 __all__ = [
-    'ReadWatch',
-    'StartWatch',
-    'StopWatch',
+    "ReadWatch",
+    "StartWatch",
+    "StopWatch",
 ]
 
 
@@ -30,7 +30,7 @@ class ReadWatch(ROSmsg):
 
     def __init__(self):
         """Create a new instance of the instruction."""
-        self.instruction = INSTRUCTION_PREFIX + 'ReadWatch'
+        self.instruction = INSTRUCTION_PREFIX + "ReadWatch"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -45,7 +45,7 @@ class ReadWatch(ROSmsg):
             Current value of the watch in seconds.
         """
         # read input value
-        result = round(result['float_values'][0], 3)
+        result = round(result["float_values"][0], 3)
         return result
 
 
@@ -73,7 +73,7 @@ class StartWatch(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'StartWatch'
+        self.instruction = INSTRUCTION_PREFIX + "StartWatch"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -104,7 +104,7 @@ class StopWatch(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'StopWatch'
+        self.instruction = INSTRUCTION_PREFIX + "StopWatch"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
