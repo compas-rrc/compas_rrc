@@ -349,7 +349,7 @@ class AbbClient(object):
         """
         interface = interface or instruction.meta.get("interface") or Interfaces.APP
         if interface != Interfaces.APP:
-            raise InstructionException("Not supported for now")
+            raise NotImplementedError("Not supported for now")
 
         self.ensure_protocol_version()
         instruction.sequence_id = self.counters[interface].increment()
