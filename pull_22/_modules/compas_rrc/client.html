@@ -446,7 +446,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">interface</span> <span class="o">=</span> <span class="n">interface</span> <span class="ow">or</span> <span class="n">instruction</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;interface&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span>
         <span class="k">if</span> <span class="n">interface</span> <span class="o">!=</span> <span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InstructionException</span><span class="p">(</span><span class="s2">&quot;Not supported for now&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not supported for now&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ensure_protocol_version</span><span class="p">()</span>
         <span class="n">instruction</span><span class="o">.</span><span class="n">sequence_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">counters</span><span class="p">[</span><span class="n">interface</span><span class="p">]</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span>
