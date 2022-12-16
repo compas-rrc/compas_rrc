@@ -4,7 +4,6 @@ from compas_fab.backends.ros.messages import ROSmsg
 
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
-from compas_rrc.common import BaseInstruction
 
 __all__ = [
     # 'GetControllerState',
@@ -29,17 +28,14 @@ class BaseSystemInstruction(ROSmsg, SystemInstruction):
 
 
 class SystemCustomInstruction(BaseSystemInstruction):
-    def __init__(self, name, method='GET', data=None, feedback_level=FeedbackLevel.DATA):
+    def __init__(self, name, method="GET", data=None, feedback_level=FeedbackLevel.DATA):
         super(SystemCustomInstruction, self).__init__(feedback_level)
         if data is not None:
-            method = 'POST'
+            method = "POST"
         self.instruction = json.dumps(dict(path=name, method=method, data=data))
 
     def parse_feedback(self, response):
-        return json.loads(response['feedback'])
-
-
-
+        return json.loads(response["feedback"])
 
 
 # class SystemGetVariable(BaseSystemInstruction):
