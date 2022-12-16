@@ -496,17 +496,13 @@ class StopApp(BaseInstruction):
 
 class ResetApp(BaseInstruction):
     def __init__(self, feedback_level=FeedbackLevel.DATA):
-        super(ResetApp, self).__init__({
-            Interfaces.SYS: 'reset_program_pointer'
-        }, default_interface=Interfaces.SYS)
+        super(ResetApp, self).__init__({Interfaces.SYS: "reset_program_pointer"}, default_interface=Interfaces.SYS)
         self.feedback_level = feedback_level
 
 
 class GetVariable(BaseInstruction):
     def __init__(self, variable_name, task_name, feedback_level=FeedbackLevel.DATA):
-        super(GetVariable, self).__init__({
-            Interfaces.SYS: 'get_variable'
-        }, default_interface=Interfaces.SYS)
+        super(GetVariable, self).__init__({Interfaces.SYS: "get_variable"}, default_interface=Interfaces.SYS)
         self.feedback_level = feedback_level
         self.string_values = [variable_name, task_name]
         self.float_values = []
@@ -519,6 +515,6 @@ class GetVariable(BaseInstruction):
         obj
             Value of the variable (the type depends on its type on the robot program).
         """
-        value = result['string_values'][0]
+        value = result["string_values"][0]
         print("Variable of type {}, value={}".format(type(value), value))
         return value
