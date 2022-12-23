@@ -1,7 +1,7 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
+from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.common import Interfaces
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-class ReadWatch(ROSmsg):
+class ReadWatch(BaseInstruction):
     """Read Watch is a call that requests the value of the watch in the robot code.
 
     Examples
@@ -30,7 +30,7 @@ class ReadWatch(ROSmsg):
 
     def __init__(self):
         """Create a new instance of the instruction."""
-        self.instruction = INSTRUCTION_PREFIX + "ReadWatch"
+        super(ReadWatch, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "ReadWatch"})
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -49,7 +49,7 @@ class ReadWatch(ROSmsg):
         return result
 
 
-class StartWatch(ROSmsg):
+class StartWatch(BaseInstruction):
     """Start Watch is a call that starts the watch in the robot code.
 
     Examples
@@ -73,14 +73,14 @@ class StartWatch(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + "StartWatch"
+        super(StartWatch, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "StartWatch"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
 
 
-class StopWatch(ROSmsg):
+class StopWatch(BaseInstruction):
     """Stop Watch is a call that stops the watch in the robot code.
 
     Examples
@@ -104,7 +104,7 @@ class StopWatch(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + "StopWatch"
+        super(StopWatch, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "StopWatch"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
