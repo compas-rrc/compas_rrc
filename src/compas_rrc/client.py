@@ -5,15 +5,15 @@ import time
 import roslibpy
 from compas_fab.backends import RosClient
 
-from .common import CLIENT_PROTOCOL_VERSION
-from .common import FutureResult
-from .common import InstructionException
-from .common import Interfaces
+from compas_rrc.common import CLIENT_PROTOCOL_VERSION
+from compas_rrc.common import FutureResult
+from compas_rrc.common import InstructionException
+from compas_rrc.common import Interfaces
 
 __all__ = ["RosClient", "AbbClient"]
 
 
-FEEDBACK_ERROR_PREFIX = "Done FError "
+FEEDBACK_ERROR_PREFIX = "Done FError"
 
 
 def _get_key(message):
@@ -271,6 +271,7 @@ class AbbClient(object):
         topic = self.topics[interface]
 
         instruction.sequence_id = counter.increment()
+
         key = _get_key(instruction)
 
         # NOTE: create a base class for all instructions (system and standard)
