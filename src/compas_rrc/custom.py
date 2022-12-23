@@ -1,12 +1,12 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
+from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.common import Interfaces
 
 __all__ = ["CustomInstruction"]
 
 
-class CustomInstruction(ROSmsg):
+class CustomInstruction(BaseInstruction):
     """Custom instruction is a call that invokes a custom RAPID instruction. The name has to match a ``RAPID`` procedure.
 
     Examples
@@ -47,7 +47,7 @@ class CustomInstruction(ROSmsg):
         execution_level : :obj:`int`
             Defines the execution level of the instruction. Defaults to :attr:`ExecutionLevel.ROBOT`.
         """
-        self.instruction = name
+        super(CustomInstruction, self).__init__({Interfaces.APP: name})
         self.feedback_level = feedback_level
         self.exec_level = execution_level
         self.string_values = string_values
