@@ -105,7 +105,7 @@ class TimeoutException(Exception):
 
 
 class BaseInstruction(ROSmsg):
-    """Base class fora all instructions."""
+    """Base class for all instructions."""
 
     def __init__(self, instruction_names, default_interface=Interfaces.APP):
         super(BaseInstruction, self).__init__()
