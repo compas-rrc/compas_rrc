@@ -106,11 +106,19 @@
 <dt class="sig sig-object py" id="compas_rrc.ResetApp">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rrc.</span></span><span class="sig-name descname"><span class="pre">ResetApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rrc/utility.html#ResetApp"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInstruction</span></code></p>
+<p>Reset the application-level code on the robot controller.</p>
+<p>In ABB robots, this is equivalent to reseting the program pointer
+to main (ie. <code class="docutils literal notranslate"><span class="pre">PP</span> <span class="pre">to</span> <span class="pre">Main</span></code>).</p>
+<p class="rubric">Examples</p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="c1"># Start app</span>
+<span class="n">done</span> <span class="o">=</span> <span class="n">abb</span><span class="o">.</span><span class="n">send_and_wait</span><span class="p">(</span><span class="n">rrc</span><span class="o">.</span><span class="n">ResetApp</span><span class="p">())</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.ResetApp.__init__.html#compas_rrc.ResetApp.__init__" title="compas_rrc.ResetApp.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([feedback_level])</p></td>
-<td><p></p></td>
+<td><p>Create a new instance of the instruction.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.ResetApp.from_msg.html#compas_rrc.ResetApp.from_msg" title="compas_rrc.ResetApp.from_msg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_msg</span></code></a>(msg)</p></td>
 <td><p></p></td>

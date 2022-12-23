@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="WaitTime.parse" href="compas_rrc.WaitTime.parse.html" />
+  <link rel="prev" title="WaitTime.to_message" href="compas_rrc.WaitTime.to_message.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -105,7 +105,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rrc.ReadWatch">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rrc.</span></span><span class="sig-name descname"><span class="pre">ReadWatch</span></span><a class="reference internal" href="../../_modules/compas_rrc/watch.html#ReadWatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ROSmsg</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInstruction</span></code></p>
 <p>Read Watch is a call that requests the value of the watch in the robot code.</p>
 <p class="rubric">Examples</p>
 <div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="c1"># Read watch</span>
@@ -131,6 +131,15 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.ReadWatch.parse_feedback.html#compas_rrc.ReadWatch.parse_feedback" title="compas_rrc.ReadWatch.parse_feedback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_feedback</span></code></a>(result)</p></td>
 <td><p>Parses the result as a <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a> (seconds).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.ReadWatch.select_interface.html#compas_rrc.ReadWatch.select_interface" title="compas_rrc.ReadWatch.select_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_interface</span></code></a>(interface_name)</p></td>
+<td><p>Select the interace over which the instruction will be sent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.ReadWatch.supports_interface.html#compas_rrc.ReadWatch.supports_interface" title="compas_rrc.ReadWatch.supports_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supports_interface</span></code></a>(interface_name)</p></td>
+<td><p>Determines if a specific interface is supported by this instruction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.ReadWatch.to_message.html#compas_rrc.ReadWatch.to_message" title="compas_rrc.ReadWatch.to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_message</span></code></a>()</p></td>
+<td><p>Convert the instruction to a roslibpy Message instance.</p></td>
 </tr>
 </tbody>
 </table>
@@ -189,11 +198,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas_rrc.WaitTime.parse.html" title="WaitTime.parse" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas_rrc.WaitTime.to_message.html" title="WaitTime.to_message" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          WaitTime.parse
+          WaitTime.to_message
         </div>
       </a>
       

@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="PrintText.parse" href="compas_rrc.PrintText.parse.html" />
+  <link rel="prev" title="PrintText.to_message" href="compas_rrc.PrintText.to_message.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -106,11 +106,18 @@
 <dt class="sig sig-object py" id="compas_rrc.GetVariable">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rrc.</span></span><span class="sig-name descname"><span class="pre">GetVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rrc/utility.html#GetVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInstruction</span></code></p>
+<p>Get the value of a variable defined in robot code.</p>
+<p class="rubric">Examples</p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="c1"># Start app</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">abb</span><span class="o">.</span><span class="n">send_and_wait</span><span class="p">(</span><span class="n">rrc</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="s2">&quot;t_RRC_ActTool&quot;</span><span class="p">,</span> <span class="s2">&quot;T_ROB1&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tool = &quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.GetVariable.__init__.html#compas_rrc.GetVariable.__init__" title="compas_rrc.GetVariable.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(variable_name, task_name[, ...])</p></td>
-<td><p></p></td>
+<td><p>Create a new instance of the instruction.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.GetVariable.from_msg.html#compas_rrc.GetVariable.from_msg" title="compas_rrc.GetVariable.from_msg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_msg</span></code></a>(msg)</p></td>
 <td><p></p></td>
@@ -187,11 +194,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas_rrc.PrintText.parse.html" title="PrintText.parse" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas_rrc.PrintText.to_message.html" title="PrintText.to_message" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          PrintText.parse
+          PrintText.to_message
         </div>
       </a>
       

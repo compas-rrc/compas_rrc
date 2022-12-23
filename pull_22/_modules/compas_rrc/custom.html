@@ -95,15 +95,15 @@
         
         
         <h1>Source code for compas_rrc.custom</h1><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code>
-<span></span><span class="kn">from</span> <span class="nn">compas_fab.backends.ros.messages</span> <span class="kn">import</span> <span class="n">ROSmsg</span>
-
+<span></span><span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">BaseInstruction</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExecutionLevel</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">FeedbackLevel</span>
+<span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">Interfaces</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CustomInstruction&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="CustomInstruction"><a class="viewcode-back" href="../../reference/generated/compas_rrc.CustomInstruction.html#compas_rrc.CustomInstruction">[docs]</a><span class="k">class</span> <span class="nc">CustomInstruction</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomInstruction"><a class="viewcode-back" href="../../reference/generated/compas_rrc.CustomInstruction.html#compas_rrc.CustomInstruction">[docs]</a><span class="k">class</span> <span class="nc">CustomInstruction</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Custom instruction is a call that invokes a custom RAPID instruction. The name has to match a ``RAPID`` procedure.</span>
 
 <span class="sd">    Examples</span>
@@ -144,7 +144,7 @@
 <span class="sd">        execution_level : :obj:`int`</span>
 <span class="sd">            Defines the execution level of the instruction. Defaults to :attr:`ExecutionLevel.ROBOT`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CustomInstruction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">execution_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="n">string_values</span>

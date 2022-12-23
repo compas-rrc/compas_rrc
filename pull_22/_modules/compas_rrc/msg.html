@@ -95,17 +95,17 @@
         
         
         <h1>Source code for compas_rrc.msg</h1><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code>
-<span></span><span class="kn">from</span> <span class="nn">compas_fab.backends.ros.messages</span> <span class="kn">import</span> <span class="n">ROSmsg</span>
-
+<span></span><span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">BaseInstruction</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExecutionLevel</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">FeedbackLevel</span>
+<span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">Interfaces</span>
 
 <span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;r_RRC_&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PrintText&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="PrintText"><a class="viewcode-back" href="../../reference/generated/compas_rrc.PrintText.html#compas_rrc.PrintText">[docs]</a><span class="k">class</span> <span class="nc">PrintText</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+<div class="viewcode-block" id="PrintText"><a class="viewcode-back" href="../../reference/generated/compas_rrc.PrintText.html#compas_rrc.PrintText">[docs]</a><span class="k">class</span> <span class="nc">PrintText</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Print text is a call that prints a single line of text on the robot panel.</span>
 
 <span class="sd">    Examples</span>
@@ -133,7 +133,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">80</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;text can only be up to 80 chars&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;PrintText&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PrintText</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;PrintText&quot;</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>

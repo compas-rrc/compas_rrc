@@ -95,10 +95,10 @@
         
         
         <h1>Source code for compas_rrc.motion</h1><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code>
-<span></span><span class="kn">from</span> <span class="nn">compas_fab.backends.ros.messages</span> <span class="kn">import</span> <span class="n">ROSmsg</span>
-
+<span></span><span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">BaseInstruction</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExecutionLevel</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">FeedbackLevel</span>
+<span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">Interfaces</span>
 
 <span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;r_RRC_&quot;</span>
 
@@ -229,7 +229,7 @@
 <span class="sd">    This type of motion can be faster than LINEAR motion.&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="MoveToJoints"><a class="viewcode-back" href="../../reference/generated/compas_rrc.MoveToJoints.html#compas_rrc.MoveToJoints">[docs]</a><span class="k">class</span> <span class="nc">MoveToJoints</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
+<div class="viewcode-block" id="MoveToJoints"><a class="viewcode-back" href="../../reference/generated/compas_rrc.MoveToJoints.html#compas_rrc.MoveToJoints">[docs]</a><span class="k">class</span> <span class="nc">MoveToJoints</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Move to joints is a call that moves the robot and the external axes with axes values.</span>
 
 <span class="sd">    Examples</span>
@@ -275,7 +275,7 @@
         <span class="k">if</span> <span class="n">speed</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Speed must be higher than zero. Current value=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">speed</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;MoveToJoints&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MoveToJoints</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;MoveToJoints&quot;</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
 
@@ -293,11 +293,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">joints</span><span class="p">)</span> <span class="o">+</span> <span class="n">joints_pad</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">ext_axes</span><span class="p">)</span> <span class="o">+</span> <span class="n">ext_axes_pad</span> <span class="o">+</span> <span class="p">[</span><span class="n">speed</span><span class="p">,</span> <span class="n">zone</span><span class="p">]</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">MoveGeneric</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">ext_axes</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MoveGeneric</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">ext_axes</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">interface_names</span><span class="p">,</span> <span class="n">default_interface</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span>
+    <span class="p">):</span>
         <span class="k">if</span> <span class="n">speed</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Speed must be higher than zero. Current value=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">speed</span><span class="p">))</span>
 
+        <span class="nb">super</span><span class="p">(</span><span class="n">MoveGeneric</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">interface_names</span><span class="p">,</span> <span class="n">default_interface</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
 
@@ -357,9 +360,9 @@
 <span class="sd">            Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure</span>
 <span class="sd">            the motion planner has executed the instruction fully.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MoveToFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="p">[],</span> <span class="n">speed</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">feedback_level</span><span class="p">)</span>
         <span class="n">instruction</span> <span class="o">=</span> <span class="s2">&quot;MoveTo&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="n">instruction</span>
+        <span class="n">interfaces</span> <span class="o">=</span> <span class="p">{</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="n">instruction</span><span class="p">}</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MoveToFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="p">[],</span> <span class="n">speed</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">interfaces</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">feedback_level</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FrameJ&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">motion_type</span> <span class="o">==</span> <span class="n">Motion</span><span class="o">.</span><span class="n">JOINT</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;FrameL&quot;</span><span class="p">]</span></div></div>
 
 
@@ -408,9 +411,16 @@
 <span class="sd">            Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure</span>
 <span class="sd">            the motion planner has executed the instruction fully.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MoveToRobtarget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">ext_axes</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">feedback_level</span><span class="p">)</span>
         <span class="n">instruction</span> <span class="o">=</span> <span class="s2">&quot;MoveTo&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="n">instruction</span>
+        <span class="n">interfaces</span> <span class="o">=</span> <span class="p">{</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="n">instruction</span><span class="p">}</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MoveToRobtarget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">frame</span><span class="p">,</span>
+            <span class="n">ext_axes</span><span class="p">,</span>
+            <span class="n">speed</span><span class="p">,</span>
+            <span class="n">zone</span><span class="p">,</span>
+            <span class="n">interfaces</span><span class="p">,</span>
+            <span class="n">feedback_level</span><span class="o">=</span><span class="n">feedback_level</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;J&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">motion_type</span> <span class="o">==</span> <span class="n">Motion</span><span class="o">.</span><span class="n">JOINT</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">]</span></div></div>
 </code></pre></div>
         
