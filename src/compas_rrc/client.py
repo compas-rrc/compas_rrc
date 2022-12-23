@@ -9,6 +9,7 @@ from compas_rrc.common import CLIENT_PROTOCOL_VERSION
 from compas_rrc.common import FutureResult
 from compas_rrc.common import InstructionException
 from compas_rrc.common import Interfaces
+from compas_rrc.parsers.abb import parser
 
 __all__ = ["RosClient", "AbbClient"]
 
@@ -369,8 +370,20 @@ class AbbClient(object):
 
         if future:
             result = message
-            if future["parser"]:
-                result = future["parser"](result)
+            parser_method = future["parser"]
+            if parser_method:
+                # NOTE: This is a rather convoluted way to passing the client to the parser
+                # The __self__ of the parser method is the instruction instance, but is has been
+                # reconstructed after being received on the subscribed, we cannot easily add the client
+                # instance to the instruction before sending because client cannot be serialized
+                # so we need to assign it on the parsing stage.
+                # A cleaner alternative to this would be that `parse_feedback` receives a `client`
+                # parameter (or kwargs), but that would mean a breaking change, so we're using
+                # this for the time being, perhaps we need to re-evaluate later on and take the
+                # breaking change route anyway.
+                if hasattr(parser_method, "__self__"):
+                    parser_method.__self__.client = self
+                result = parser_method(result)
             else:
                 result = default_feedback_parser(result)
             if "result" in future:
@@ -379,3 +392,17 @@ class AbbClient(object):
             elif "callback" in future:
                 future["callback"](result)
                 # TODO: Handle unsubscribes
+
+    def parse_variable_value(self, raw_value):
+        """Parses a robot data type string into a similar Python data type.
+
+        Parameters
+        ----------
+        raw_value : str
+            The string representation of a variable value in the ABB RAPID language.
+
+        Returns
+        -------
+        obj
+            A python object with data types similar to the RAPID ones."""
+        return parser.parse(raw_value)

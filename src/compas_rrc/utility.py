@@ -1,6 +1,7 @@
 from compas.geometry import Frame
 from compas_fab.backends.ros.messages import ROSmsg
 
+from compas_rrc.client import default_feedback_parser
 from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import ExternalAxes
@@ -570,6 +571,7 @@ class GetVariable(BaseInstruction):
         print("Tool = ", result)
 
     """
+
     def __init__(self, variable_name, task_name, feedback_level=FeedbackLevel.DATA):
         """Create a new instance of the instruction.
 
@@ -595,6 +597,22 @@ class GetVariable(BaseInstruction):
         obj
             Value of the variable (the type depends on its type on the robot program).
         """
-        value = result["string_values"][0]
-        print("Variable of type {}, value={}".format(type(value), value))
+        # Make sure the default parsers take care of turning basic error messages
+        # into exceptions. In that case, return it (the raising of that is handled by FutureResult)
+        feedback_value = default_feedback_parser(result)
+        if isinstance(feedback_value, Exception):
+            return feedback_value
+
+        if not len(result["string_values"]):
+            return None
+
+        if len(result["string_values"]) > 2:
+            raise InstructionException(
+                "Unexpected return value. Expected 2 string values, got {}.".format(len(result["string_values"])),
+                result,
+            )
+
+        raw_value = result["string_values"][0]
+        value = self.client.parse_variable_value(raw_value)
+        value.type_name = result["string_values"][1]
         return value
