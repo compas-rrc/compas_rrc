@@ -1,14 +1,14 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
+from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.common import Interfaces
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
 __all__ = ["PrintText"]
 
 
-class PrintText(ROSmsg):
+class PrintText(BaseInstruction):
     """Print text is a call that prints a single line of text on the robot panel.
 
     Examples
@@ -36,7 +36,7 @@ class PrintText(ROSmsg):
         """
         if len(text) > 80:
             raise ValueError("text can only be up to 80 chars")
-        self.instruction = INSTRUCTION_PREFIX + "PrintText"
+        super(PrintText, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "PrintText"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [text]
