@@ -206,7 +206,7 @@ class GetRobtarget(BaseInstruction):
 
     def __init__(self):
         """Create a new instance of the instruction."""
-        super(Noop, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "GetRobtarget"})
+        super(GetRobtarget, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "GetRobtarget"})
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
