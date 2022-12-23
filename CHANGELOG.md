@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed all instructions to inherit from `BaseInstruction` instead of `ROSMsg`.
+* Changed `MoveGeneric` to require new interface arguments on the constructor.
+
 ### Fixed
 
 ### Deprecated
