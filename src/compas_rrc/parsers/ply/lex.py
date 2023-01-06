@@ -57,7 +57,7 @@ class LexError(Exception):
 # Token class.  This class is used to represent the tokens produced.
 class LexToken(object):
     def __repr__(self):
-        return f"LexToken({self.type},{self.value!r},{self.lineno},{self.lexpos})"
+        return "LexToken({},{},{},{})".format(self.type, repr(self.value), self.lineno, self.lexpos)
 
 
 # This object is a stand-in for a logging object created by the
@@ -164,7 +164,7 @@ class Lexer:
     # ------------------------------------------------------------
     def begin(self, state):
         if state not in self.lexstatere:
-            raise ValueError(f"Undefined state {state!r}")
+            raise ValueError("Undefined state {}".format(repr(state)))
         self.lexre = self.lexstatere[state]
         self.lexretext = self.lexstateretext[state]
         self.lexignore = self.lexstateignore.get(state, "")
@@ -281,14 +281,18 @@ class Lexer:
                     newtok = self.lexerrorf(tok)
                     if lexpos == self.lexpos:
                         # Error method didn't change text position at all. This is an error.
-                        raise LexError(f"Scanning error. Illegal character {lexdata[lexpos]!r}", lexdata[lexpos:])
+                        raise LexError(
+                            "Scanning error. Illegal character {}".format(repr(lexdata[lexpos])), lexdata[lexpos:]
+                        )
                     lexpos = self.lexpos
                     if not newtok:
                         continue
                     return newtok
 
                 self.lexpos = lexpos
-                raise LexError(f"Illegal character {lexdata[lexpos]!r} at index {lexpos}", lexdata[lexpos:])
+                raise LexError(
+                    "Illegal character {} at index {}".format(repr(lexdata[lexpos], lexpos)), lexdata[lexpos:]
+                )
 
         if self.lexeoff:
             tok = LexToken()
@@ -343,7 +347,14 @@ def _get_regex(func):
 # -----------------------------------------------------------------------------
 def get_caller_module_dict(levels):
     f = sys._getframe(levels)
-    return {**f.f_globals, **f.f_locals}
+    # The following 4 lines are rolled back from an older version of PLY
+    # to get back python 2.7 compatibility
+    ldict = f.f_globals.copy()
+    if f.f_globals != f.f_locals:
+        ldict.update(f.f_locals)
+    return ldict
+    # This would be the python 3.x version of that (and current released code of PLY)
+    # return {**f.f_globals, **f.f_locals}
 
 
 # -----------------------------------------------------------------------------
@@ -466,10 +477,10 @@ class LexerReflect(object):
         terminals = {}
         for n in self.tokens:
             if not _is_identifier.match(n):
-                self.log.error(f"Bad token name {n!r}")
+                self.log.error("Bad token name {}".format(repr(n)))
                 self.error = True
             if n in terminals:
-                self.log.warning(f"Token {n!r} multiply defined")
+                self.log.warning("Token {} multiply defined".format(repr(n)))
             terminals[n] = 1
 
     # Get the literals specifier
@@ -483,7 +494,7 @@ class LexerReflect(object):
         try:
             for c in self.literals:
                 if not isinstance(c, StringTypes) or len(c) > 1:
-                    self.log.error(f"Invalid literal {c!r}. Must be a single character")
+                    self.log.error("Invalid literal {}. Must be a single character".format(repr(c)))
                     self.error = True
 
         except TypeError:
@@ -728,7 +739,7 @@ class LexerReflect(object):
 #
 # Build all of the regular expression rules from definitions in the supplied module
 # -----------------------------------------------------------------------------
-def lex(*, module=None, object=None, debug=False, reflags=int(re.VERBOSE), debuglog=None, errorlog=None):
+def lex(module=None, object=None, debug=False, reflags=int(re.VERBOSE), debuglog=None, errorlog=None):
 
     global lexer
 
@@ -897,7 +908,7 @@ def runmain(lexer=None, data=None):
         tok = _token()
         if not tok:
             break
-        sys.stdout.write(f"({tok.type},{tok.value!r},{tok.lineno},{tok.lexpos})\n")
+        sys.stdout.write("({},{},{},{})\n".format(tok.type, repr(tok.value), tok.lineno, tok.lexpos))
 
 
 # -----------------------------------------------------------------------------

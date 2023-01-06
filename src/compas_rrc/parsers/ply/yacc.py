@@ -2320,7 +2320,6 @@ class ParserReflect(object):
 
 
 def yacc(
-    *,
     debug=yaccdebug,
     module=None,
     start=None,
@@ -2328,7 +2327,7 @@ def yacc(
     optimize=False,
     debugfile=debug_file,
     debuglog=None,
-    errorlog=None
+    errorlog=None,
 ):
 
     # Reference to the parsing method of the last built parser
