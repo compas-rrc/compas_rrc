@@ -1,3 +1,5 @@
+import json
+
 from compas.geometry import Frame
 from compas_fab.backends.ros.messages import ROSmsg
 
@@ -23,6 +25,7 @@ __all__ = [
     "SetAcceleration",
     "SetMaxSpeed",
     "SetTool",
+    "SetVariable",
     "SetWorkObject",
     "StartApp",
     "Stop",
@@ -617,3 +620,37 @@ class GetVariable(BaseInstruction):
 
         value = self.client.parse_variable_value(raw_value, type_name)
         return value
+
+
+class SetVariable(BaseInstruction):
+    """Set the value of a variable defined in robot code.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Start app
+        result = abb.send_and_wait(rrc.SetVariable("n_RRC_Value", 42, "T_ROB1"))
+        print("Result = ", result)
+
+    """
+
+    def __init__(self, variable_name, variable_value, task_name, feedback_level=FeedbackLevel.DATA):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        variable_name : :obj:`str`
+            Variable name to assign.
+        variable_value
+            Value to assign to the variable. # TODO: Define exactly which format this needs to go in, probably native
+        task_name : :obj:`str`
+            Robot task in which the variable is to be found, e.g. ``T_ROB1``.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
+        """
+        super(SetVariable, self).__init__({Interfaces.SYS: "set_variable"}, default_interface=Interfaces.SYS)
+        serialized_variable_value = json.dumps(variable_value)
+        self.feedback_level = feedback_level
+        self.string_values = [variable_name, serialized_variable_value, task_name]
+        self.float_values = []
