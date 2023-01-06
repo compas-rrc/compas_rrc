@@ -95,7 +95,9 @@
         
         
         <h1>Source code for compas_rrc.utility</h1><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code>
-<span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">compas_fab.backends.ros.messages</span> <span class="kn">import</span> <span class="n">ROSmsg</span>
 
 <span class="kn">from</span> <span class="nn">compas_rrc.client</span> <span class="kn">import</span> <span class="n">default_feedback_parser</span>
@@ -120,6 +122,7 @@
     <span class="s2">&quot;SetAcceleration&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SetMaxSpeed&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SetTool&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SetVariable&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SetWorkObject&quot;</span><span class="p">,</span>
     <span class="s2">&quot;StartApp&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Stop&quot;</span><span class="p">,</span>
@@ -714,6 +717,40 @@
 
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">parse_variable_value</span><span class="p">(</span><span class="n">raw_value</span><span class="p">,</span> <span class="n">type_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">SetVariable</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the value of a variable defined in robot code.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Start app</span>
+<span class="sd">        result = abb.send_and_wait(rrc.SetVariable(&quot;n_RRC_Value&quot;, 42, &quot;T_ROB1&quot;))</span>
+<span class="sd">        print(&quot;Result = &quot;, result)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">variable_value</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        variable_name : :obj:`str`</span>
+<span class="sd">            Variable name to assign.</span>
+<span class="sd">        variable_value</span>
+<span class="sd">            Value to assign to the variable. # TODO: Define exactly which format this needs to go in, probably native</span>
+<span class="sd">        task_name : :obj:`str`</span>
+<span class="sd">            Robot task in which the variable is to be found, e.g. ``T_ROB1``.</span>
+<span class="sd">        feedback_level : :obj:`int`</span>
+<span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SetVariable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s2">&quot;set_variable&quot;</span><span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
+        <span class="n">serialized_variable_value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">variable_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable_name</span><span class="p">,</span> <span class="n">serialized_variable_value</span><span class="p">,</span> <span class="n">task_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span>
 </code></pre></div>
         
       </main>
