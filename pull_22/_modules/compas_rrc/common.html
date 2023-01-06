@@ -134,7 +134,7 @@
 
 
 <div class="viewcode-block" id="FeedbackLevel"><a class="viewcode-back" href="../../reference/generated/compas_rrc.FeedbackLevel.html#compas_rrc.FeedbackLevel">[docs]</a><span class="k">class</span> <span class="nc">FeedbackLevel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents default valid feedback levels.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents default valid feedback levels.</span>
 
 <span class="sd">    .. autoattribute:: NONE</span>
 <span class="sd">    .. autoattribute:: DONE</span>
@@ -142,53 +142,53 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="sd">&quot;&quot;&quot;Indicates no feedback is requested from the robot.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Indicates no feedback is requested from the robot.&quot;&quot;&quot;</span>
 
     <span class="n">DONE</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="sd">&quot;&quot;&quot;Indicates completion feedback is requested from the robot. Completion feedback means</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Indicates completion feedback is requested from the robot. Completion feedback means</span>
 <span class="sd">    the robot has executed the procedure. See :meth:`AbbClient.send_and_wait` for more details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">DATA</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="sd">&quot;&quot;&quot;Indicates all feedback data is requested from the robot.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Indicates all feedback data is requested from the robot.&quot;&quot;&quot;</span></div>
 
 
 <span class="k">class</span> <span class="nc">Interfaces</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Defines the supported interfaces over which instructions can be sent.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the supported interfaces over which instructions can be sent.</span>
 
 <span class="sd">    .. autoattribute:: APP</span>
 <span class="sd">    .. autoattribute:: SYS</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">APP</span> <span class="o">=</span> <span class="s2">&quot;app&quot;</span>
-    <span class="sd">&quot;&quot;&quot;Default interface. Uses the primary TCP/IP communication channels.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default interface. Uses the primary TCP/IP communication channels.&quot;&quot;&quot;</span>
 
     <span class="n">SYS</span> <span class="o">=</span> <span class="s2">&quot;sys&quot;</span>
-    <span class="sd">&quot;&quot;&quot;System interafce uses an alternative communication channel. In the case of ABB, web services.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;System interafce uses an alternative communication channel. In the case of ABB, web services.&quot;&quot;&quot;</span>
 
     <span class="n">SUPPORTED_INTERFACES</span> <span class="o">=</span> <span class="p">(</span><span class="n">APP</span><span class="p">,</span> <span class="n">SYS</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;Tuple of currently-supported interfaces.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tuple of currently-supported interfaces.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="ExecutionLevel"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ExecutionLevel.html#compas_rrc.ExecutionLevel">[docs]</a><span class="k">class</span> <span class="nc">ExecutionLevel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Defines the execution level of an instruction.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the execution level of an instruction.</span>
 
 <span class="sd">    .. autoattribute:: ROBOT</span>
 <span class="sd">    .. autoattribute:: CONTROLLER</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">ROBOT</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="sd">&quot;&quot;&quot;Execute instruction on the robot task.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute instruction on the robot task.&quot;&quot;&quot;</span>
 
     <span class="n">CONTROLLER</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="sd">&quot;&quot;&quot;Execute instruction on the ``controller`` task (only usable with custom instructions).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute instruction on the ``controller`` task (only usable with custom instructions).&quot;&quot;&quot;</span>
 
     <span class="n">DRIVER</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="sd">&quot;&quot;&quot;Execute instruction outside of the robot controller, and inside the ROS environment.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute instruction outside of the robot controller, and inside the ROS environment.&quot;&quot;&quot;</span></div>
 
 
 <span class="k">class</span> <span class="nc">InstructionException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception caused during/after the execution of an instruction.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception caused during/after the execution of an instruction.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">InstructionException</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, RRC Reply=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
@@ -196,13 +196,13 @@
 
 
 <span class="k">class</span> <span class="nc">TimeoutException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Timeout exception caused during execution of an instruction.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Timeout exception caused during execution of an instruction.&quot;&quot;&quot;</span>
 
     <span class="k">pass</span>
 
 
 <span class="k">class</span> <span class="nc">BaseInstruction</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for all instructions.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all instructions.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction_names</span><span class="p">,</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -213,7 +213,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">select_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Select the interace over which the instruction will be sent.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select the interace over which the instruction will be sent.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -229,7 +229,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Instruction does not support selected interface: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">interface_name</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">supports_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Determines if a specific interface is supported by this instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determines if a specific interface is supported by this instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -244,7 +244,7 @@
         <span class="k">return</span> <span class="n">interface_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;instruction_names&quot;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">to_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the instruction to a roslibpy Message instance.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the instruction to a roslibpy Message instance.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -257,7 +257,7 @@
 
 
 <div class="viewcode-block" id="FutureResult"><a class="viewcode-back" href="../../reference/generated/compas_rrc.FutureResult.html#compas_rrc.FutureResult">[docs]</a><span class="k">class</span> <span class="nc">FutureResult</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents a future result value.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a future result value.</span>
 
 <span class="sd">    Futures are the result of asynchronous operations</span>
 <span class="sd">    but allow to explicitely control when to block and wait</span>
@@ -269,7 +269,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="FutureResult.result"><a class="viewcode-back" href="../../reference/generated/compas_rrc.FutureResult.result.html#compas_rrc.FutureResult.result">[docs]</a>    <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the feedback value returned by the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the feedback value returned by the instruction.</span>
 
 <span class="sd">        If the instruction has not yet returned feedback, it will wait</span>
 <span class="sd">        up to ``timeout`` seconds. If the ``timeout`` expires, the method</span>
@@ -291,10 +291,10 @@
 
 
 <div class="viewcode-block" id="ExternalAxes"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ExternalAxes.html#compas_rrc.ExternalAxes">[docs]</a><span class="k">class</span> <span class="nc">ExternalAxes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents a configuration for external axes.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a configuration for external axes.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ExternalAxes.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ExternalAxes.__init__.html#compas_rrc.ExternalAxes.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize a new object with the specified values for external axes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new object with the specified values for external axes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -309,7 +309,7 @@
     <span class="c1"># Properties</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">eax_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Value of the first external axis.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Value of the first external axis.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@eax_a</span><span class="o">.</span><span class="n">setter</span>
@@ -318,7 +318,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">eax_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Value of the second external axis.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Value of the second external axis.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@eax_b</span><span class="o">.</span><span class="n">setter</span>
@@ -327,7 +327,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">eax_c</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Value of the third external axis.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Value of the third external axis.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="nd">@eax_c</span><span class="o">.</span><span class="n">setter</span>
@@ -336,7 +336,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">eax_d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Value of the fourth external axis.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Value of the fourth external axis.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 
     <span class="nd">@eax_d</span><span class="o">.</span><span class="n">setter</span>
@@ -345,7 +345,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">eax_e</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Value of the fifth external axis.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Value of the fifth external axis.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 
     <span class="nd">@eax_e</span><span class="o">.</span><span class="n">setter</span>
@@ -354,7 +354,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">eax_f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Value of the sexth external axis.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Value of the sexth external axis.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
 
     <span class="nd">@eax_f</span><span class="o">.</span><span class="n">setter</span>
@@ -382,7 +382,7 @@
 
     <span class="c1"># Conversion methods</span>
 <div class="viewcode-block" id="ExternalAxes.to_configuration_primitive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ExternalAxes.to_configuration_primitive.html#compas_rrc.ExternalAxes.to_configuration_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">to_configuration_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_types</span><span class="p">,</span> <span class="n">joint_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the ExternalAxes to a :class:`compas.robots.Configuration`, including the unit conversion</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the ExternalAxes to a :class:`compas.robots.Configuration`, including the unit conversion</span>
 <span class="sd">        from mm and degrees to meters and radians.</span>
 
 <span class="sd">        Parameters</span>
@@ -400,7 +400,7 @@
         <span class="k">return</span> <span class="n">Configuration</span><span class="p">(</span><span class="n">joint_values</span><span class="p">,</span> <span class="n">joint_types</span><span class="p">,</span> <span class="n">joint_names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ExternalAxes.to_configuration"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ExternalAxes.to_configuration.html#compas_rrc.ExternalAxes.to_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">to_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the ExternalAxes to a :class:`compas.robots.Configuration`, including the unit conversion</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the ExternalAxes to a :class:`compas.robots.Configuration`, including the unit conversion</span>
 <span class="sd">        from mm and degrees to meters and radians.</span>
 
 <span class="sd">        Parameters</span>
@@ -421,7 +421,7 @@
 
 <div class="viewcode-block" id="ExternalAxes.from_configuration_primitive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ExternalAxes.from_configuration_primitive.html#compas_rrc.ExternalAxes.from_configuration_primitive">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_configuration_primitive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">joint_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`, including the unit</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`, including the unit</span>
 <span class="sd">        conversion from meters and radians to mm and degrees.</span>
 
 <span class="sd">        Parameters</span>
@@ -449,7 +449,7 @@
 
 <div class="viewcode-block" id="ExternalAxes.from_configuration"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ExternalAxes.from_configuration.html#compas_rrc.ExternalAxes.from_configuration">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_configuration</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">robot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`, including the unit</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of ``ExternalAxes`` from a :class:`compas.robots.Configuration`, including the unit</span>
 <span class="sd">        conversion from meters and radians to mm and degrees.</span>
 
 <span class="sd">        Parameters</span>
@@ -471,7 +471,7 @@
 
 
 <div class="viewcode-block" id="RobotJoints"><a class="viewcode-back" href="../../reference/generated/compas_rrc.RobotJoints.html#compas_rrc.RobotJoints">[docs]</a><span class="k">class</span> <span class="nc">RobotJoints</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents a configuration for robot joints&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a configuration for robot joints&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="RobotJoints.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.RobotJoints.__init__.html#compas_rrc.RobotJoints.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -549,7 +549,7 @@
 
     <span class="c1"># Conversion methods</span>
 <div class="viewcode-block" id="RobotJoints.to_configuration_primitive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.RobotJoints.to_configuration_primitive.html#compas_rrc.RobotJoints.to_configuration_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">to_configuration_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_types</span><span class="p">,</span> <span class="n">joint_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the RobotJoints to a :class:`compas.robots.Configuration`, including the unit conversion</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the RobotJoints to a :class:`compas.robots.Configuration`, including the unit conversion</span>
 <span class="sd">        from mm and degrees to meters and radians.</span>
 
 <span class="sd">        Parameters</span>
@@ -567,7 +567,7 @@
         <span class="k">return</span> <span class="n">Configuration</span><span class="p">(</span><span class="n">joint_values</span><span class="p">,</span> <span class="n">joint_types</span><span class="p">,</span> <span class="n">joint_names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RobotJoints.to_configuration"><a class="viewcode-back" href="../../reference/generated/compas_rrc.RobotJoints.to_configuration.html#compas_rrc.RobotJoints.to_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">to_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the RobotJoints to a :class:`compas.robots.Configuration`, including the unit conversion</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the RobotJoints to a :class:`compas.robots.Configuration`, including the unit conversion</span>
 <span class="sd">        from mm and degrees to meters and radians.</span>
 
 <span class="sd">        Parameters</span>
@@ -588,7 +588,7 @@
 
 <div class="viewcode-block" id="RobotJoints.from_configuration_primitive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.RobotJoints.from_configuration_primitive.html#compas_rrc.RobotJoints.from_configuration_primitive">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_configuration_primitive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">joint_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`, including the unit</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`, including the unit</span>
 <span class="sd">        conversion from meters and radians to mm and degrees.</span>
 
 <span class="sd">        Parameters</span>
@@ -616,7 +616,7 @@
 
 <div class="viewcode-block" id="RobotJoints.from_configuration"><a class="viewcode-back" href="../../reference/generated/compas_rrc.RobotJoints.from_configuration.html#compas_rrc.RobotJoints.from_configuration">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_configuration</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">robot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`, including the unit</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of ``RobotJoints`` from a :class:`compas.robots.Configuration`, including the unit</span>
 <span class="sd">        conversion from meters and radians to mm and degrees.</span>
 
 <span class="sd">        Parameters</span>

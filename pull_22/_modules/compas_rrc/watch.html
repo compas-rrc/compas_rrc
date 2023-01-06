@@ -110,7 +110,7 @@
 
 
 <div class="viewcode-block" id="ReadWatch"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadWatch.html#compas_rrc.ReadWatch">[docs]</a><span class="k">class</span> <span class="nc">ReadWatch</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read Watch is a call that requests the value of the watch in the robot code.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read Watch is a call that requests the value of the watch in the robot code.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -126,7 +126,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ReadWatch.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadWatch.__init__.html#compas_rrc.ReadWatch.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ReadWatch</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;ReadWatch&quot;</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DONE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
@@ -134,7 +134,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="ReadWatch.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadWatch.parse_feedback.html#compas_rrc.ReadWatch.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the result as a :obj:`float` (seconds).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as a :obj:`float` (seconds).</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        ------</span>
@@ -147,7 +147,7 @@
 
 
 <div class="viewcode-block" id="StartWatch"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StartWatch.html#compas_rrc.StartWatch">[docs]</a><span class="k">class</span> <span class="nc">StartWatch</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Start Watch is a call that starts the watch in the robot code.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start Watch is a call that starts the watch in the robot code.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -163,7 +163,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="StartWatch.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StartWatch.__init__.html#compas_rrc.StartWatch.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -178,7 +178,7 @@
 
 
 <div class="viewcode-block" id="StopWatch"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StopWatch.html#compas_rrc.StopWatch">[docs]</a><span class="k">class</span> <span class="nc">StopWatch</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Stop Watch is a call that stops the watch in the robot code.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop Watch is a call that stops the watch in the robot code.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -194,7 +194,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="StopWatch.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StopWatch.__init__.html#compas_rrc.StopWatch.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

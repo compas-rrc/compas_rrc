@@ -141,7 +141,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">goal</span> <span class="o">=</span> <span class="n">goal</span>
 
     <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Attempt to cancel the action.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempt to cancel the action.</span>
 
 <span class="sd">        If the task is currently being executed and cannot be cancelled</span>
 <span class="sd">        then the method will return ``False``, otherwise the call will</span>
@@ -167,7 +167,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_local_cache_directory</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">local_cache_directory</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct local caching options based on the local cache directory.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct local caching options based on the local cache directory.</span>
 
 <span class="sd">        Based on the specified local cache directory, determine whether</span>
 <span class="sd">        caching should be used at all, what the robot name is, and what the</span>
@@ -201,7 +201,7 @@
 
 
 <div class="viewcode-block" id="RosClient"><a class="viewcode-back" href="../../../../reference/generated/compas_rrc.RosClient.html#compas_rrc.RosClient">[docs]</a><span class="k">class</span> <span class="nc">RosClient</span><span class="p">(</span><span class="n">Ros</span><span class="p">,</span> <span class="n">ClientInterface</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Interface to use ROS as backend via the **rosbridge**.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interface to use ROS as backend via the **rosbridge**.</span>
 
 <span class="sd">    The connection is managed by ``roslibpy``.</span>
 
@@ -252,14 +252,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ros_distro</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retrieves the ROS version to which the client is connected (eg. kinetic)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves the ROS version to which the client is connected (eg. kinetic)&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ros_distro</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_ros_distro</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;/rosdistro&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ros_distro</span>
 
 <div class="viewcode-block" id="RosClient.load_robot"><a class="viewcode-back" href="../../../../reference/generated/compas_rrc.RosClient.load_robot.html#compas_rrc.RosClient.load_robot">[docs]</a>    <span class="k">def</span> <span class="nf">load_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">load_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">urdf_param_name</span><span class="o">=</span><span class="s1">&#39;/robot_description&#39;</span><span class="p">,</span> <span class="n">srdf_param_name</span><span class="o">=</span><span class="s1">&#39;/robot_description_semantic&#39;</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_cache_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Load an entire robot instance -including model and semantics- directly from ROS.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load an entire robot instance -including model and semantics- directly from ROS.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -337,7 +337,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">follow_joint_trajectory</span><span class="p">(</span><span class="n">joint_trajectory</span><span class="o">=</span><span class="n">joint_trajectory</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_convert_to_ros_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_trajectory</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Converts a ``compas_fab.robots.JointTrajectory`` into a ROS Msg joint trajectory.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts a ``compas_fab.robots.JointTrajectory`` into a ROS Msg joint trajectory.&quot;&quot;&quot;</span>
 
         <span class="c1"># For backwards-compatibility, accept ROS Msg directly as well and simply do not modify</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">joint_trajectory</span><span class="p">,</span> <span class="n">RosMsgJointTrajectory</span><span class="p">):</span>
@@ -360,7 +360,7 @@
         <span class="k">return</span> <span class="n">trajectory</span>
 
 <div class="viewcode-block" id="RosClient.follow_joint_trajectory"><a class="viewcode-back" href="../../../../reference/generated/compas_rrc.RosClient.follow_joint_trajectory.html#compas_rrc.RosClient.follow_joint_trajectory">[docs]</a>    <span class="k">def</span> <span class="nf">follow_joint_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_trajectory</span><span class="p">,</span> <span class="n">action_name</span><span class="o">=</span><span class="s1">&#39;/joint_trajectory_action&#39;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">feedback_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60000</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Follow the joint trajectory as computed by MoveIt planner.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Follow the joint trajectory as computed by MoveIt planner.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -427,7 +427,7 @@
         <span class="k">return</span> <span class="n">action_result</span></div>
 
 <div class="viewcode-block" id="RosClient.execute_joint_trajectory"><a class="viewcode-back" href="../../../../reference/generated/compas_rrc.RosClient.execute_joint_trajectory.html#compas_rrc.RosClient.execute_joint_trajectory">[docs]</a>    <span class="k">def</span> <span class="nf">execute_joint_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_trajectory</span><span class="p">,</span> <span class="n">action_name</span><span class="o">=</span><span class="s1">&#39;/execute_trajectory&#39;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">feedback_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60000</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Execute a joint trajectory via the MoveIt infrastructure.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute a joint trajectory via the MoveIt infrastructure.</span>
 
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>

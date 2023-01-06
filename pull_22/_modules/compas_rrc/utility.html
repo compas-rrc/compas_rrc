@@ -129,12 +129,12 @@
 
 
 <span class="k">def</span> <span class="nf">is_rapid_none</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;In RAPID, None values are expressed as 9E+9, they end up as 8999999488 in Python&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;In RAPID, None values are expressed as 9E+9, they end up as 8999999488 in Python&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8999999488</span>
 
 
 <div class="viewcode-block" id="Noop"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Noop.html#compas_rrc.Noop">[docs]</a><span class="k">class</span> <span class="nc">Noop</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;No-op is a call without any effect. But like all other instructions it makes a roundtrip from the user code to the robot and back.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;No-op is a call without any effect. But like all other instructions it makes a roundtrip from the user code to the robot and back.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -150,7 +150,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Noop.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Noop.__init__.html#compas_rrc.Noop.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -165,7 +165,7 @@
 
 
 <div class="viewcode-block" id="Debug"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Debug.html#compas_rrc.Debug">[docs]</a><span class="k">class</span> <span class="nc">Debug</span><span class="p">(</span><span class="n">ROSmsg</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Activate debug mode on any instruction by wrapping it.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Activate debug mode on any instruction by wrapping it.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -180,7 +180,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Debug.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Debug.__init__.html#compas_rrc.Debug.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">debug_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize a new debug instruction wrapping another instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new debug instruction wrapping another instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -194,17 +194,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">msg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Raw message.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Raw message.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">msg</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">instruction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Name of the instruction.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the instruction.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">instruction</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">sequence_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sequence identifier.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sequence identifier.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">sequence_id</span>
 
     <span class="nd">@sequence_id</span><span class="o">.</span><span class="n">setter</span>
@@ -213,7 +213,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">feedback_level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Feedback level.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Feedback level.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">feedback_level</span>
 
     <span class="nd">@feedback_level</span><span class="o">.</span><span class="n">setter</span>
@@ -222,17 +222,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">exec_level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Execution level.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execution level.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">exec_level</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">string_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List of string values.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of string values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">string_values</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">float_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List of float values.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of float values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">float_values</span>
 
 <div class="viewcode-block" id="Debug.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Debug.parse_feedback.html#compas_rrc.Debug.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
@@ -242,7 +242,7 @@
 
 
 <div class="viewcode-block" id="GetJoints"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.html#compas_rrc.GetJoints">[docs]</a><span class="k">class</span> <span class="nc">GetJoints</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get joints is a call that requests the joint values (:class:`RobotJoints`) and the external axes (:class:`ExternalAxes`) of the robot.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get joints is a call that requests the joint values (:class:`RobotJoints`) and the external axes (:class:`ExternalAxes`) of the robot.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -258,7 +258,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GetJoints.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.__init__.html#compas_rrc.GetJoints.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GetJoints</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;GetJoints&quot;</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DONE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
@@ -266,7 +266,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="GetJoints.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.parse_feedback.html#compas_rrc.GetJoints.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the result as :class:`RobotJoints` and :class:`ExternalAxes`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as :class:`RobotJoints` and :class:`ExternalAxes`.</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        ------</span>
@@ -286,7 +286,7 @@
 
 
 <div class="viewcode-block" id="GetRobtarget"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.html#compas_rrc.GetRobtarget">[docs]</a><span class="k">class</span> <span class="nc">GetRobtarget</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Instruction to request the current robtarget defined as frame (:class:`compas.geometry.Frame`)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instruction to request the current robtarget defined as frame (:class:`compas.geometry.Frame`)</span>
 <span class="sd">    and external axes (:class:`ExternalAxes`) of the robot.</span>
 
 <span class="sd">    Examples</span>
@@ -303,7 +303,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GetRobtarget.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.__init__.html#compas_rrc.GetRobtarget.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GetRobtarget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">APP</span><span class="p">:</span> <span class="n">INSTRUCTION_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;GetRobtarget&quot;</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DONE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
@@ -311,7 +311,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="GetRobtarget.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.parse_feedback.html#compas_rrc.GetRobtarget.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the result as a :class:`compas.geometry.Frame` and :class:`ExternalAxes`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as a :class:`compas.geometry.Frame` and :class:`ExternalAxes`.</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        ------</span>
@@ -347,7 +347,7 @@
 
 
 <div class="viewcode-block" id="GetFrame"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetFrame.html#compas_rrc.GetFrame">[docs]</a><span class="k">class</span> <span class="nc">GetFrame</span><span class="p">(</span><span class="n">GetRobtarget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Instruction to request the current frame (:class:`compas.geometry.Frame`) of the robot.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instruction to request the current frame (:class:`compas.geometry.Frame`) of the robot.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -363,7 +363,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GetFrame.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetFrame.parse_feedback.html#compas_rrc.GetFrame.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the result as a :class:`compas.geometry.Frame`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as a :class:`compas.geometry.Frame`.</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        ------</span>
@@ -375,7 +375,7 @@
 
 
 <div class="viewcode-block" id="SetAcceleration"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetAcceleration.html#compas_rrc.SetAcceleration">[docs]</a><span class="k">class</span> <span class="nc">SetAcceleration</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set acceleration is a call that sets the acc- and deceleration of the robot.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set acceleration is a call that sets the acc- and deceleration of the robot.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -392,7 +392,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SetAcceleration.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetAcceleration.__init__.html#compas_rrc.SetAcceleration.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -411,7 +411,7 @@
 
 
 <div class="viewcode-block" id="SetTool"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetTool.html#compas_rrc.SetTool">[docs]</a><span class="k">class</span> <span class="nc">SetTool</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set tool is a call that sets a predefined tool in the robot as active.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set tool is a call that sets a predefined tool in the robot as active.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -427,7 +427,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SetTool.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetTool.__init__.html#compas_rrc.SetTool.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_name</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -444,7 +444,7 @@
 
 
 <div class="viewcode-block" id="SetMaxSpeed"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetMaxSpeed.html#compas_rrc.SetMaxSpeed">[docs]</a><span class="k">class</span> <span class="nc">SetMaxSpeed</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set max speed is a call that sets the override and maximal tool center point (TCP) speed from the robot.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set max speed is a call that sets the override and maximal tool center point (TCP) speed from the robot.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -462,7 +462,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SetMaxSpeed.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetMaxSpeed.__init__.html#compas_rrc.SetMaxSpeed.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">override</span><span class="p">,</span> <span class="n">max_tcp</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -484,7 +484,7 @@
 
 
 <div class="viewcode-block" id="SetWorkObject"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetWorkObject.html#compas_rrc.SetWorkObject">[docs]</a><span class="k">class</span> <span class="nc">SetWorkObject</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set work object is a call that sets a predefined work object in the robot as active.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set work object is a call that sets a predefined work object in the robot as active.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -500,7 +500,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SetWorkObject.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.SetWorkObject.__init__.html#compas_rrc.SetWorkObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wobj_name</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -517,7 +517,7 @@
 
 
 <div class="viewcode-block" id="Stop"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Stop.html#compas_rrc.Stop">[docs]</a><span class="k">class</span> <span class="nc">Stop</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Stop is a function to stop the associated motion task of the robot.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop is a function to stop the associated motion task of the robot.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -533,7 +533,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Stop.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Stop.__init__.html#compas_rrc.Stop.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -548,7 +548,7 @@
 
 
 <div class="viewcode-block" id="WaitTime"><a class="viewcode-back" href="../../reference/generated/compas_rrc.WaitTime.html#compas_rrc.WaitTime">[docs]</a><span class="k">class</span> <span class="nc">WaitTime</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wait time is a call that will wait on the robot task for a certain time.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait time is a call that will wait on the robot task for a certain time.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -565,7 +565,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="WaitTime.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.WaitTime.__init__.html#compas_rrc.WaitTime.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">NONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -582,7 +582,7 @@
 
 
 <div class="viewcode-block" id="StartApp"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StartApp.html#compas_rrc.StartApp">[docs]</a><span class="k">class</span> <span class="nc">StartApp</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Start the application-level code on the robot controller.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start the application-level code on the robot controller.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -594,7 +594,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="StartApp.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StartApp.__init__.html#compas_rrc.StartApp.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -606,7 +606,7 @@
 
 
 <div class="viewcode-block" id="StopApp"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StopApp.html#compas_rrc.StopApp">[docs]</a><span class="k">class</span> <span class="nc">StopApp</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Stop the application-level code on the robot controller.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop the application-level code on the robot controller.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -618,7 +618,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="StopApp.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.StopApp.__init__.html#compas_rrc.StopApp.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -630,7 +630,7 @@
 
 
 <div class="viewcode-block" id="ResetApp"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ResetApp.html#compas_rrc.ResetApp">[docs]</a><span class="k">class</span> <span class="nc">ResetApp</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reset the application-level code on the robot controller.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the application-level code on the robot controller.</span>
 
 <span class="sd">    In ABB robots, this is equivalent to reseting the program pointer</span>
 <span class="sd">    to main (ie. ``PP to Main``).</span>
@@ -645,7 +645,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ResetApp.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ResetApp.__init__.html#compas_rrc.ResetApp.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -657,7 +657,7 @@
 
 
 <div class="viewcode-block" id="GetVariable"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.html#compas_rrc.GetVariable">[docs]</a><span class="k">class</span> <span class="nc">GetVariable</span><span class="p">(</span><span class="n">BaseInstruction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the value of a variable defined in robot code.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the value of a variable defined in robot code.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -670,7 +670,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GetVariable.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.__init__.html#compas_rrc.GetVariable.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -687,7 +687,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="GetVariable.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.parse_feedback.html#compas_rrc.GetVariable.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the value of the variable.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the value of the variable.</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        ------</span>
