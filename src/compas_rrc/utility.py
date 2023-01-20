@@ -12,8 +12,8 @@ from compas_rrc.common import InstructionException
 from compas_rrc.common import Interfaces
 from compas_rrc.common import RobotJoints
 
-# TODO: This will change to a 2nd-level import
-from compas_rrc.parsers.complex_types import parse_complex_type
+from compas_rrc.complex_types import decode
+from compas_rrc.complex_types import encode
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
@@ -622,7 +622,7 @@ class GetVariable(BaseInstruction):
         type_namespace = result["string_values"][1]
         type_name = result["string_values"][2]
 
-        value = parse_complex_type(raw_value, type_name, type_namespace)
+        value = decode(raw_value, type_name, type_namespace)
         return value
 
 
@@ -654,7 +654,9 @@ class SetVariable(BaseInstruction):
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
         """
         super(SetVariable, self).__init__({Interfaces.SYS: "set_variable"}, default_interface=Interfaces.SYS)
-        serialized_variable_value = json.dumps(variable_value)
+        encoded_value = encode(variable_value, "abb")
+        serialized_value = json.dumps(encoded_value)
+
         self.feedback_level = feedback_level
-        self.string_values = [variable_name, serialized_variable_value, task_name]
+        self.string_values = [variable_name, serialized_value, task_name]
         self.float_values = []
