@@ -109,8 +109,8 @@
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">Interfaces</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">RobotJoints</span>
 
-<span class="c1"># TODO: This will change to a 2nd-level import</span>
-<span class="kn">from</span> <span class="nn">compas_rrc.parsers.complex_types</span> <span class="kn">import</span> <span class="n">parse_complex_type</span>
+<span class="kn">from</span> <span class="nn">compas_rrc.complex_types</span> <span class="kn">import</span> <span class="n">decode</span>
+<span class="kn">from</span> <span class="nn">compas_rrc.complex_types</span> <span class="kn">import</span> <span class="n">encode</span>
 
 <span class="n">INSTRUCTION_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;r_RRC_&quot;</span>
 
@@ -719,7 +719,7 @@
         <span class="n">type_namespace</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;string_values&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">type_name</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;string_values&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
 
-        <span class="n">value</span> <span class="o">=</span> <span class="n">parse_complex_type</span><span class="p">(</span><span class="n">raw_value</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">type_namespace</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="n">raw_value</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">type_namespace</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span></div></div>
 
 
@@ -751,9 +751,11 @@
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SetVariable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s2">&quot;set_variable&quot;</span><span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
-        <span class="n">serialized_variable_value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">variable_value</span><span class="p">)</span>
+        <span class="n">encoded_value</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="n">variable_value</span><span class="p">,</span> <span class="s2">&quot;abb&quot;</span><span class="p">)</span>
+        <span class="n">serialized_value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">encoded_value</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable_name</span><span class="p">,</span> <span class="n">serialized_variable_value</span><span class="p">,</span> <span class="n">task_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable_name</span><span class="p">,</span> <span class="n">serialized_value</span><span class="p">,</span> <span class="n">task_name</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span>
 </code></pre></div>
         
