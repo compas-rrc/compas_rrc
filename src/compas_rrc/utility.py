@@ -12,6 +12,9 @@ from compas_rrc.common import InstructionException
 from compas_rrc.common import Interfaces
 from compas_rrc.common import RobotJoints
 
+# TODO: This will change to a 2nd-level import
+from compas_rrc.parsers.complex_types import parse_complex_type
+
 INSTRUCTION_PREFIX = "r_RRC_"
 
 __all__ = [
@@ -609,16 +612,17 @@ class GetVariable(BaseInstruction):
         if not len(result["string_values"]):
             return None
 
-        if len(result["string_values"]) > 2:
+        if len(result["string_values"]) > 3:
             raise InstructionException(
-                "Unexpected return value. Expected 2 string values, got {}.".format(len(result["string_values"])),
+                "Unexpected return value. Expected 3 string values, got {}.".format(len(result["string_values"])),
                 result,
             )
 
         raw_value = json.loads(result["string_values"][0])
-        type_name = result["string_values"][1]
+        type_namespace = result["string_values"][1]
+        type_name = result["string_values"][2]
 
-        value = self.client.parse_variable_value(raw_value, type_name)
+        value = parse_complex_type(raw_value, type_name, type_namespace)
         return value
 
 

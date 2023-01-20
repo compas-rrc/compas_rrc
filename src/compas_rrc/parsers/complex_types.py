@@ -8,8 +8,10 @@ from compas.geometry import Point
 from compas.geometry import Quaternion
 
 
-def parse_complex_type(value, type_name):
-    cls = SUPPORTED_COMPLEX_TYPES.get(type_name)
+def parse_complex_type(value, type_name, type_namespace):
+    ns = SUPPORTED_COMPLEX_TYPES.get(type_namespace)
+    cls = ns.get(type_name) if ns else None
+
     # No supported complex type, return what we have
     if not cls:
         return value
@@ -59,7 +61,8 @@ class ToolData(object):
         return cls(robot_hold, frame, LoadData.from_list(load_data))
 
 
-SUPPORTED_COMPLEX_TYPES = {
+SUPPORTED_COMPLEX_TYPES = {}
+SUPPORTED_COMPLEX_TYPES["abb"] = {
     "tooldata": ToolData,
     "loaddata": LoadData,
 }
