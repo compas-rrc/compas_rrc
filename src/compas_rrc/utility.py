@@ -615,7 +615,7 @@ class GetVariable(BaseInstruction):
                 result,
             )
 
-        raw_value = result["string_values"][0]
+        raw_value = json.loads(result["string_values"][0])
         type_name = result["string_values"][1]
 
         value = self.client.parse_variable_value(raw_value, type_name)

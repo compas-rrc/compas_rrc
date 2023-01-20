@@ -101,7 +101,6 @@ from __future__ import absolute_import
 
 from compas_rrc.__version__ import __author__, __author_email__, __copyright__, __license__, __url__, __version__
 from compas_rrc.client import AbbClient, RosClient
-from compas_rrc.parsers import ParserException
 from compas_rrc.common import (
     CLIENT_PROTOCOL_VERSION,
     ExecutionLevel,
@@ -148,8 +147,6 @@ __all__ = [
     # client
     "AbbClient",
     "RosClient",
-    # parsers
-    "ParserException",
     # common
     "CLIENT_PROTOCOL_VERSION",
     "ExecutionLevel",

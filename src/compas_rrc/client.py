@@ -9,7 +9,6 @@ from compas_rrc.common import CLIENT_PROTOCOL_VERSION
 from compas_rrc.common import FutureResult
 from compas_rrc.common import InstructionException
 from compas_rrc.common import Interfaces
-from compas_rrc.parsers.abb import parser
 from compas_rrc.parsers.abb_types import parse_complex_type
 
 __all__ = ["RosClient", "AbbClient"]
@@ -384,6 +383,7 @@ class AbbClient(object):
                 # breaking change route anyway.
                 if hasattr(parser_method, "__self__"):
                     parser_method.__self__.client = self
+
                 result = parser_method(result)
             else:
                 result = default_feedback_parser(result)
@@ -394,13 +394,13 @@ class AbbClient(object):
                 future["callback"](result)
                 # TODO: Handle unsubscribes
 
-    def parse_variable_value(self, raw_value, type_name):
-        """Parses a robot data type string into a similar Python data type.
+    def parse_variable_value(self, obj, type_name):
+        """Parses a Python built-in data types into a high-level data types
 
         Parameters
         ----------
-        raw_value : str
-            The string representation of a variable value in the ABB RAPID language.
+        obj : obj
+            Python object.
         type_name : str
             RAPID data type name.
 
@@ -408,7 +408,6 @@ class AbbClient(object):
         -------
         obj
             A python object with data types similar to the RAPID ones."""
-        obj = parser.parse(raw_value)
         obj = parse_complex_type(obj, type_name)
 
         return obj
