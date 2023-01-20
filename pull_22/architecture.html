@@ -135,6 +135,88 @@ design decisions taken during development.</p>
 </li>
 </ul>
 </section>
+<section id="software-architecture-layers">
+<h2>Software Architecture Layers</h2>
+<p>RRC is composed by three layers:</p>
+<ul class="simple">
+<li><p>User-level: the <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code>, a simple-to-use Python interface which can be used as a library on any python application and/or script.</p></li>
+<li><p>Middleware-level: the <code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> running as a ROS package which acts as intermediary between robot code and user code.</p></li>
+<li><p>Robot-level: the <code class="docutils literal notranslate"><span class="pre">RRC</span> <span class="pre">Server</span></code> running as an application on the robot controller and the system interface (eg. <code class="docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">Web</span> <span class="pre">Service</span></code> in the case of ABB robots).</p></li>
+</ul>
+</section>
+<section id="interfaces">
+<h2>Interfaces</h2>
+<p>There are two interfaces supported by RRC:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">System</span></code>: The system interface connects to system-level services on the robot.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Application</span></code>: The application interface connects to the robot application via TCP using the RRC protocol specified above.</p></li>
+</ul>
+</section>
+<section id="data-parsing-conversion">
+<h2>Data Parsing/Conversion</h2>
+<p>There are three different data type representations involved in the process of sending and receiving data:</p>
+<ul class="simple">
+<li><p>Python data types (eg. <code class="docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code>)</p></li>
+<li><p>JSON/stringified representation of data types</p></li>
+<li><p>Robot data types (eg. <code class="docutils literal notranslate"><span class="pre">tooldata</span></code> for ABB RAPID)</p></li>
+</ul>
+<p>Rules:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> is the only layer that converts from/to high-level data types, such as <code class="docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> only knows about Python built-in data types and the conversions required to/from the RRC protocol, which includes the conversion of Python built-in data types to Robot-native data types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RRC</span> <span class="pre">Server</span></code> only knows about the RRC protocol and how to convert to native actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> does not have a dependency to COMPAS library.</p></li>
+</ul>
+</section>
+<section id="example-workflows">
+<h2>Example Workflows</h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Move to Frame using Application interface:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> input is <code class="docutils literal notranslate"><span class="pre">MoveToFrame(frame)</span></code> -&gt; converts to strings/floats values according to the protocol -&gt; converted to JSON for topic publishing -&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> input is topic message -&gt; converts from strings/floats values to bytes of the wire protocol -&gt; sends over TCP/IP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RRC</span> <span class="pre">Server</span></code> input is TCP/IP message -&gt; converts to RAPID actions -&gt; creates feedback and sends it over TCP/IP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> input is TCP/IP message -&gt; convert to JSON for topic publishing -&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> input is topic message -&gt; convert to feedback string (<code class="docutils literal notranslate"><span class="pre">Done</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Get Frame using Application interface:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> input is <code class="docutils literal notranslate"><span class="pre">GetFrame()</span></code> -&gt; converts to strings/floats values according to the protocol -&gt; converted to JSON for topic publishing -&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> input is topic message -&gt; converts from strings/floats values to bytes of the wire protocol -&gt; sends over TCP/IP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RRC</span> <span class="pre">Server</span></code> input is TCP/IP message -&gt; converts to RAPID actions -&gt; creates feedback and sends it over TCP/IP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> input is TCP/IP message -&gt; converts to Python built-in data types -&gt; convert to JSON for topic publishing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> input is topic message -&gt; converts from JSON to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Get Variable using System interface:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> input is <code class="docutils literal notranslate"><span class="pre">GetVariable(name)</span></code> -&gt; converts to strings/floats values according to the protocol -&gt; converted to JSON for topic publishing -&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> input is topic message -&gt; converts from strings/floats values to REST JSON request -&gt; sends request to system interface <code class="docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">Web</span> <span class="pre">Service</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">Web</span> <span class="pre">Service</span></code> input is REST JSON request -&gt; returns REST JSON response</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> input is REST JSON response -&gt; parse RAPID string to Python built-in data types (using <code class="docutils literal notranslate"><span class="pre">ply</span></code>) -&gt; convert Python built-in data types (including complex dictionaries if needed) to JSON for topic publishing (<code class="docutils literal notranslate"><span class="pre">string_values[0]</span></code> is the JSON string serialization of the variable value) -&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> input is topic message -&gt; loads variable value in JSON from <code class="docutils literal notranslate"><span class="pre">string_values[0]</span></code> and converts from Python built-in data types to COMPAS and other complex data types, eg. <code class="docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set Variable using System interface:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> input is <code class="docutils literal notranslate"><span class="pre">SetVariable(name,</span> <span class="pre">value)</span></code> -&gt; converts to strings/floats values according to the protocol (<code class="docutils literal notranslate"><span class="pre">string_value[0]</span></code> is variable name, <code class="docutils literal notranslate"><span class="pre">string_value[1]</span></code> is data representation of variable as JSON string) -&gt; converted to JSON for topic publishing -&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> input is topic message -&gt; converts from strings/floats values to REST JSON request including the conversion of <code class="docutils literal notranslate"><span class="pre">string_value[1]</span></code> JSON string to a Robot-native data type -&gt; sends request to system interface <code class="docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">Web</span> <span class="pre">Service</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">Web</span> <span class="pre">Service</span></code> input is REST JSON request -&gt; returns REST JSON response</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROS</span> <span class="pre">Driver</span></code> input is REST JSON response -&gt; convert to JSON for topic publishing -&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">RRC</span> <span class="pre">Client</span></code> input is topic message -&gt; convert to feedback string (<code class="docutils literal notranslate"><span class="pre">Done</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
 </section>
 
         
@@ -176,6 +258,10 @@ design decisions taken during development.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#">Software Architecture</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#protocol-specification">Protocol Specification</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#protocol-version-check">Protocol Version check</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#software-architecture-layers">Software Architecture Layers</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#interfaces">Interfaces</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#data-parsing-conversion">Data Parsing/Conversion</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#example-workflows">Example Workflows</a></li>
 </ul>
 </li>
 </ul>
