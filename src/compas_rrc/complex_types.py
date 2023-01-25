@@ -71,7 +71,7 @@ class LoadDataDecoder(TypeDecoder):
 
 
 class LoadDataEncoder(TypeEncoder):
-    def encode(self, value: LoadData):
+    def encode(self, value):
         return [
             value.mass,
             [value.center_of_gravity.x, value.center_of_gravity.y, value.center_of_gravity.z],
@@ -103,13 +103,13 @@ class ToolDataDecoder(TypeDecoder):
 
 
 class ToolDataEncoder(TypeEncoder):
-    def encode(self, value: ToolData):
+    def encode(self, value):
         type_namespace = "abb"
         return [value.robot_hold, encode(value.frame, type_namespace), encode(value.load_data, type_namespace)]
 
 
 class FrameEncoder(TypeEncoder):
-    def encode(self, value: Frame):
+    def encode(self, value):
         return [[value.point.x, value.point.y, value.point.z], value.quaternion.xyzw]
 
 
