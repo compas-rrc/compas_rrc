@@ -370,6 +370,8 @@ class AbbClient(object):
         key = _get_key(instruction)
 
         parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
+        if not parser:
+            parser = instruction.on_after_receive if hasattr(instruction, "on_after_receive") else None
         self.futures[key] = dict(callback=callback, parser=parser)
 
         self.topics[interface].publish(instruction.to_message())
