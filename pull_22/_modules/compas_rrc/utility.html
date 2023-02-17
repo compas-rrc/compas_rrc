@@ -100,7 +100,6 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">compas_fab.backends.ros.messages</span> <span class="kn">import</span> <span class="n">ROSmsg</span>
 
-<span class="kn">from</span> <span class="nn">compas_rrc.client</span> <span class="kn">import</span> <span class="n">default_feedback_parser</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">BaseInstruction</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExecutionLevel</span>
 <span class="kn">from</span> <span class="nn">compas_rrc.common</span> <span class="kn">import</span> <span class="n">ExternalAxes</span>
@@ -675,7 +674,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GetVariable.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.__init__.html#compas_rrc.GetVariable.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
+<div class="viewcode-block" id="GetVariable.__init__"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.__init__.html#compas_rrc.GetVariable.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">raw_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">feedback_level</span><span class="o">=</span><span class="n">FeedbackLevel</span><span class="o">.</span><span class="n">DATA</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of the instruction.</span>
 
 <span class="sd">        Parameters</span>
@@ -684,15 +683,26 @@
 <span class="sd">            Variable name to retrieve.</span>
 <span class="sd">        task_name : :obj:`str`</span>
 <span class="sd">            Robot task in which the variable is to be found, e.g. ``T_ROB1``.</span>
+<span class="sd">        raw_data : :obj:`bool`</span>
+<span class="sd">            Indicates whether to return the unparsed/raw data from RAPID, otherwise, try to parse variable</span>
+<span class="sd">            value into meaningful data types.</span>
 <span class="sd">        feedback_level : :obj:`int`</span>
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GetVariable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s2">&quot;get_variable&quot;</span><span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span> <span class="o">=</span> <span class="n">raw_data</span></div>
 
-<div class="viewcode-block" id="GetVariable.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.parse_feedback.html#compas_rrc.GetVariable.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">msg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Raw message.&quot;&quot;&quot;</span>
+        <span class="n">message_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">GetVariable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">msg</span>
+        <span class="k">del</span> <span class="n">message_dict</span><span class="p">[</span><span class="s2">&quot;raw_data&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">message_dict</span>
+
+<div class="viewcode-block" id="GetVariable.on_after_receive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetVariable.on_after_receive.html#compas_rrc.GetVariable.on_after_receive">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the value of the variable.</span>
 
 <span class="sd">        Return</span>
@@ -702,7 +712,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Make sure the default parsers take care of turning basic error messages</span>
         <span class="c1"># into exceptions. In that case, return it (the raising of that is handled by FutureResult)</span>
-        <span class="n">feedback_value</span> <span class="o">=</span> <span class="n">default_feedback_parser</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">feedback_value</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">GetVariable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">on_after_receive</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feedback_value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">feedback_value</span>
 
@@ -716,6 +726,10 @@
             <span class="p">)</span>
 
         <span class="n">raw_value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;string_values&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">raw_value</span>
+
         <span class="n">type_namespace</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;string_values&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">type_name</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;string_values&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
 
@@ -751,12 +765,19 @@
 <span class="sd">            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SetVariable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">:</span> <span class="s2">&quot;set_variable&quot;</span><span class="p">},</span> <span class="n">default_interface</span><span class="o">=</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">SYS</span><span class="p">)</span>
-        <span class="n">encoded_value</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="n">variable_value</span><span class="p">,</span> <span class="s2">&quot;abb&quot;</span><span class="p">)</span>
-        <span class="n">serialized_value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">encoded_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable_info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">variable_value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">variable_name</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">task_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="n">feedback_level</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable_name</span><span class="p">,</span> <span class="n">serialized_value</span><span class="p">,</span> <span class="n">task_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">on_before_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">type_namespace</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;type_namespace&quot;</span><span class="p">]</span>
+        <span class="n">encoded_value</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_info</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span> <span class="n">type_namespace</span><span class="p">)</span>
+        <span class="n">serialized_value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">encoded_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">serialized_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_info</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">]]</span>
+
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_info</span>
 </code></pre></div>
         
       </main>
