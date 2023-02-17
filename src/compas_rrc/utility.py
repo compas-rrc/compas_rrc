@@ -3,7 +3,6 @@ import json
 from compas.geometry import Frame
 from compas_fab.backends.ros.messages import ROSmsg
 
-from compas_rrc.client import default_feedback_parser
 from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import ExternalAxes
@@ -578,7 +577,7 @@ class GetVariable(BaseInstruction):
 
     """
 
-    def __init__(self, variable_name, task_name, feedback_level=FeedbackLevel.DATA):
+    def __init__(self, variable_name, task_name, raw_data=False, feedback_level=FeedbackLevel.DATA):
         """Create a new instance of the instruction.
 
         Parameters
@@ -587,6 +586,9 @@ class GetVariable(BaseInstruction):
             Variable name to retrieve.
         task_name : :obj:`str`
             Robot task in which the variable is to be found, e.g. ``T_ROB1``.
+        raw_data : :obj:`bool`
+            Indicates whether to return the unparsed/raw data from RAPID, otherwise, try to parse variable
+            value into meaningful data types.
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
         """
@@ -594,6 +596,14 @@ class GetVariable(BaseInstruction):
         self.feedback_level = feedback_level
         self.string_values = [variable_name, task_name]
         self.float_values = []
+        self.raw_data = raw_data
+
+    @property
+    def msg(self):
+        """Raw message."""
+        message_dict = super(GetVariable, self).msg
+        del message_dict["raw_data"]
+        return message_dict
 
     def on_after_receive(self, result, **kwargs):
         """Parses the value of the variable.
@@ -605,7 +615,7 @@ class GetVariable(BaseInstruction):
         """
         # Make sure the default parsers take care of turning basic error messages
         # into exceptions. In that case, return it (the raising of that is handled by FutureResult)
-        feedback_value = default_feedback_parser(result)
+        feedback_value = super(GetVariable, self).on_after_receive(result, **kwargs)
         if isinstance(feedback_value, Exception):
             return feedback_value
 
@@ -619,6 +629,10 @@ class GetVariable(BaseInstruction):
             )
 
         raw_value = json.loads(result["string_values"][0])
+
+        if self.raw_data:
+            return raw_value
+
         type_namespace = result["string_values"][1]
         type_name = result["string_values"][2]
 
