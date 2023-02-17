@@ -8,13 +8,6 @@ __all__ = [
     "GetOperationMode",
     "GetSpeedRatio",
     "SetSpeedRatio",
-    # 'GetTaskExecutionState',
-    # 'GetTasks',
-    # 'SystemCustomInstruction',
-    # 'SystemGetVariable',
-    # 'SystemSetVariable',
-    # 'SystemStart',
-    # 'SystemStop',
 ]
 
 
@@ -68,22 +61,3 @@ class GetExecutionState(BaseInstruction):
 
     def on_after_receive(self, result, **kwargs):
         return result["string_values"][0]
-
-
-# class GetTasks(BaseSystemInstruction):
-#     def __init__(self, feedback_level=FeedbackLevel.DATA):
-#         super(GetTasks, self).__init__(feedback_level)
-#         self.instruction = 'get_tasks'
-
-#     def parse_feedback(self, response):
-#         return json.loads(response['feedback'])
-
-
-# class GetTaskExecutionState(BaseSystemInstruction):
-#     def __init__(self, task_name, feedback_level=FeedbackLevel.DATA):
-#         super(GetTaskExecutionState, self).__init__(feedback_level)
-#         self.instruction = 'get_task_execution_state'
-#         self.string_values = [task_name]
-
-#     def parse_feedback(self, response):
-#         return response['string_values'][0]

@@ -71,13 +71,6 @@ The following example shows how to retrieve, update and send the robot joints an
 #     GetOperationMode
 #     GetSpeedRatio
 #     SetSpeedRatio
-#     GetTaskExecutionState
-#     GetTasks
-#     SystemCustomInstruction
-#     SystemGetVariable
-#     SystemSetVariable
-#     SystemStart
-#     SystemStop
 
 Debugging instructions
 ----------------------
