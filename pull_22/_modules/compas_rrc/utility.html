@@ -240,7 +240,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;List of float values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction</span><span class="o">.</span><span class="n">float_values</span>
 
-<div class="viewcode-block" id="Debug.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Debug.parse_feedback.html#compas_rrc.Debug.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<div class="viewcode-block" id="Debug.on_after_receive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.Debug.on_after_receive.html#compas_rrc.Debug.on_after_receive">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_parser</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_parser</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div></div>
@@ -270,7 +270,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="GetJoints.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.parse_feedback.html#compas_rrc.GetJoints.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<div class="viewcode-block" id="GetJoints.on_after_receive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetJoints.on_after_receive.html#compas_rrc.GetJoints.on_after_receive">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as :class:`RobotJoints` and :class:`ExternalAxes`.</span>
 
 <span class="sd">        Return</span>
@@ -315,7 +315,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">float_values</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="GetRobtarget.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.parse_feedback.html#compas_rrc.GetRobtarget.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<div class="viewcode-block" id="GetRobtarget.on_after_receive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetRobtarget.on_after_receive.html#compas_rrc.GetRobtarget.on_after_receive">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as a :class:`compas.geometry.Frame` and :class:`ExternalAxes`.</span>
 
 <span class="sd">        Return</span>
@@ -367,7 +367,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GetFrame.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetFrame.parse_feedback.html#compas_rrc.GetFrame.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<div class="viewcode-block" id="GetFrame.on_after_receive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.GetFrame.on_after_receive.html#compas_rrc.GetFrame.on_after_receive">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as a :class:`compas.geometry.Frame`.</span>
 
 <span class="sd">        Return</span>
@@ -375,7 +375,7 @@
 <span class="sd">        :class:`compas.geometry.Frame`</span>
 <span class="sd">            Current frame of the robot.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">frame</span><span class="p">,</span> <span class="n">_ext_axes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">GetFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">parse_feedback</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">frame</span><span class="p">,</span> <span class="n">_ext_axes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">GetFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">on_after_receive</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">frame</span></div></div>
 
 

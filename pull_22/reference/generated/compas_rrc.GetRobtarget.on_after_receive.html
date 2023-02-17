@@ -106,10 +106,13 @@
 <h1>GetRobtarget.on_after_receive</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rrc.GetRobtarget.on_after_receive">
-<span class="sig-prename descclassname"><span class="pre">GetRobtarget.</span></span><span class="sig-name descname"><span class="pre">on_after_receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Called after new feedback is received.</p>
-<p>This method can be overwritten in sub-classes to handle transformations of the feedback results
-before it is returned to the main code.</p>
+<span class="sig-prename descclassname"><span class="pre">GetRobtarget.</span></span><span class="sig-name descname"><span class="pre">on_after_receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rrc/utility.html#GetRobtarget.on_after_receive"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Parses the result as a <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="(in COMPAS v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a> and <a class="reference internal" href="compas_rrc.ExternalAxes.html#compas_rrc.ExternalAxes" title="compas_rrc.ExternalAxes"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExternalAxes</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="(in COMPAS v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>, <a class="reference internal" href="compas_rrc.ExternalAxes.html#compas_rrc.ExternalAxes" title="compas_rrc.ExternalAxes"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExternalAxes</span></code></a> – Current frame and external axes of the robot.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

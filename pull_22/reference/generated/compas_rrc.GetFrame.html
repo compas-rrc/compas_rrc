@@ -127,7 +127,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.GetFrame.on_after_receive.html#compas_rrc.GetFrame.on_after_receive" title="compas_rrc.GetFrame.on_after_receive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_after_receive</span></code></a>(result, **kwargs)</p></td>
-<td><p>Called after new feedback is received.</p></td>
+<td><p>Parses the result as a <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="(in COMPAS v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.GetFrame.on_before_send.html#compas_rrc.GetFrame.on_before_send" title="compas_rrc.GetFrame.on_before_send"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_before_send</span></code></a>(**kwargs)</p></td>
 <td><p>Called right before the instruction is sent over the wire.</p></td>
@@ -135,16 +135,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.GetFrame.parse.html#compas_rrc.GetFrame.parse" title="compas_rrc.GetFrame.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a>(msg, msg_type)</p></td>
 <td><p>Parses a msg in various possible input formats and tries to return an instance of the class that wraps it.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.GetFrame.parse_feedback.html#compas_rrc.GetFrame.parse_feedback" title="compas_rrc.GetFrame.parse_feedback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_feedback</span></code></a>(result)</p></td>
-<td><p>Parses the result as a <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="(in COMPAS v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.GetFrame.select_interface.html#compas_rrc.GetFrame.select_interface" title="compas_rrc.GetFrame.select_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_interface</span></code></a>(interface_name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.GetFrame.select_interface.html#compas_rrc.GetFrame.select_interface" title="compas_rrc.GetFrame.select_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_interface</span></code></a>(interface_name)</p></td>
 <td><p>Select the interace over which the instruction will be sent.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.GetFrame.supports_interface.html#compas_rrc.GetFrame.supports_interface" title="compas_rrc.GetFrame.supports_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supports_interface</span></code></a>(interface_name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.GetFrame.supports_interface.html#compas_rrc.GetFrame.supports_interface" title="compas_rrc.GetFrame.supports_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supports_interface</span></code></a>(interface_name)</p></td>
 <td><p>Determines if a specific interface is supported by this instruction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rrc.GetFrame.to_message.html#compas_rrc.GetFrame.to_message" title="compas_rrc.GetFrame.to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_message</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rrc.GetFrame.to_message.html#compas_rrc.GetFrame.to_message" title="compas_rrc.GetFrame.to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_message</span></code></a>()</p></td>
 <td><p>Convert the instruction to a roslibpy Message instance.</p></td>
 </tr>
 </tbody>

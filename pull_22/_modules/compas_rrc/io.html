@@ -301,7 +301,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">io_name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="ReadAnalog.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadAnalog.parse_feedback.html#compas_rrc.ReadAnalog.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<div class="viewcode-block" id="ReadAnalog.on_after_receive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadAnalog.on_after_receive.html#compas_rrc.ReadAnalog.on_after_receive">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as a :obj:`float`.</span>
 
 <span class="sd">        Return</span>
@@ -346,7 +346,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">io_name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="ReadDigital.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadDigital.parse_feedback.html#compas_rrc.ReadDigital.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<div class="viewcode-block" id="ReadDigital.on_after_receive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadDigital.on_after_receive.html#compas_rrc.ReadDigital.on_after_receive">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as a :obj:`int`.</span>
 
 <span class="sd">        Return</span>
@@ -392,7 +392,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_level</span> <span class="o">=</span> <span class="n">ExecutionLevel</span><span class="o">.</span><span class="n">ROBOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">string_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">io_name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="ReadGroup.parse_feedback"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadGroup.parse_feedback.html#compas_rrc.ReadGroup.parse_feedback">[docs]</a>    <span class="k">def</span> <span class="nf">parse_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<div class="viewcode-block" id="ReadGroup.on_after_receive"><a class="viewcode-back" href="../../reference/generated/compas_rrc.ReadGroup.on_after_receive.html#compas_rrc.ReadGroup.on_after_receive">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the result as a :obj:`int`.</span>
 
 <span class="sd">        Return</span>
