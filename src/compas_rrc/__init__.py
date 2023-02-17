@@ -67,6 +67,8 @@ The following example shows how to retrieve, update and send the robot joints an
 #     :nosignatures:
 
 #     GetControllerState
+#     GetExecutionState
+#     GetOperationMode
 #     GetSpeedRatio
 #     SetSpeedRatio
 #     GetTaskExecutionState
@@ -116,7 +118,7 @@ from compas_rrc.custom import CustomInstruction
 from compas_rrc.io import PulseDigital, ReadAnalog, ReadDigital, ReadGroup, SetAnalog, SetDigital, SetGroup
 from compas_rrc.motion import Motion, MoveToFrame, MoveToJoints, MoveToRobtarget, Zone
 from compas_rrc.msg import PrintText
-from compas_rrc.system import GetSpeedRatio, SetSpeedRatio
+from compas_rrc.system import GetControllerState, GetExecutionState, GetOperationMode, GetSpeedRatio, SetSpeedRatio
 from compas_rrc.utility import (
     Debug,
     GetFrame,
@@ -177,6 +179,9 @@ __all__ = [
     # msg
     "PrintText",
     # system
+    "GetControllerState",
+    "GetExecutionState",
+    "GetOperationMode",
     "GetSpeedRatio",
     "SetSpeedRatio",
     # utility

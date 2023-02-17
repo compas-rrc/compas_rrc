@@ -3,7 +3,9 @@ from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import BaseInstruction
 
 __all__ = [
-    # 'GetControllerState',
+    "GetControllerState",
+    "GetExecutionState",
+    "GetOperationMode",
     "GetSpeedRatio",
     "SetSpeedRatio",
     # 'GetTaskExecutionState',
@@ -37,13 +39,35 @@ class SetSpeedRatio(BaseInstruction):
         self.float_values = [speed_ratio]
 
 
-# class GetControllerState(BaseSystemInstruction):
-#     def __init__(self, feedback_level=FeedbackLevel.DATA):
-#         super(GetControllerState, self).__init__(feedback_level)
-#         self.instruction = 'get_controller_state'
+class GetControllerState(BaseInstruction):
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        super(GetControllerState, self).__init__(
+            {Interfaces.SYS: "get_controller_state"}, default_interface=Interfaces.SYS
+        )
+        self.feedback_level = feedback_level
 
-#     def parse_feedback(self, response):
-#         return response['string_values'][0]
+    def on_after_receive(self, result, **kwargs):
+        return result["string_values"][0]
+
+
+class GetOperationMode(BaseInstruction):
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        super(GetOperationMode, self).__init__({Interfaces.SYS: "get_operation_mode"}, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level
+
+    def on_after_receive(self, result, **kwargs):
+        return result["string_values"][0]
+
+
+class GetExecutionState(BaseInstruction):
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        super(GetExecutionState, self).__init__(
+            {Interfaces.SYS: "get_execution_state"}, default_interface=Interfaces.SYS
+        )
+        self.feedback_level = feedback_level
+
+    def on_after_receive(self, result, **kwargs):
+        return result["string_values"][0]
 
 
 # class GetTasks(BaseSystemInstruction):
