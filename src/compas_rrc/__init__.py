@@ -68,6 +68,7 @@ The following example shows how to retrieve, update and send the robot joints an
 
 #     GetControllerState
 #     GetSpeedRatio
+#     SetSpeedRatio
 #     GetTaskExecutionState
 #     GetTasks
 #     SystemCustomInstruction
@@ -115,6 +116,7 @@ from compas_rrc.custom import CustomInstruction
 from compas_rrc.io import PulseDigital, ReadAnalog, ReadDigital, ReadGroup, SetAnalog, SetDigital, SetGroup
 from compas_rrc.motion import Motion, MoveToFrame, MoveToJoints, MoveToRobtarget, Zone
 from compas_rrc.msg import PrintText
+from compas_rrc.system import GetSpeedRatio, SetSpeedRatio
 from compas_rrc.utility import (
     Debug,
     GetFrame,
@@ -174,6 +176,9 @@ __all__ = [
     "Zone",
     # msg
     "PrintText",
+    # system
+    "GetSpeedRatio",
+    "SetSpeedRatio",
     # utility
     "Debug",
     "GetFrame",
