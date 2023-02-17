@@ -328,7 +328,12 @@ class AbbClient(object):
                 instruction.feedback_level = 1
 
         future = self.send(instruction, interface)
-        return future.result(timeout)
+        result = future.result(timeout)
+
+        if isinstance(result, Exception):
+            raise result
+
+        return result
 
     def send_and_subscribe(self, instruction, callback, interface=None):
         """Send instruction and activate a service on the robot to stream feedback at a regular inverval.
@@ -368,12 +373,15 @@ class AbbClient(object):
         future = self.futures.get(response_key, None)
 
         if future:
-            result = message
-            parser_method = future["parser"]
-            if parser_method:
-                result = parser_method(result)
-            else:
-                result = default_feedback_parser(result)
+            try:
+                result = message
+                parser_method = future["parser"]
+                if parser_method:
+                    result = parser_method(result)
+                else:
+                    result = default_feedback_parser(result)
+            except Exception as e:
+                result = e
             if "result" in future:
                 future["result"]._set_result(result)
                 self.futures.pop(response_key)
