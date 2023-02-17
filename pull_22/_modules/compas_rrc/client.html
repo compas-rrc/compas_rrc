@@ -425,7 +425,12 @@
                 <span class="n">instruction</span><span class="o">.</span><span class="n">feedback_level</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">instruction</span><span class="p">,</span> <span class="n">interface</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span></div>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">result</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="AbbClient.send_and_subscribe"><a class="viewcode-back" href="../../reference/generated/compas_rrc.AbbClient.send_and_subscribe.html#compas_rrc.AbbClient.send_and_subscribe">[docs]</a>    <span class="k">def</span> <span class="nf">send_and_subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">interface</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Send instruction and activate a service on the robot to stream feedback at a regular inverval.</span>
@@ -465,12 +470,15 @@
         <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">response_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">future</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">message</span>
-            <span class="n">parser_method</span> <span class="o">=</span> <span class="n">future</span><span class="p">[</span><span class="s2">&quot;parser&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">parser_method</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">parser_method</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">default_feedback_parser</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">message</span>
+                <span class="n">parser_method</span> <span class="o">=</span> <span class="n">future</span><span class="p">[</span><span class="s2">&quot;parser&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">parser_method</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">parser_method</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">default_feedback_parser</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">e</span>
             <span class="k">if</span> <span class="s2">&quot;result&quot;</span> <span class="ow">in</span> <span class="n">future</span><span class="p">:</span>
                 <span class="n">future</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">_set_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">response_key</span><span class="p">)</span>
