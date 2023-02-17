@@ -595,7 +595,7 @@ class GetVariable(BaseInstruction):
         self.string_values = [variable_name, task_name]
         self.float_values = []
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the value of the variable.
 
         Return
@@ -654,9 +654,16 @@ class SetVariable(BaseInstruction):
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
         """
         super(SetVariable, self).__init__({Interfaces.SYS: "set_variable"}, default_interface=Interfaces.SYS)
-        encoded_value = encode(variable_value, "abb")
-        serialized_value = json.dumps(encoded_value)
+        self.variable_info = dict(value=variable_value, name=variable_name, task=task_name)
 
         self.feedback_level = feedback_level
-        self.string_values = [variable_name, serialized_value, task_name]
+        self.string_values = []
         self.float_values = []
+
+    def on_before_send(self, **kwargs):
+        type_namespace = kwargs["type_namespace"]
+        encoded_value = encode(self.variable_info["value"], type_namespace)
+        serialized_value = json.dumps(encoded_value)
+        self.string_values = [self.variable_info["name"], serialized_value, self.variable_info["task"]]
+
+        del self.variable_info

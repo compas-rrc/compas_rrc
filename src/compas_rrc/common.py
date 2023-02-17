@@ -22,6 +22,7 @@ __all__ = [
 ]
 
 CLIENT_PROTOCOL_VERSION = 2
+FEEDBACK_ERROR_PREFIX = "Done FError"
 
 
 def _convert_unit_to_meters_radians(value, type_):
@@ -157,6 +158,30 @@ class BaseInstruction(ROSmsg):
         msg.pop("meta")
 
         return roslibpy.Message(msg)
+
+    # --------------------------------------------------------------------------
+    # Event handlers for before/after sending/receiving messages.
+    # --------------------------------------------------------------------------
+
+    def on_before_send(self, **kwargs):
+        """Called right before the instruction is sent over the wire.
+
+        This method can be overwritten in sub-classes to handle transformations of the message before
+        the message is sent."""
+        pass
+
+    def on_after_receive(self, result, **kwargs):
+        """Called after new feedback is received.
+
+        This method can be overwritten in sub-classes to handle transformations of the feedback results
+        before it is returned to the main code.
+        """
+        feedback_value = result["feedback"]
+
+        if feedback_value.startswith(FEEDBACK_ERROR_PREFIX):
+            return InstructionException(feedback_value, result)
+
+        return feedback_value
 
 
 class FutureResult(object):

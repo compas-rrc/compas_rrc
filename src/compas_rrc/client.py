@@ -13,9 +13,6 @@ from compas_rrc.common import Interfaces
 __all__ = ["RosClient", "AbbClient"]
 
 
-FEEDBACK_ERROR_PREFIX = "Done FError"
-
-
 def _get_key(message):
     prefix = "sys" if message.meta["interface"] == Interfaces.SYS else "msg"
     return "{}:{}".format(prefix, message.sequence_id)
@@ -50,15 +47,6 @@ class SequenceCounter(object):
         """Current sequence counter."""
         with self._lock:
             return self._value
-
-
-def default_feedback_parser(result):
-    feedback_value = result["feedback"]
-
-    if feedback_value.startswith(FEEDBACK_ERROR_PREFIX):
-        return InstructionException(feedback_value, result)
-
-    return feedback_value
 
 
 class AbbClient(object):
@@ -119,6 +107,7 @@ class AbbClient(object):
             Optional. If not specified, it will use namespace ``/rob1``.
         """
         self.ros = ros
+        self.type_namespace = "abb"
 
         # Interface-specific counters
         self.counters = {}
@@ -272,6 +261,9 @@ class AbbClient(object):
 
         instruction.sequence_id = counter.increment()
 
+        kwargs = dict(type_namespace=self.type_namespace)
+        instruction.on_before_send(**kwargs)
+
         key = _get_key(instruction)
 
         # NOTE: create a base class for all instructions (system and standard)
@@ -279,7 +271,11 @@ class AbbClient(object):
         # the conditions under which the instruction will need the future result handling
         if instruction.feedback_level > 0 or instruction.feedback_level == -1:
             result = FutureResult()
+
             parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
+            if not parser:
+                parser = instruction.on_after_receive if hasattr(instruction, "on_after_receive") else None
+
             self.futures[key] = dict(result=result, parser=parser)
 
         topic.publish(instruction.to_message())
@@ -378,8 +374,6 @@ class AbbClient(object):
                 parser_method = future["parser"]
                 if parser_method:
                     result = parser_method(result)
-                else:
-                    result = default_feedback_parser(result)
             except Exception as e:
                 result = e
             if "result" in future:
