@@ -199,7 +199,7 @@ class AbbClient(object):
             topic.unadvertise()
         time.sleep(0.5)
 
-    def send(self, instruction, interface=None):
+    def send(self, instruction, interface=None, debug=False):
         """Sends an instruction to the robot without waiting.
 
         Instructions can indicate that feedback is required or not. If
@@ -218,6 +218,9 @@ class AbbClient(object):
         interface :class:`compas_rrc.Interfaces`
             Select the interface over which the instruction will be sent.
             Defaults to ``Interfaces.APP`` unless the instruction has another default.
+        debug : bool
+            False to receive parsed feedback data, otherwise True to
+            receive raw data. Useful for debugging purposes.
 
         Returns
         -------
@@ -272,9 +275,14 @@ class AbbClient(object):
         if instruction.feedback_level > 0 or instruction.feedback_level == -1:
             result = FutureResult()
 
-            parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
-            if not parser:
-                parser = instruction.on_after_receive if hasattr(instruction, "on_after_receive") else None
+            parser = None
+            if debug:
+                # If debug, use a no-op parser that returns data as it comes
+                parser = lambda r: r
+            else:
+                parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
+                if not parser:
+                    parser = instruction.on_after_receive if hasattr(instruction, "on_after_receive") else None
 
             self.futures[key] = dict(result=result, parser=parser)
 
@@ -282,7 +290,7 @@ class AbbClient(object):
 
         return result
 
-    def send_and_wait(self, instruction, timeout=None, interface=None):
+    def send_and_wait(self, instruction, timeout=None, interface=None, debug=False):
         """Send instruction and wait for feedback.
 
         This is a blocking call, it will only return once the robot
@@ -299,6 +307,9 @@ class AbbClient(object):
         interface :class:`compas_rrc.Interfaces`
             Select the interface over which the instruction will be sent.
             Defaults to ``Interfaces.APP`` unless the instruction has another default.
+        debug : bool
+            False to receive parsed feedback data, otherwise True to
+            receive raw data. Useful for debugging purposes.
 
         Returns
         -------
@@ -323,7 +334,7 @@ class AbbClient(object):
             else:
                 instruction.feedback_level = 1
 
-        future = self.send(instruction, interface)
+        future = self.send(instruction, interface, debug)
         result = future.result(timeout)
 
         if isinstance(result, Exception):
