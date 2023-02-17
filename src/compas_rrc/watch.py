@@ -36,7 +36,7 @@ class ReadWatch(BaseInstruction):
         self.string_values = []
         self.float_values = []
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as a :obj:`float` (seconds).
 
         Return

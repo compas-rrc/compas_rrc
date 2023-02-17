@@ -204,7 +204,7 @@ class ReadAnalog(BaseInstruction):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as a :obj:`float`.
 
         Return
@@ -249,7 +249,7 @@ class ReadDigital(BaseInstruction):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as a :obj:`int`.
 
         Return
@@ -295,7 +295,7 @@ class ReadGroup(BaseInstruction):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as a :obj:`int`.
 
         Return

@@ -143,7 +143,7 @@ class Debug(ROSmsg):
         """List of float values."""
         return self._instruction.float_values
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         if self.debug_parser:
             return self.debug_parser(result)
         return result
@@ -173,7 +173,7 @@ class GetJoints(BaseInstruction):
         self.string_values = []
         self.float_values = []
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as :class:`RobotJoints` and :class:`ExternalAxes`.
 
         Return
@@ -218,7 +218,7 @@ class GetRobtarget(BaseInstruction):
         self.string_values = []
         self.float_values = []
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as a :class:`compas.geometry.Frame` and :class:`ExternalAxes`.
 
         Return
@@ -270,7 +270,7 @@ class GetFrame(GetRobtarget):
 
     """
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as a :class:`compas.geometry.Frame`.
 
         Return
@@ -278,7 +278,7 @@ class GetFrame(GetRobtarget):
         :class:`compas.geometry.Frame`
             Current frame of the robot.
         """
-        frame, _ext_axes = super(GetFrame, self).parse_feedback(result)
+        frame, _ext_axes = super(GetFrame, self).on_after_receive(result, **kwargs)
         return frame
 
 
