@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `to_configuration` and `to_configuration_primitive` to `compas_rrc.ExternalAxes` and `compas_rrc.RobotJoints`
+* Add `is_connected` property to `AbbClient`
 
 ### Changed
 

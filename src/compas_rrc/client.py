@@ -192,6 +192,16 @@ class AbbClient(object):
 
         self._version_checked = True
 
+    @property
+    def is_connected(self):
+        """Indicate if the ABB client is connected or not.
+
+        Returns:
+            bool: True if connected, False otherwise.
+        """
+        version = self._server_protocol_check["version"]
+        return self.ros.is_connected and version is not None and version > 0
+
     def _disconnect_topics(self):
         for topic in self.topics.values():
             topic.unadvertise()
