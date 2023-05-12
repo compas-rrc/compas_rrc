@@ -167,7 +167,12 @@ class GetJoints(BaseInstruction):
 
     def __init__(self):
         """Create a new instance of the instruction."""
-        super(GetJoints, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "GetJoints"})
+        super(GetJoints, self).__init__(
+            {
+                Interfaces.APP: INSTRUCTION_PREFIX + "GetJoints",
+                Interfaces.SYS: "get_joint_target",
+            }
+        )
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
