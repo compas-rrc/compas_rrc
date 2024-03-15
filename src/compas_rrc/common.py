@@ -2,8 +2,8 @@ import itertools
 import math
 import threading
 
-from compas.robots import Configuration
-from compas.robots import Joint
+from compas_robots import Configuration
+from compas_robots.model import Joint
 
 __all__ = ['CLIENT_PROTOCOL_VERSION',
            'FeedbackLevel',
@@ -196,7 +196,7 @@ class ExternalAxes(object):
 
     # Conversion methods
     def to_configuration_primitive(self, joint_types, joint_names=None):
-        """Convert the ExternalAxes to a :class:`compas.robots.Configuration`, including the unit conversion
+        """Convert the ExternalAxes to a :class:`compas_robots.Configuration`, including the unit conversion
         from mm and degrees to meters and radians.
 
         Parameters

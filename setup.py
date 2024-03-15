@@ -31,6 +31,10 @@ def read(*names, **kwargs):
 about = {}
 exec(read('src', 'compas_rrc', '__version__.py'), about)
 
+
+requirements = read("requirements.txt").split("\n")
+
+
 setup(
     name=about['__title__'],
     version=about['__version__'],
