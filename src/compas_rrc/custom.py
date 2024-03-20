@@ -52,3 +52,14 @@ class CustomInstruction(BaseInstruction):
         self.exec_level = execution_level
         self.string_values = string_values
         self.float_values = float_values
+
+
+# class SystemCustomInstruction(BaseSystemInstruction):
+#     def __init__(self, name, method="GET", data=None, feedback_level=FeedbackLevel.DATA):
+#         super(SystemCustomInstruction, self).__init__(feedback_level)
+#         if data is not None:
+#             method = "POST"
+#         self.instruction = json.dumps(dict(path=name, method=method, data=data))
+
+#     def parse_feedback(self, response):
+#         return json.loads(response["feedback"])
