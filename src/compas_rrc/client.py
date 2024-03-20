@@ -108,6 +108,7 @@ class AbbClient(object):
         """
         self.ros = ros
         self.type_namespace = "abb"
+        self.namespace = namespace
 
         # Interface-specific counters
         self.counters = {}
@@ -199,6 +200,7 @@ class AbbClient(object):
         Returns:
             bool: True if connected, False otherwise.
         """
+        self.ensure_protocol_version()
         version = self._server_protocol_check["version"]
         return self.ros.is_connected and version is not None and version > 0
 
@@ -405,3 +407,17 @@ class AbbClient(object):
             elif "callback" in future:
                 future["callback"](result)
                 # TODO: Handle unsubscribes
+
+    def __str__(self):
+        """Return a human-readable string representation of the instance."""
+        return 'AbbClient("{}")'.format(self.namespace)
+
+    def __repr__(self):
+        """Printable representation of :class:`AbbClient`."""
+        return self.__str__()
+
+    def ToString(self):
+        """Converts the instance to a string.
+
+        Hello .NET compatibility."""
+        return str(self)
