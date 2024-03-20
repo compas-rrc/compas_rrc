@@ -56,6 +56,22 @@ The following example shows how to retrieve, update and send the robot joints an
     RobotJoints
     ExternalAxes
 
+# System instructions
+# -------------------
+
+# Besides the normal instructions, RRC can send and receive system-level instructions to the
+# controller.
+
+# .. autosummary::
+#     :toctree: generated/
+#     :nosignatures:
+
+#     GetControllerState
+#     GetExecutionState
+#     GetOperationMode
+#     GetSpeedRatio
+#     SetSpeedRatio
+
 Debugging instructions
 ----------------------
 
@@ -79,18 +95,8 @@ output values::
 
 from __future__ import absolute_import
 
-from compas_rrc.__version__ import (
-    __author__,
-    __author_email__,
-    __copyright__,
-    __license__,
-    __url__,
-    __version__
-)
-from compas_rrc.client import (
-    AbbClient,
-    RosClient
-)
+from compas_rrc.__version__ import __author__, __author_email__, __copyright__, __license__, __url__, __version__
+from compas_rrc.client import AbbClient, RosClient
 from compas_rrc.common import (
     CLIENT_PROTOCOL_VERSION,
     ExecutionLevel,
@@ -99,89 +105,96 @@ from compas_rrc.common import (
     FutureResult,
     InstructionException,
     RobotJoints,
-    TimeoutException
+    TimeoutException,
 )
 from compas_rrc.custom import CustomInstruction
-from compas_rrc.io import (
-    PulseDigital,
-    ReadAnalog,
-    ReadDigital,
-    ReadGroup,
-    SetAnalog,
-    SetDigital,
-    SetGroup
-)
-from compas_rrc.motion import (
-    Motion,
-    MoveToFrame,
-    MoveToJoints,
-    MoveToRobtarget,
-    Zone
-)
+from compas_rrc.io import PulseDigital, ReadAnalog, ReadDigital, ReadGroup, SetAnalog, SetDigital, SetGroup
+from compas_rrc.motion import Motion, MoveToFrame, MoveToJoints, MoveToRobtarget, Zone
 from compas_rrc.msg import PrintText
+from compas_rrc.system import GetControllerState, GetExecutionState, GetOperationMode, GetSpeedRatio, SetSpeedRatio
 from compas_rrc.utility import (
     Debug,
     GetFrame,
     GetJoints,
     GetRobtarget,
+    GetVariable,
     Noop,
+    ResetApp,
     SetAcceleration,
     SetMaxSpeed,
     SetTool,
+    SetVariable,
     SetWorkObject,
+    StartApp,
     Stop,
-    WaitTime
+    StopApp,
+    WaitTime,
 )
-from compas_rrc.watch import (
-    ReadWatch,
-    StartWatch,
-    StopWatch
-)
+from compas_rrc.watch import ReadWatch, StartWatch, StopWatch
 
-__all_plugins__ = ['compas_rrc.__install']
+__all_plugins__ = ["compas_rrc.__install"]
 __all__ = [
-    '__url__',
-    '__version__',
-    '__author__',
-    '__author_email__',
-    '__license__',
-    '__copyright__',
-    'CLIENT_PROTOCOL_VERSION',
-    'FeedbackLevel',
-    'ExecutionLevel',
-    'InstructionException',
-    'TimeoutException',
-    'FutureResult',
-    'ExternalAxes',
-    'RobotJoints',
-    'RosClient',
-    'AbbClient',
-    'SetDigital',
-    'SetAnalog',
-    'SetGroup',
-    'PulseDigital',
-    'ReadAnalog',
-    'ReadDigital',
-    'ReadGroup',
-    'Zone',
-    'Motion',
-    'MoveToJoints',
-    'MoveToFrame',
-    'MoveToRobtarget',
-    'PrintText',
-    'CustomInstruction',
-    'Noop',
-    'GetFrame',
-    'GetJoints',
-    'GetRobtarget',
-    'SetAcceleration',
-    'SetTool',
-    'SetMaxSpeed',
-    'Stop',
-    'WaitTime',
-    'SetWorkObject',
-    'Debug',
-    'ReadWatch',
-    'StartWatch',
-    'StopWatch',
+    # __version__
+    "__url__",
+    "__version__",
+    "__author__",
+    "__author_email__",
+    "__license__",
+    "__copyright__",
+    # client
+    "AbbClient",
+    "RosClient",
+    # common
+    "CLIENT_PROTOCOL_VERSION",
+    "ExecutionLevel",
+    "ExternalAxes",
+    "FeedbackLevel",
+    "FutureResult",
+    "InstructionException",
+    "RobotJoints",
+    "TimeoutException",
+    # custom
+    "CustomInstruction",
+    # io
+    "PulseDigital",
+    "ReadAnalog",
+    "ReadDigital",
+    "ReadGroup",
+    "SetAnalog",
+    "SetDigital",
+    "SetGroup",
+    # motion
+    "Motion",
+    "MoveToFrame",
+    "MoveToJoints",
+    "MoveToRobtarget",
+    "Zone",
+    # msg
+    "PrintText",
+    # system
+    "GetControllerState",
+    "GetExecutionState",
+    "GetOperationMode",
+    "GetSpeedRatio",
+    "SetSpeedRatio",
+    # utility
+    "Debug",
+    "GetFrame",
+    "GetJoints",
+    "GetRobtarget",
+    "GetVariable",
+    "Noop",
+    "ReadWatch",
+    "ResetApp",
+    "SetAcceleration",
+    "SetMaxSpeed",
+    "SetTool",
+    "SetVariable",
+    "SetWorkObject",
+    "StartApp",
+    "StartWatch",
+    "Stop",
+    "StopApp",
+    "StopWatch",
+    "WaitTime",
 ]

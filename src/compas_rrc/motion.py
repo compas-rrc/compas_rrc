@@ -1,16 +1,16 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
+from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.common import Interfaces
 
-INSTRUCTION_PREFIX = 'r_RRC_'
+INSTRUCTION_PREFIX = "r_RRC_"
 
 __all__ = [
-    'Zone',
-    'Motion',
-    'MoveToJoints',
-    'MoveToFrame',
-    'MoveToRobtarget',
+    "Zone",
+    "Motion",
+    "MoveToJoints",
+    "MoveToFrame",
+    "MoveToRobtarget",
 ]
 
 
@@ -123,15 +123,16 @@ class Motion(object):
     .. autoattribute:: LINEAR
     .. autoattribute:: JOINT
     """
-    LINEAR = 'L'
+
+    LINEAR = "L"
     """Moves the robot linearly to the specified position."""
 
-    JOINT = 'J'
+    JOINT = "J"
     """Moves the robot not linearly to the specified position by coordinating all joints to start and end together.
     This type of motion can be faster than LINEAR motion."""
 
 
-class MoveToJoints(ROSmsg):
+class MoveToJoints(BaseInstruction):
     """Move to joints is a call that moves the robot and the external axes with axes values.
 
     Examples
@@ -175,31 +176,34 @@ class MoveToJoints(ROSmsg):
             the motion planner has executed the instruction fully.
         """
         if speed <= 0:
-            raise ValueError('Speed must be higher than zero. Current value={}'.format(speed))
+            raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
-        self.instruction = INSTRUCTION_PREFIX + 'MoveToJoints'
+        super(MoveToJoints, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "MoveToJoints"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
         joints = joints or []
         if len(joints) > 6:
-            raise ValueError('Only up to 6 joints are supported')
+            raise ValueError("Only up to 6 joints are supported")
         joints_pad = [0.0] * (6 - len(joints))
 
         ext_axes = ext_axes or []
         if len(ext_axes) > 6:
-            raise ValueError('Only up to 6 external axes are supported')
+            raise ValueError("Only up to 6 external axes are supported")
 
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
         self.string_values = []
         self.float_values = list(joints) + joints_pad + list(ext_axes) + ext_axes_pad + [speed, zone]
 
 
-class MoveGeneric(ROSmsg):
-    def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
+class MoveGeneric(BaseInstruction):
+    def __init__(
+        self, frame, ext_axes, speed, zone, interface_names, default_interface=None, feedback_level=FeedbackLevel.NONE
+    ):
         if speed <= 0:
-            raise ValueError('Speed must be higher than zero. Current value={}'.format(speed))
+            raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
+        super(MoveGeneric, self).__init__(interface_names, default_interface)
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
@@ -208,7 +212,7 @@ class MoveGeneric(ROSmsg):
 
         ext_axes = ext_axes or []
         if len(ext_axes) > 6:
-            raise ValueError('Only up to 6 external axes are supported')
+            raise ValueError("Only up to 6 external axes are supported")
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
 
         self.string_values = []
@@ -259,10 +263,10 @@ class MoveToFrame(MoveGeneric):
             Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
             the motion planner has executed the instruction fully.
         """
-        super(MoveToFrame, self).__init__(frame, [], speed, zone, feedback_level)
-        instruction = 'MoveTo'
-        self.instruction = INSTRUCTION_PREFIX + instruction
-        self.string_values = ['FrameJ'] if motion_type == Motion.JOINT else ['FrameL']
+        instruction = "MoveTo"
+        interfaces = {Interfaces.APP: INSTRUCTION_PREFIX + instruction}
+        super(MoveToFrame, self).__init__(frame, [], speed, zone, interfaces, feedback_level=feedback_level)
+        self.string_values = ["FrameJ"] if motion_type == Motion.JOINT else ["FrameL"]
 
 
 class MoveToRobtarget(MoveGeneric):
@@ -310,7 +314,14 @@ class MoveToRobtarget(MoveGeneric):
             Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
             the motion planner has executed the instruction fully.
         """
-        super(MoveToRobtarget, self).__init__(frame, ext_axes, speed, zone, feedback_level)
-        instruction = 'MoveTo'
-        self.instruction = INSTRUCTION_PREFIX + instruction
-        self.string_values = ['J'] if motion_type == Motion.JOINT else ['L']
+        instruction = "MoveTo"
+        interfaces = {Interfaces.APP: INSTRUCTION_PREFIX + instruction}
+        super(MoveToRobtarget, self).__init__(
+            frame,
+            ext_axes,
+            speed,
+            zone,
+            interfaces,
+            feedback_level=feedback_level,
+        )
+        self.string_values = ["J"] if motion_type == Motion.JOINT else ["L"]

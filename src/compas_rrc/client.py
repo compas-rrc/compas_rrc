@@ -1,29 +1,30 @@
+import functools
 import threading
 import time
 
 import roslibpy
 from compas_fab.backends import RosClient
 
-from .common import CLIENT_PROTOCOL_VERSION
-from .common import FutureResult
-from .common import InstructionException
+from compas_rrc.common import CLIENT_PROTOCOL_VERSION
+from compas_rrc.common import FutureResult
+from compas_rrc.common import InstructionException
+from compas_rrc.common import Interfaces
 
-__all__ = ['RosClient', 'AbbClient']
-
-
-FEEDBACK_ERROR_PREFIX = 'Done FError '
+__all__ = ["RosClient", "AbbClient"]
 
 
 def _get_key(message):
-    return 'msg:{}'.format(message.sequence_id)
+    prefix = "sys" if message.meta["interface"] == Interfaces.SYS else "msg"
+    return "{}:{}".format(prefix, message.sequence_id)
 
 
-def _get_response_key(message):
-    return 'msg:{}'.format(message['feedback_id'])
+def _get_response_key(message, prefix):
+    return "{}:{}".format(prefix, message["feedback_id"])
 
 
 class SequenceCounter(object):
     """An atomic, thread-safe sequence increament counter."""
+
     ROLLOVER_THRESHOLD = 1000000
 
     def __init__(self, start=0):
@@ -46,15 +47,6 @@ class SequenceCounter(object):
         """Current sequence counter."""
         with self._lock:
             return self._value
-
-
-def default_feedback_parser(result):
-    feedback_value = result['feedback']
-
-    if feedback_value.startswith(FEEDBACK_ERROR_PREFIX):
-        return InstructionException(feedback_value, result)
-
-    return feedback_value
 
 
 class AbbClient(object):
@@ -103,7 +95,7 @@ class AbbClient(object):
 
     """
 
-    def __init__(self, ros, namespace='/rob1'):
+    def __init__(self, ros, namespace="/rob1"):
         """Initialize a new robot client instance.
 
         Parameters
@@ -115,63 +107,111 @@ class AbbClient(object):
             Optional. If not specified, it will use namespace ``/rob1``.
         """
         self.ros = ros
-        self.counter = SequenceCounter()
-        if not namespace.endswith('/'):
-            namespace += '/'
+        self.type_namespace = "abb"
+        self.namespace = namespace
+
+        # Interface-specific counters
+        self.counters = {}
+        self.counters[Interfaces.APP] = SequenceCounter()
+        self.counters[Interfaces.SYS] = SequenceCounter()
+
+        if not namespace.endswith("/"):
+            namespace += "/"
         self._version_checked = False
-        self._server_protocol_check = dict(event=threading.Event(),
-                                           param=roslibpy.Param(ros, namespace + 'protocol_version'),
-                                           version=None)
+        self._server_protocol_check = dict(
+            event=threading.Event(), param=roslibpy.Param(ros, namespace + "protocol_version"), version=None
+        )
         self.ros.on_ready(self.version_check)
-        self.topic = roslibpy.Topic(ros, namespace + 'robot_command', 'compas_rrc_driver/RobotMessage', queue_size=None)
-        self.feedback = roslibpy.Topic(ros, namespace + 'robot_response', 'compas_rrc_driver/RobotMessage', queue_size=0)
-        self.feedback.subscribe(self.feedback_callback)
-        self.topic.advertise()
+
+        # Interface-specific communication channels
+        self.topics = {}
+        self.feedback_topics = {}
+
+        # Main communication channel
+        self.topics[Interfaces.APP] = roslibpy.Topic(
+            ros, namespace + "robot_command", "compas_rrc_driver/RobotMessage", queue_size=None
+        )
+        self.feedback_topics[Interfaces.APP] = roslibpy.Topic(
+            ros, namespace + "robot_response", "compas_rrc_driver/RobotMessage", queue_size=0
+        )
+        self.feedback_topics[Interfaces.APP].subscribe(functools.partial(self.feedback_callback, key_prefix="msg"))
+
+        # System communication channel
+        self.topics[Interfaces.SYS] = roslibpy.Topic(
+            ros, namespace + "robot_command_system", "compas_rrc_driver/RobotMessage", queue_size=None
+        )
+        self.feedback_topics[Interfaces.SYS] = roslibpy.Topic(
+            ros, namespace + "robot_response_system", "compas_rrc_driver/RobotMessage", queue_size=0
+        )
+        self.feedback_topics[Interfaces.SYS].subscribe(functools.partial(self.feedback_callback, key_prefix="sys"))
+
+        for topic in self.topics.values():
+            topic.advertise()
+
         self.futures = {}
 
-        self.ros.on('closing', self._disconnect_topics)
+        self.ros.on("closing", self._disconnect_topics)
 
     def version_check(self):
         """Check if the protocol version on the server matches the protocol version on the client."""
-        self._server_protocol_check['version'] = self._server_protocol_check['param'].get()
+        self._server_protocol_check["version"] = self._server_protocol_check["param"].get()
         # No version is usually caused by wrong namespace in the connection, check that and raise correct error
-        if self._server_protocol_check['version'] is None:
+        if self._server_protocol_check["version"] is None:
             params = self.ros.get_params()
 
             detected_namespaces = set()
             tentative_namespaces = set()
             for param in params:
-                if param.endswith('/robot_state_port') or param.endswith('/protocol_version'):
-                    namespace = param[:param.rindex('/')]
+                if param.endswith("/robot_state_port") or param.endswith("/protocol_version"):
+                    namespace = param[: param.rindex("/")]
                     if namespace not in tentative_namespaces:
                         tentative_namespaces.add(namespace)
                     else:
                         detected_namespaces.add(namespace)
 
-            raise Exception('Cannot find the specified namespace. Detected namespaces={}'.format(sorted(detected_namespaces)))
+            raise Exception(
+                "Cannot find the specified namespace. Detected namespaces={}".format(sorted(detected_namespaces))
+            )
 
-        self._server_protocol_check['event'].set()
+        self._server_protocol_check["event"].set()
 
     def ensure_protocol_version(self):
         """Ensure protocol version on the server matches the protocol version on the client."""
         if self._version_checked:
             return
 
-        if not self._server_protocol_check['version']:
-            if not self._server_protocol_check['event'].wait(10):
-                raise Exception('Could not yet retrieve server protocol version')
+        if not self._server_protocol_check["version"]:
+            if not self._server_protocol_check["event"].wait(10):
+                raise Exception("Could not yet retrieve server protocol version")
 
-        if self._server_protocol_check['version'] != CLIENT_PROTOCOL_VERSION:
-            raise Exception('Protocol version mismatch. Server={}, Client={}'.format(self._server_protocol_check['version'], CLIENT_PROTOCOL_VERSION))
+        if self._server_protocol_check["version"] != CLIENT_PROTOCOL_VERSION:
+            raise Exception(
+                "Protocol version mismatch. Server={}, Client={}".format(
+                    self._server_protocol_check["version"], CLIENT_PROTOCOL_VERSION
+                )
+            )
 
         self._version_checked = True
 
+    @property
+    def is_connected(self):
+        """Indicate if the ABB client is connected or not.
+
+        Returns:
+            bool: True if connected, False otherwise.
+        """
+        self.ensure_protocol_version()
+        version = self._server_protocol_check["version"]
+        return self.ros.is_connected and version is not None and version > 0
+
     def _disconnect_topics(self):
-        self.topic.unadvertise()
-        self.feedback.unsubscribe()
+        for topic in self.topics.values():
+            topic.unadvertise()
+        for topic in self.feedback_topics.values():
+            topic.unadvertise()
         time.sleep(0.5)
 
-    def send(self, instruction):
+    def send(self, instruction, interface=None, debug=False):
         """Sends an instruction to the robot without waiting.
 
         Instructions can indicate that feedback is required or not. If
@@ -185,8 +225,14 @@ class AbbClient(object):
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.BaseInstruction`
+            Instance of an instruction to send.
+        interface :class:`compas_rrc.Interfaces`
+            Select the interface over which the instruction will be sent.
+            Defaults to ``Interfaces.APP`` unless the instruction has another default.
+        debug : bool
+            False to receive parsed feedback data, otherwise True to
+            receive raw data. Useful for debugging purposes.
 
         Returns
         -------
@@ -220,21 +266,43 @@ class AbbClient(object):
 
         """
         self.ensure_protocol_version()
-        instruction.sequence_id = self.counter.increment()
-
-        key = _get_key(instruction)
         result = None
 
-        if instruction.feedback_level > 0:
+        interface = interface or instruction.meta.get("interface") or Interfaces.APP
+        instruction.select_interface(interface)
+
+        counter = self.counters[interface]
+        topic = self.topics[interface]
+
+        instruction.sequence_id = counter.increment()
+
+        kwargs = dict(type_namespace=self.type_namespace)
+        instruction.on_before_send(**kwargs)
+
+        key = _get_key(instruction)
+
+        # NOTE: create a base class for all instructions (system and standard)
+        # and add a method .produces_feedback() (or similar) that determines
+        # the conditions under which the instruction will need the future result handling
+        if instruction.feedback_level > 0 or instruction.feedback_level == -1:
             result = FutureResult()
-            parser = instruction.parse_feedback if hasattr(instruction, 'parse_feedback') else None
+
+            parser = None
+            if debug:
+                # If debug, use a no-op parser that returns data as it comes
+                parser = lambda r: r
+            else:
+                parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
+                if not parser:
+                    parser = instruction.on_after_receive if hasattr(instruction, "on_after_receive") else None
+
             self.futures[key] = dict(result=result, parser=parser)
 
-        self.topic.publish(roslibpy.Message(instruction.msg))
+        topic.publish(instruction.to_message())
 
         return result
 
-    def send_and_wait(self, instruction, timeout=None):
+    def send_and_wait(self, instruction, timeout=None, interface=None, debug=False):
         """Send instruction and wait for feedback.
 
         This is a blocking call, it will only return once the robot
@@ -244,10 +312,16 @@ class AbbClient(object):
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.BaseInstruction`
+            Instance of an instruction to send.
         timeout : :obj:`int`
             Timeout in seconds to wait before raising an exception. Optional.
+        interface :class:`compas_rrc.Interfaces`
+            Select the interface over which the instruction will be sent.
+            Defaults to ``Interfaces.APP`` unless the instruction has another default.
+        debug : bool
+            False to receive parsed feedback data, otherwise True to
+            receive raw data. Useful for debugging purposes.
 
         Returns
         -------
@@ -267,50 +341,83 @@ class AbbClient(object):
 
         """
         if instruction.feedback_level == 0:
-            instruction.feedback_level = 1
+            if instruction.exec_level == -1:
+                instruction.feedback_level = -1
+            else:
+                instruction.feedback_level = 1
 
-        future = self.send(instruction)
-        return future.result(timeout)
+        future = self.send(instruction, interface, debug)
+        result = future.result(timeout)
 
-    def send_and_subscribe(self, instruction, callback):
+        if isinstance(result, Exception):
+            raise result
+
+        return result
+
+    def send_and_subscribe(self, instruction, callback, interface=None):
         """Send instruction and activate a service on the robot to stream feedback at a regular inverval.
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.BaseInstruction`
+            Instance of an instruction to send.
         callback
             Python function to be invoked every time a new value is made available.
+        interface :class:`compas_rrc.Interfaces`
+            Select the interface over which the instruction will be sent.
+            Currently only ``Interfaces.APP`` is supported.
 
         Notes
         -----
             This feature is currently only usable with custom instructions.
 
         """
+        interface = interface or instruction.meta.get("interface") or Interfaces.APP
+        if interface != Interfaces.APP:
+            raise NotImplementedError("Not supported for now")
+
         self.ensure_protocol_version()
-        instruction.sequence_id = self.counter.increment()
+        instruction.sequence_id = self.counters[interface].increment()
 
         key = _get_key(instruction)
 
-        parser = instruction.parse_feedback if hasattr(instruction, 'parse_feedback') else None
+        parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
+        if not parser:
+            parser = instruction.on_after_receive if hasattr(instruction, "on_after_receive") else None
         self.futures[key] = dict(callback=callback, parser=parser)
 
-        self.topic.publish(roslibpy.Message(instruction.msg))
+        self.topics[interface].publish(instruction.to_message())
 
-    def feedback_callback(self, message):
+    def feedback_callback(self, message, key_prefix):
         """Internal method."""
-        response_key = _get_response_key(message)
+        response_key = _get_response_key(message, key_prefix)
         future = self.futures.get(response_key, None)
 
         if future:
-            result = message
-            if future['parser']:
-                result = future['parser'](result)
-            else:
-                result = default_feedback_parser(result)
-            if 'result' in future:
-                future['result']._set_result(result)
+            try:
+                result = message
+                parser_method = future["parser"]
+                if parser_method:
+                    result = parser_method(result)
+            except Exception as e:
+                result = e
+            if "result" in future:
+                future["result"]._set_result(result)
                 self.futures.pop(response_key)
-            elif 'callback' in future:
-                future['callback'](result)
+            elif "callback" in future:
+                future["callback"](result)
                 # TODO: Handle unsubscribes
+
+    def __str__(self):
+        """Return a human-readable string representation of the instance."""
+        return 'AbbClient("{}")'.format(self.namespace)
+
+    def __repr__(self):
+        """Printable representation of :class:`AbbClient`."""
+        return self.__str__()
+
+    def ToString(self):
+        """Converts the instance to a string.
+
+        Hello .NET compatibility."""
+        return str(self)

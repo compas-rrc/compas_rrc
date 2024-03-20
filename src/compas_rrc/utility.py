@@ -1,24 +1,39 @@
+import json
+
 from compas.geometry import Frame
 from compas_fab.backends.ros.messages import ROSmsg
 
+from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import ExternalAxes
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.common import InstructionException
+from compas_rrc.common import Interfaces
 from compas_rrc.common import RobotJoints
 
-INSTRUCTION_PREFIX = 'r_RRC_'
+from compas_rrc.complex_types import decode
+from compas_rrc.complex_types import encode
 
-__all__ = ['Noop',
-           'GetFrame',
-           'GetJoints',
-           'GetRobtarget',
-           'SetAcceleration',
-           'SetTool',
-           'SetMaxSpeed',
-           'Stop',
-           'WaitTime',
-           'SetWorkObject',
-           'Debug']
+INSTRUCTION_PREFIX = "r_RRC_"
+
+__all__ = [
+    "Debug",
+    "GetFrame",
+    "GetJoints",
+    "GetRobtarget",
+    "GetVariable",
+    "Noop",
+    "ResetApp",
+    "SetAcceleration",
+    "SetMaxSpeed",
+    "SetTool",
+    "SetVariable",
+    "SetWorkObject",
+    "StartApp",
+    "Stop",
+    "StopApp",
+    "WaitTime",
+]
 
 
 def is_rapid_none(val):
@@ -26,7 +41,7 @@ def is_rapid_none(val):
     return int(val) == 8999999488
 
 
-class Noop(ROSmsg):
+class Noop(BaseInstruction):
     """No-op is a call without any effect. But like all other instructions it makes a roundtrip from the user code to the robot and back.
 
     Examples
@@ -50,7 +65,7 @@ class Noop(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'Noop'
+        super(Noop, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "Noop"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
@@ -128,13 +143,13 @@ class Debug(ROSmsg):
         """List of float values."""
         return self._instruction.float_values
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         if self.debug_parser:
             return self.debug_parser(result)
         return result
 
 
-class GetJoints(ROSmsg):
+class GetJoints(BaseInstruction):
     """Get joints is a call that requests the joint values (:class:`RobotJoints`) and the external axes (:class:`ExternalAxes`) of the robot.
 
     Examples
@@ -152,13 +167,18 @@ class GetJoints(ROSmsg):
 
     def __init__(self):
         """Create a new instance of the instruction."""
-        self.instruction = INSTRUCTION_PREFIX + 'GetJoints'
+        super(GetJoints, self).__init__(
+            {
+                Interfaces.APP: INSTRUCTION_PREFIX + "GetJoints",
+                Interfaces.SYS: "get_joint_target",
+            }
+        )
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as :class:`RobotJoints` and :class:`ExternalAxes`.
 
         Return
@@ -167,16 +187,18 @@ class GetJoints(ROSmsg):
             Current joints and external axes of the robot.
         """
         # read robot joints
-        robot_joints = [result['float_values'][i] for i in range(0, 6)]
+        robot_joints = [result["float_values"][i] for i in range(0, 6)]
 
         # read external axes
-        external_axes = [result['float_values'][i] for i in range(6, 12) if not is_rapid_none(result['float_values'][i])]
+        external_axes = [
+            result["float_values"][i] for i in range(6, 12) if not is_rapid_none(result["float_values"][i])
+        ]
 
         # write result
         return RobotJoints(*robot_joints), ExternalAxes(*external_axes)
 
 
-class GetRobtarget(ROSmsg):
+class GetRobtarget(BaseInstruction):
     """Instruction to request the current robtarget defined as frame (:class:`compas.geometry.Frame`)
     and external axes (:class:`ExternalAxes`) of the robot.
 
@@ -195,13 +217,13 @@ class GetRobtarget(ROSmsg):
 
     def __init__(self):
         """Create a new instance of the instruction."""
-        self.instruction = INSTRUCTION_PREFIX + 'GetRobtarget'
+        super(GetRobtarget, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "GetRobtarget"})
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as a :class:`compas.geometry.Frame` and :class:`ExternalAxes`.
 
         Return
@@ -211,20 +233,22 @@ class GetRobtarget(ROSmsg):
         """
 
         # read pos
-        x = result['float_values'][0]
-        y = result['float_values'][1]
-        z = result['float_values'][2]
+        x = result["float_values"][0]
+        y = result["float_values"][1]
+        z = result["float_values"][2]
         pos = [x, y, z]
 
         # read orient
-        orient_q1 = result['float_values'][3]
-        orient_q2 = result['float_values'][4]
-        orient_q3 = result['float_values'][5]
-        orient_q4 = result['float_values'][6]
+        orient_q1 = result["float_values"][3]
+        orient_q2 = result["float_values"][4]
+        orient_q3 = result["float_values"][5]
+        orient_q4 = result["float_values"][6]
         orientation = [orient_q1, orient_q2, orient_q3, orient_q4]
 
         # read gantry joints
-        external_axes = [result['float_values'][i] for i in range(7, 13) if not is_rapid_none(result['float_values'][i])]
+        external_axes = [
+            result["float_values"][i] for i in range(7, 13) if not is_rapid_none(result["float_values"][i])
+        ]
 
         # write result
 
@@ -251,7 +275,7 @@ class GetFrame(GetRobtarget):
 
     """
 
-    def parse_feedback(self, result):
+    def on_after_receive(self, result, **kwargs):
         """Parses the result as a :class:`compas.geometry.Frame`.
 
         Return
@@ -259,11 +283,11 @@ class GetFrame(GetRobtarget):
         :class:`compas.geometry.Frame`
             Current frame of the robot.
         """
-        frame, _ext_axes = super(GetFrame, self).parse_feedback(result)
+        frame, _ext_axes = super(GetFrame, self).on_after_receive(result, **kwargs)
         return frame
 
 
-class SetAcceleration(ROSmsg):
+class SetAcceleration(BaseInstruction):
     """Set acceleration is a call that sets the acc- and deceleration of the robot.
 
     Examples
@@ -292,14 +316,14 @@ class SetAcceleration(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetAcceleration'
+        super(SetAcceleration, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "SetAcceleration"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = [acc, ramp]
 
 
-class SetTool(ROSmsg):
+class SetTool(BaseInstruction):
     """Set tool is a call that sets a predefined tool in the robot as active.
 
     Examples
@@ -325,14 +349,14 @@ class SetTool(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetTool'
+        super(SetTool, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "SetTool"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [tool_name]
         self.float_values = []
 
 
-class SetMaxSpeed(ROSmsg):
+class SetMaxSpeed(BaseInstruction):
     """Set max speed is a call that sets the override and maximal tool center point (TCP) speed from the robot.
 
     Examples
@@ -365,14 +389,14 @@ class SetMaxSpeed(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetMaxSpeed'
+        super(SetMaxSpeed, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "SetMaxSpeed"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = [override, max_tcp]
 
 
-class SetWorkObject(ROSmsg):
+class SetWorkObject(BaseInstruction):
     """Set work object is a call that sets a predefined work object in the robot as active.
 
     Examples
@@ -398,14 +422,14 @@ class SetWorkObject(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetWorkObject'
+        super(SetWorkObject, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "SetWorkObject"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [wobj_name]
         self.float_values = []
 
 
-class Stop(ROSmsg):
+class Stop(BaseInstruction):
     """Stop is a function to stop the associated motion task of the robot.
 
     Examples
@@ -429,14 +453,14 @@ class Stop(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'Stop'
+        super(Stop, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "Stop"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = []
 
 
-class WaitTime(ROSmsg):
+class WaitTime(BaseInstruction):
     """Wait time is a call that will wait on the robot task for a certain time.
 
     Examples
@@ -463,8 +487,202 @@ class WaitTime(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'WaitTime'
+        super(WaitTime, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "WaitTime"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = []
         self.float_values = [time]
+
+
+class StartApp(BaseInstruction):
+    """Start the application-level code on the robot controller.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Start app
+        done = abb.send_and_wait(rrc.StartApp())
+
+    """
+
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
+        """
+        super(StartApp, self).__init__({Interfaces.SYS: "start"}, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level
+
+
+class StopApp(BaseInstruction):
+    """Stop the application-level code on the robot controller.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Start app
+        done = abb.send_and_wait(rrc.StopApp())
+
+    """
+
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
+        """
+        super(StopApp, self).__init__({Interfaces.SYS: "stop"}, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level
+
+
+class ResetApp(BaseInstruction):
+    """Reset the application-level code on the robot controller.
+
+    In ABB robots, this is equivalent to reseting the program pointer
+    to main (ie. ``PP to Main``).
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Start app
+        done = abb.send_and_wait(rrc.ResetApp())
+
+    """
+
+    def __init__(self, feedback_level=FeedbackLevel.DATA):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
+        """
+        super(ResetApp, self).__init__({Interfaces.SYS: "reset_program_pointer"}, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level
+
+
+class GetVariable(BaseInstruction):
+    """Get the value of a variable defined in robot code.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Start app
+        result = abb.send_and_wait(rrc.GetVariable("t_RRC_ActTool", "T_ROB1"))
+        print("Tool = ", result)
+
+    """
+
+    def __init__(self, variable_name, task_name, raw_data=False, feedback_level=FeedbackLevel.DATA):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        variable_name : :obj:`str`
+            Variable name to retrieve.
+        task_name : :obj:`str`
+            Robot task in which the variable is to be found, e.g. ``T_ROB1``.
+        raw_data : :obj:`bool`
+            Indicates whether to return the unparsed/raw data from RAPID, otherwise, try to parse variable
+            value into meaningful data types.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
+        """
+        super(GetVariable, self).__init__({Interfaces.SYS: "get_variable"}, default_interface=Interfaces.SYS)
+        self.feedback_level = feedback_level
+        self.string_values = [variable_name, task_name]
+        self.float_values = []
+        self.raw_data = raw_data
+
+    @property
+    def msg(self):
+        """Raw message."""
+        message_dict = super(GetVariable, self).msg
+        del message_dict["raw_data"]
+        return message_dict
+
+    def on_after_receive(self, result, **kwargs):
+        """Parses the value of the variable.
+
+        Return
+        ------
+        obj
+            Value of the variable (the type depends on its type on the robot program).
+        """
+        # Make sure the default parsers take care of turning basic error messages
+        # into exceptions. In that case, return it (the raising of that is handled by FutureResult)
+        feedback_value = super(GetVariable, self).on_after_receive(result, **kwargs)
+        if isinstance(feedback_value, Exception):
+            return feedback_value
+
+        if not len(result["string_values"]):
+            return None
+
+        if len(result["string_values"]) > 3:
+            raise InstructionException(
+                "Unexpected return value. Expected 3 string values, got {}.".format(len(result["string_values"])),
+                result,
+            )
+
+        raw_value = json.loads(result["string_values"][0])
+
+        if self.raw_data:
+            return raw_value
+
+        type_namespace = result["string_values"][1]
+        type_name = result["string_values"][2]
+
+        value = decode(raw_value, type_name, type_namespace)
+        return value
+
+
+class SetVariable(BaseInstruction):
+    """Set the value of a variable defined in robot code.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        # Start app
+        result = abb.send_and_wait(rrc.SetVariable("n_RRC_Value", 42, "T_ROB1"))
+        print("Result = ", result)
+
+    """
+
+    def __init__(self, variable_name, variable_value, task_name, feedback_level=FeedbackLevel.DATA):
+        """Create a new instance of the instruction.
+
+        Parameters
+        ----------
+        variable_name : :obj:`str`
+            Variable name to assign.
+        variable_value
+            Value to assign to the variable. # TODO: Define exactly which format this needs to go in, probably native
+        task_name : :obj:`str`
+            Robot task in which the variable is to be found, e.g. ``T_ROB1``.
+        feedback_level : :obj:`int`
+            Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.DATA`.
+        """
+        super(SetVariable, self).__init__({Interfaces.SYS: "set_variable"}, default_interface=Interfaces.SYS)
+        self.variable_info = dict(value=variable_value, name=variable_name, task=task_name)
+
+        self.feedback_level = feedback_level
+        self.string_values = []
+        self.float_values = []
+
+    def on_before_send(self, **kwargs):
+        type_namespace = kwargs["type_namespace"]
+        encoded_value = encode(self.variable_info["value"], type_namespace)
+        serialized_value = json.dumps(encoded_value)
+        self.string_values = [self.variable_info["name"], serialized_value, self.variable_info["task"]]
+
+        del self.variable_info
