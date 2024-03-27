@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Update minimum requirements to `compas_fab > 1.x` and `compas > 2.x`
+
 ### Removed
 
 ## 1.1.0
