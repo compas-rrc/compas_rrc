@@ -35,7 +35,7 @@ jobs:
     #       target: src/compas_rrc/ghpython/components/ghuser
       - name: Test import
         run: |
-          ipy -m compas_rrc
+          ipy -c "import compas_rrc"
         env:
           IRONPYTHONPATH: ./src
       - name: Run tests
