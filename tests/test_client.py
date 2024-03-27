@@ -39,7 +39,7 @@ def test_multithreaded_consistency():
 
     threads = []
     for _ in range(nr_of_threads):
-        t = threading.Thread(target=incrementer, args=(counter, ))
+        t = threading.Thread(target=incrementer, args=(counter,))
         t.start()
         threads.append(t)
 
