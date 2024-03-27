@@ -3,16 +3,16 @@ from compas_fab.backends.ros.messages import ROSmsg
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 
-INSTRUCTION_PREFIX = 'r_RRC_'
+INSTRUCTION_PREFIX = "r_RRC_"
 
 __all__ = [
-    'SetDigital',
-    'SetAnalog',
-    'SetGroup',
-    'PulseDigital',
-    'ReadAnalog',
-    'ReadDigital',
-    'ReadGroup',
+    "SetDigital",
+    "SetAnalog",
+    "SetGroup",
+    "PulseDigital",
+    "ReadAnalog",
+    "ReadDigital",
+    "ReadGroup",
 ]
 
 
@@ -48,7 +48,7 @@ class SetDigital(ROSmsg):
         """
         if value not in (0, 1):
             raise ValueError("Value can only be 0 or 1")
-        self.instruction = INSTRUCTION_PREFIX + 'SetDigital'
+        self.instruction = INSTRUCTION_PREFIX + "SetDigital"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -85,7 +85,7 @@ class SetAnalog(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetAnalog'
+        self.instruction = INSTRUCTION_PREFIX + "SetAnalog"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -122,7 +122,7 @@ class SetGroup(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'SetGroup'
+        self.instruction = INSTRUCTION_PREFIX + "SetGroup"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -158,7 +158,7 @@ class PulseDigital(ROSmsg):
         feedback_level : :obj:`int`
             Defines the feedback level requested from the robot. Defaults to :attr:`FeedbackLevel.NONE`.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'PulseDigital'
+        self.instruction = INSTRUCTION_PREFIX + "PulseDigital"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -189,7 +189,7 @@ class ReadAnalog(ROSmsg):
         io_name : :obj:`str`
             Name of the input signal.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'ReadAnalog'
+        self.instruction = INSTRUCTION_PREFIX + "ReadAnalog"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -203,7 +203,7 @@ class ReadAnalog(ROSmsg):
             Current value of the input signal.
         """
         # read input value
-        result = result['float_values'][0]
+        result = result["float_values"][0]
         return result
 
 
@@ -231,7 +231,7 @@ class ReadDigital(ROSmsg):
         io_name : :obj:`str`
             Name of the input signal.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'ReadDigital'
+        self.instruction = INSTRUCTION_PREFIX + "ReadDigital"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -246,7 +246,7 @@ class ReadDigital(ROSmsg):
         """
 
         # read input value
-        result = int(result['float_values'][0])
+        result = int(result["float_values"][0])
         return result
 
 
@@ -274,7 +274,7 @@ class ReadGroup(ROSmsg):
         io_name : :obj:`str`
             Name of the input signal.
         """
-        self.instruction = INSTRUCTION_PREFIX + 'ReadGroup'
+        self.instruction = INSTRUCTION_PREFIX + "ReadGroup"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
@@ -289,5 +289,5 @@ class ReadGroup(ROSmsg):
         """
 
         # read input value
-        result = int(result['float_values'][0])
+        result = int(result["float_values"][0])
         return result

@@ -1,144 +1,170 @@
+# flake8: noqa
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
-import os
-import sphinx_compas_theme
+from sphinx.writers import html, html5
+import sphinx_compas2_theme
 
-from sphinx.ext.napoleon.docstring import NumpyDocstring
+# -- General configuration ------------------------------------------------
+project = "COMPAS RRC"
+copyright = "2019-2024, ETH Zurich"
+author = "ETH Zurich"
+organization = "compas-rrc"
+package = "compas_rrc"
 
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.coverage',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.extlinks',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.todo',
-    'sphinx.ext.viewcode',
-]
-if os.getenv('SPELLCHECK'):
-    extensions += 'sphinxcontrib.spelling',
-    spelling_show_suggestions = True
-    spelling_lang = 'en_US'
-
-source_suffix = '.rst'
-master_doc = 'index'
-project = 'COMPAS RRC'
-year = '2019'
-author = 'ETH Zurich'
-copyright = '{0}, {1}'.format(year, author)
-version = release = '1.1.0'
-
-pygments_style = 'sphinx'
-show_authors = True
+master_doc = "index"
+source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
+templates_path = sphinx_compas2_theme.get_autosummary_templates_path()
+exclude_patterns = sphinx_compas2_theme.default_exclude_patterns
 add_module_names = True
-templates_path = ['_templates', ]
-extlinks = {
-    'issue': ('https://github.com/compas-rrc/compas_rrc/issues/%s', '#'),
-    'pr': ('https://github.com/compas-rrc/compas_rrc/pull/%s', 'PR #'),
-}
+language = "en"
 
-# intersphinx options
-intersphinx_mapping = {'python': ('https://docs.python.org/', None),
-                       'compas': ('https://compas.dev/compas/latest/', None),
-                       'compas_fab': ('https://gramaziokohler.github.io/compas_fab/latest/', None),
-                       'roslibpy': ('https://roslibpy.readthedocs.io/en/latest/', None),
-                       }
+latest_version = sphinx_compas2_theme.get_latest_version()
+
+if latest_version == "Unreleased":
+    release = "Unreleased"
+    version = "latest"
+else:
+    release = latest_version
+    version = ".".join(release.split(".")[0:2])  # type: ignore
+
+# -- Extension configuration ------------------------------------------------
+
+extensions = sphinx_compas2_theme.default_extensions
+
+# numpydoc options
+
+numpydoc_show_class_members = False
+numpydoc_class_members_toctree = False
+numpydoc_attributes_as_param_list = True
+numpydoc_show_inherited_class_members = False
+
+# bibtex options
 
 # autodoc options
+
+autodoc_type_aliases = {}
+autodoc_typehints_description_target = "documented"
+autodoc_mock_imports = sphinx_compas2_theme.default_mock_imports
 autodoc_default_options = {
-    'member-order': 'bysource',
-    'exclude-members': '__weakref__',
-    'undoc-members': True,
-    'private-members': True,
-    'show-inheritance': True,
+    "undoc-members": True,
+    "show-inheritance": True,
+    "private-members": True,
+    "exclude-members": "__weakref__",
 }
 
-autodoc_member_order = 'alphabetical'
+autodoc_member_order = "alphabetical"
+autodoc_typehints = "description"
+autodoc_class_signature = "separated"
+
+autoclass_content = "class"
+
+
+def setup(app):
+    app.connect("autodoc-skip-member", sphinx_compas2_theme.skip)
+
 
 # autosummary options
+
 autosummary_generate = True
+autosummary_mock_imports = sphinx_compas2_theme.default_mock_imports
 
-# collect doc versions
-package_docs_root = 'https://compas-rrc.github.io/compas_rrc/'
+# graph options
 
-with open(os.path.join(os.path.dirname(__file__), 'doc_versions.txt'), 'r') as f:
-    version_names = [version.strip() for version in f.readlines()]
-    package_docs_versions = [(version, '{}{}/'.format(package_docs_root, version))
-                             for version in version_names if version]
+# plot options
 
-# on_rtd is whether we are on readthedocs.org
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-html_theme = 'compaspkg'
-html_theme_path = sphinx_compas_theme.get_html_theme_path()
-html_theme_options = {
-    "package_name": 'compas_rrc',
-    "package_title": project,
-    "package_version": release,
-    "package_repo": 'https://github.com/compas-rrc/compas_rrc',
-    "package_docs": package_docs_root,
-    "package_old_versions": package_docs_versions
+plot_include_source = False
+plot_html_show_source_link = False
+plot_html_show_formats = False
+plot_formats = ["png"]
+
+# intersphinx options
+
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/", None),
+    "compas": ("https://compas.dev/compas/latest/", None),
+    "compas_fab": ("https://compas.dev/compas_fab/latest/", None),
+    "roslibpy": ("https://roslibpy.readthedocs.io/en/latest/", None),
 }
 
-html_split_index = False
-html_short_title = '%s-%s' % (project, version)
-html_context = {}
-html_static_path = ['_static']
-html_last_updated_fmt = '%b %d, %Y'
+# linkcode
+
+linkcode_resolve = sphinx_compas2_theme.get_linkcode_resolve(organization, package)
+
+# extlinks
+
+extlinks = {
+    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s"),
+    "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s"),
+}
+
+# from pytorch
+
+sphinx_compas2_theme.replace(html.HTMLTranslator)
+sphinx_compas2_theme.replace(html5.HTML5Translator)
+
+# -- Options for HTML output ----------------------------------------------
+
+html_theme = "sidebaronly"
+html_title = project
+html_sidebars = {"index": []}
+
+favicons = [
+    {
+        "rel": "icon",
+        "href": "compas.ico",
+    }
+]
+
+html_theme_options = {
+    "external_links": [
+        {"name": "COMPAS RRC", "url": "https://compas-rrc.github.io/compas_rrc/"},
+    ],
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": f"https://github.com/{organization}/{package}",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "Discourse",
+            "url": "http://forum.compas-framework.org/",
+            "icon": "fa-brands fa-discourse",
+            "type": "fontawesome",
+        },
+        {
+            "name": "PyPI",
+            "url": f"https://pypi.org/project/{package}/",
+            "icon": "fa-brands fa-python",
+            "type": "fontawesome",
+        },
+    ],
+    "switcher": {
+        "json_url": f"https://raw.githubusercontent.com/{organization}/{package}/gh-pages/versions.json",
+        "version_match": version,
+    },
+    "logo": {
+        "image_light": "_static/compas_icon_white.png",
+        "image_dark": "_static/compas_icon_white.png",
+        "text": "COMPAS RRC",
+    },
+    "navigation_depth": 2,
+}
+
+html_context = {
+    "github_url": "https://github.com",
+    "github_user": organization,
+    "github_repo": package,
+    "github_version": "main",
+    "doc_path": "docs",
+}
+
+html_static_path = sphinx_compas2_theme.get_html_static_path() + ["_static"]
+html_css_files = []
+html_extra_path = []
+html_last_updated_fmt = ""
 html_copy_source = False
-html_show_sourcelink = False
-html_add_permalinks = ''
+html_show_sourcelink = True
 html_permalinks = False
-html_experimental_html5_writer = True
+html_permalinks_icon = ""
 html_compact_lists = True
-
-# napoleon options
-napoleon_google_docstring = True
-napoleon_numpy_docstring = True
-napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = True
-napoleon_include_special_with_doc = True
-napoleon_use_admonition_for_examples = False
-napoleon_use_admonition_for_notes = False
-napoleon_use_admonition_for_references = False
-napoleon_use_ivar = False
-napoleon_use_param = False
-napoleon_use_rtype = False
-
-# Parse Attributes and Class Attributes on Class docs same as parameters.
-# first, we define new methods for any new sections and add them to the class
-
-
-def parse_keys_section(self, section):
-    return self._format_fields('Keys', self._consume_fields())
-
-
-NumpyDocstring._parse_keys_section = parse_keys_section
-
-
-def parse_attributes_section(self, section):
-    return self._format_fields('Attributes', self._consume_fields())
-
-
-NumpyDocstring._parse_attributes_section = parse_attributes_section
-
-
-def parse_class_attributes_section(self, section):
-    return self._format_fields('Class Attributes', self._consume_fields())
-
-
-NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
-
-
-# we now patch the parse method to guarantee that the the above methods are
-# assigned to the _section dict
-def patched_parse(self):
-    self._sections['keys'] = self._parse_keys_section
-    self._sections['class attributes'] = self._parse_class_attributes_section
-    self._unpatched_parse()
-
-
-NumpyDocstring._unpatched_parse = NumpyDocstring._parse
-NumpyDocstring._parse = patched_parse

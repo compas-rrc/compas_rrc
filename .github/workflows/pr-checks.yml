@@ -10,10 +10,11 @@ jobs:
     name: Check Actions
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Changelog check
-        uses: Zomzog/changelog-checker@v1.1.0
+        uses: Zomzog/changelog-checker@v1.2.0
         with:
-          fileName: CHANGELOG.rst
+          fileName: CHANGELOG.md
+          checkNotification: Simple
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
