@@ -12,7 +12,7 @@ authors:
   orcid: "https://orcid.org/0000-0000-0000-0000"
 title: "COMPAS RRC: Online control for ABB robots over a simple-to-use Python interface."
 doi: 10.5281/zenodo.4639418
-version: v1.1.0
+version: v2.0.0
 date-released: 2020-07-03
 repository-code: "https://github.com/compas-rrc/compas_rrc"
 url: "https://compas-rrc.github.io/compas_rrc"
