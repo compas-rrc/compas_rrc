@@ -21,7 +21,6 @@ Contents
    contributing
    architecture
    authors
-   changelog
    citing
 
 Indices and tables
