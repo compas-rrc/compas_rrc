@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `to_configuration` and `to_configuration_primitive` to `compas_rrc.ExternalAxes` and `compas_rrc.RobotJoints`
 * Add `is_connected` property to `AbbClient`
 
 ### Changed
@@ -17,9 +16,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed all instructions to inherit from `BaseInstruction` instead of `ROSMsg`.
 * Changed `MoveGeneric` to require new interface arguments on the constructor.
 
-### Fixed
+### Removed
 
-### Deprecated
+
+## [2.0.0] 2024-03-28
+
+### Added
+
+* Added `to_configuration` and `to_configuration_primitive` to `compas_rrc.ExternalAxes` and `compas_rrc.RobotJoints`
+
+### Changed
+
+* Update minimum requirements to `compas_fab > 1.x` and `compas > 2.x`
 
 ### Removed
 
@@ -29,14 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Prepared github actions for continuous integration
 * Added compas plugin for automatic Rhino install
-
-### Changed
-
-### Fixed
-
-### Deprecated
-
-### Removed
 
 ## 1.0.0
 

@@ -51,4 +51,10 @@ def test_move_to_robtarget():
 def test_move_to_robtarget_validation():
     # Only up to 6 external axes are supported
     with pytest.raises(ValueError):
-        rrc.MoveToRobtarget(Frame.worldXY(), [50, 20, 0, 0, 0, 0, 0, 0], 100, rrc.Zone.FINE, rrc.Motion.JOINT)
+        rrc.MoveToRobtarget(
+            Frame.worldXY(),
+            [50, 20, 0, 0, 0, 0, 0, 0],
+            100,
+            rrc.Zone.FINE,
+            rrc.Motion.JOINT,
+        )

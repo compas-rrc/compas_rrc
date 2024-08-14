@@ -1,7 +1,7 @@
 __title__ = "compas_rrc"
 __description__ = "COMPAS RRC: Library for ABB Robots"
 __url__ = "https://github.com/compas-rrc/compas_rrc"
-__version__ = "1.1.0"
+__version__ = "2.0.0"
 __author__ = "ETH Zurich"
 __author_email__ = "rrc@arch.ethz.ch"
 __license__ = "MIT license"

@@ -16,12 +16,11 @@ Contents
 
    readme
    getting_started
-   reference/index
+   api/index
    links
    contributing
    architecture
    authors
-   changelog
    citing
 
 Indices and tables

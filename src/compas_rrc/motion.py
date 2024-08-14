@@ -244,7 +244,14 @@ class MoveToFrame(MoveGeneric):
 
     """
 
-    def __init__(self, frame, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
+    def __init__(
+        self,
+        frame,
+        speed,
+        zone,
+        motion_type=Motion.JOINT,
+        feedback_level=FeedbackLevel.NONE,
+    ):
         """Create a new instance of the instruction.
 
         Parameters
@@ -293,7 +300,15 @@ class MoveToRobtarget(MoveGeneric):
 
     """
 
-    def __init__(self, frame, ext_axes, speed, zone, motion_type=Motion.JOINT, feedback_level=FeedbackLevel.NONE):
+    def __init__(
+        self,
+        frame,
+        ext_axes,
+        speed,
+        zone,
+        motion_type=Motion.JOINT,
+        feedback_level=FeedbackLevel.NONE,
+    ):
         """Create a new instance of the instruction.
 
         Parameters

@@ -3,6 +3,7 @@ The following classes are not currently stable, so they are not added to the pub
 
 This will probably change in the near future.
 """
+
 from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Quaternion

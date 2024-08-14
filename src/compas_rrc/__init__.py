@@ -95,7 +95,14 @@ output values::
 
 from __future__ import absolute_import
 
-from compas_rrc.__version__ import __author__, __author_email__, __copyright__, __license__, __url__, __version__
+from compas_rrc.__version__ import (
+    __author__,
+    __author_email__,
+    __copyright__,
+    __license__,
+    __url__,
+    __version__,
+)
 from compas_rrc.client import AbbClient, RosClient
 from compas_rrc.common import (
     CLIENT_PROTOCOL_VERSION,
@@ -108,10 +115,30 @@ from compas_rrc.common import (
     TimeoutException,
 )
 from compas_rrc.custom import CustomInstruction
-from compas_rrc.io import PulseDigital, ReadAnalog, ReadDigital, ReadGroup, SetAnalog, SetDigital, SetGroup
-from compas_rrc.motion import Motion, MoveToFrame, MoveToJoints, MoveToRobtarget, Zone
+from compas_rrc.io import (
+    PulseDigital,
+    ReadAnalog,
+    ReadDigital,
+    ReadGroup,
+    SetAnalog,
+    SetDigital,
+    SetGroup,
+)
+from compas_rrc.motion import (
+    Motion,
+    MoveToFrame,
+    MoveToJoints,
+    MoveToRobtarget,
+    Zone,
+)
 from compas_rrc.msg import PrintText
-from compas_rrc.system import GetControllerState, GetExecutionState, GetOperationMode, GetSpeedRatio, SetSpeedRatio
+from compas_rrc.system import (
+    GetControllerState,
+    GetExecutionState,
+    GetOperationMode,
+    GetSpeedRatio,
+    SetSpeedRatio,
+)
 from compas_rrc.utility import (
     Debug,
     GetFrame,
@@ -130,7 +157,11 @@ from compas_rrc.utility import (
     StopApp,
     WaitTime,
 )
-from compas_rrc.watch import ReadWatch, StartWatch, StopWatch
+from compas_rrc.watch import (
+    ReadWatch,
+    StartWatch,
+    StopWatch,
+)
 
 __all_plugins__ = ["compas_rrc.__install"]
 __all__ = [

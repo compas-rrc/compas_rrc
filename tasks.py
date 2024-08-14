@@ -29,7 +29,7 @@ ns.configure(
         "ghuser": {
             "source_dir": "src/compas_rrc/ghpython/components",
             "target_dir": "src/compas_rrc/ghpython/components/ghuser",
-            "prefix": "(COMPAS RRC)",
+            "prefix": "COMPAS RRC: ",
         },
     }
 )

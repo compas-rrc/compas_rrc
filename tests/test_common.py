@@ -1,7 +1,7 @@
 import math
 
 from compas.geometry import allclose
-from compas.robots import Configuration
+from compas_robots import Configuration
 import compas_rrc as rrc
 
 
@@ -52,7 +52,8 @@ def test_robot_joints():
     assert len(c.joint_names) == 0
 
     config = Configuration(
-        [2 * math.pi, math.pi, math.pi / 2, math.pi / 3, math.pi / 4, math.pi / 6], [0, 0, 0, 0, 0, 0]
+        [2 * math.pi, math.pi, math.pi / 2, math.pi / 3, math.pi / 4, math.pi / 6],
+        [0, 0, 0, 0, 0, 0],
     )
     rj = rrc.RobotJoints.from_configuration_primitive(config)
     assert allclose(rj.values, [360, 180, 90, 60, 45, 30])
@@ -98,7 +99,8 @@ def test_external_axes():
     assert len(c.joint_names) == 0
 
     config = Configuration(
-        [2 * math.pi, math.pi, math.pi / 2, math.pi / 3, math.pi / 4, math.pi / 6], [0, 0, 0, 0, 0, 0]
+        [2 * math.pi, math.pi, math.pi / 2, math.pi / 3, math.pi / 4, math.pi / 6],
+        [0, 0, 0, 0, 0, 0],
     )
     rj = rrc.ExternalAxes.from_configuration_primitive(config)
     assert allclose(rj.values, [360, 180, 90, 60, 45, 30])

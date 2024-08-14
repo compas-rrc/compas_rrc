@@ -119,7 +119,9 @@ class AbbClient(object):
             namespace += "/"
         self._version_checked = False
         self._server_protocol_check = dict(
-            event=threading.Event(), param=roslibpy.Param(ros, namespace + "protocol_version"), version=None
+            event=threading.Event(),
+            param=roslibpy.Param(ros, namespace + "protocol_version"),
+            version=None,
         )
         self.ros.on_ready(self.version_check)
 

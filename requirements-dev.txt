@@ -10,7 +10,6 @@ isort
 m2r2
 pylint
 pytest
-sphinx_compas_theme >=0.15.18
-sphinx>=1.6
+sphinx_compas2_theme
 twine
 -e .
