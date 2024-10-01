@@ -1,7 +1,7 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
+from compas_rrc.common import BaseInstruction
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.common import Interfaces
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
@@ -132,7 +132,7 @@ class Motion(object):
     This type of motion can be faster than LINEAR motion."""
 
 
-class MoveToJoints(ROSmsg):
+class MoveToJoints(BaseInstruction):
     """Move to joints is a call that moves the robot and the external axes with axes values.
 
     Examples
@@ -156,9 +156,7 @@ class MoveToJoints(ROSmsg):
 
     """
 
-    def __init__(
-        self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE
-    ):
+    def __init__(self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         """Create a new instance of the instruction.
 
         Parameters
@@ -178,11 +176,9 @@ class MoveToJoints(ROSmsg):
             the motion planner has executed the instruction fully.
         """
         if speed <= 0:
-            raise ValueError(
-                "Speed must be higher than zero. Current value={}".format(speed)
-            )
+            raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
-        self.instruction = INSTRUCTION_PREFIX + "MoveToJoints"
+        super(MoveToJoints, self).__init__({Interfaces.APP: INSTRUCTION_PREFIX + "MoveToJoints"})
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
@@ -197,18 +193,17 @@ class MoveToJoints(ROSmsg):
 
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
         self.string_values = []
-        self.float_values = (
-            list(joints) + joints_pad + list(ext_axes) + ext_axes_pad + [speed, zone]
-        )
+        self.float_values = list(joints) + joints_pad + list(ext_axes) + ext_axes_pad + [speed, zone]
 
 
-class MoveGeneric(ROSmsg):
-    def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
+class MoveGeneric(BaseInstruction):
+    def __init__(
+        self, frame, ext_axes, speed, zone, interface_names, default_interface=None, feedback_level=FeedbackLevel.NONE
+    ):
         if speed <= 0:
-            raise ValueError(
-                "Speed must be higher than zero. Current value={}".format(speed)
-            )
+            raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
+        super(MoveGeneric, self).__init__(interface_names, default_interface)
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
 
@@ -275,9 +270,9 @@ class MoveToFrame(MoveGeneric):
             Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
             the motion planner has executed the instruction fully.
         """
-        super(MoveToFrame, self).__init__(frame, [], speed, zone, feedback_level)
         instruction = "MoveTo"
-        self.instruction = INSTRUCTION_PREFIX + instruction
+        interfaces = {Interfaces.APP: INSTRUCTION_PREFIX + instruction}
+        super(MoveToFrame, self).__init__(frame, [], speed, zone, interfaces, feedback_level=feedback_level)
         self.string_values = ["FrameJ"] if motion_type == Motion.JOINT else ["FrameL"]
 
 
@@ -334,9 +329,14 @@ class MoveToRobtarget(MoveGeneric):
             Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
             the motion planner has executed the instruction fully.
         """
-        super(MoveToRobtarget, self).__init__(
-            frame, ext_axes, speed, zone, feedback_level
-        )
         instruction = "MoveTo"
-        self.instruction = INSTRUCTION_PREFIX + instruction
+        interfaces = {Interfaces.APP: INSTRUCTION_PREFIX + instruction}
+        super(MoveToRobtarget, self).__init__(
+            frame,
+            ext_axes,
+            speed,
+            zone,
+            interfaces,
+            feedback_level=feedback_level,
+        )
         self.string_values = ["J"] if motion_type == Motion.JOINT else ["L"]

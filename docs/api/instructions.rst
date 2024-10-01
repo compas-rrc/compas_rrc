@@ -63,7 +63,11 @@ Utility
 
     Noop
     PrintText
+    GetVariable
+    ResetApp
+    StartApp
     Stop
+    StopApp
     WaitTime
 
 Watch

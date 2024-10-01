@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add `is_connected` property to `AbbClient`
+
 ### Changed
+
+* Changed all instructions to inherit from `BaseInstruction` instead of `ROSMsg`.
+* Changed `MoveGeneric` to require new interface arguments on the constructor.
 
 ### Removed
 

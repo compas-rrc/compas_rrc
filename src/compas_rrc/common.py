@@ -2,8 +2,11 @@ import itertools
 import math
 import threading
 
+import roslibpy
 from compas_robots import Configuration
 from compas_robots.model import Joint
+from compas_fab.backends.ros.messages import ROSmsg
+
 
 __all__ = [
     "CLIENT_PROTOCOL_VERSION",
@@ -11,12 +14,15 @@ __all__ = [
     "ExecutionLevel",
     "InstructionException",
     "TimeoutException",
+    "Interfaces",
+    "BaseInstruction",
     "FutureResult",
     "ExternalAxes",
     "RobotJoints",
 ]
 
 CLIENT_PROTOCOL_VERSION = 2
+FEEDBACK_ERROR_PREFIX = "Done FError"
 
 
 def _convert_unit_to_meters_radians(value, type_):
@@ -36,6 +42,7 @@ class FeedbackLevel(object):
 
     .. autoattribute:: NONE
     .. autoattribute:: DONE
+    .. autoattribute:: DATA
     """
 
     NONE = 0
@@ -45,6 +52,26 @@ class FeedbackLevel(object):
     """Indicates completion feedback is requested from the robot. Completion feedback means
     the robot has executed the procedure. See :meth:`AbbClient.send_and_wait` for more details.
     """
+
+    DATA = -1
+    """Indicates all feedback data is requested from the robot."""
+
+
+class Interfaces(object):
+    """Defines the supported interfaces over which instructions can be sent.
+
+    .. autoattribute:: APP
+    .. autoattribute:: SYS
+    """
+
+    APP = "app"
+    """Default interface. Uses the primary TCP/IP communication channels."""
+
+    SYS = "sys"
+    """System interafce uses an alternative communication channel. In the case of ABB, web services."""
+
+    SUPPORTED_INTERFACES = (APP, SYS)
+    """Tuple of currently-supported interfaces."""
 
 
 class ExecutionLevel(object):
@@ -60,14 +87,15 @@ class ExecutionLevel(object):
     CONTROLLER = 10
     """Execute instruction on the ``controller`` task (only usable with custom instructions)."""
 
+    DRIVER = -1
+    """Execute instruction outside of the robot controller, and inside the ROS environment."""
+
 
 class InstructionException(Exception):
     """Exception caused during/after the execution of an instruction."""
 
     def __init__(self, message, result):
-        super(InstructionException, self).__init__(
-            "{}, RRC Reply={}".format(message, result)
-        )
+        super(InstructionException, self).__init__("{}, RRC Reply={}".format(message, result))
         self.result = result
 
 
@@ -75,6 +103,85 @@ class TimeoutException(Exception):
     """Timeout exception caused during execution of an instruction."""
 
     pass
+
+
+class BaseInstruction(ROSmsg):
+    """Base class for all instructions."""
+
+    def __init__(self, instruction_names, default_interface=Interfaces.APP):
+        super(BaseInstruction, self).__init__()
+        self.meta = dict(instruction_names=instruction_names, interface=default_interface)
+        self.feedback_level = FeedbackLevel.NONE
+        self.exec_level = ExecutionLevel.ROBOT
+        self.string_values = []
+        self.float_values = []
+
+    def select_interface(self, interface_name):
+        """Select the interace over which the instruction will be sent.
+
+        Parameters
+        ----------
+        interface_name : :obj:`str`
+            Name of the interface to select.
+        """
+        if interface_name not in Interfaces.SUPPORTED_INTERFACES:
+            raise ValueError("Interface not supported: {}".format(interface_name))
+        self.meta["interface"] = interface_name
+        self.instruction = self.meta["instruction_names"].get(interface_name)
+
+        if not self.instruction:
+            raise ValueError("Instruction does not support selected interface: '{}'".format(interface_name))
+
+    def supports_interface(self, interface_name):
+        """Determines if a specific interface is supported by this instruction.
+
+        Parameters
+        ----------
+        interface_name : :obj:`str`
+            Name of the interface.
+
+        Returns
+        -------
+        :obj:`bool`
+            Indicate whether the interface is supported.
+        """
+        return interface_name in self.meta["instruction_names"]
+
+    def to_message(self):
+        """Convert the instruction to a roslibpy Message instance.
+
+        Returns
+        -------
+        :class:`roslibpy.Message`
+        """
+        msg = self.msg
+        msg.pop("meta")
+
+        return roslibpy.Message(msg)
+
+    # --------------------------------------------------------------------------
+    # Event handlers for before/after sending/receiving messages.
+    # --------------------------------------------------------------------------
+
+    def on_before_send(self, **kwargs):
+        """Called right before the instruction is sent over the wire.
+
+        This method can be overwritten in sub-classes to handle transformations of the message before
+        the message is sent."""
+        pass
+
+    def on_after_receive(self, result, **kwargs):
+        """Called after new feedback is received.
+
+        This method can be overwritten in sub-classes to handle transformations of the feedback results
+        before it is returned to the main code.
+        """
+        feedback_value = result["feedback"]
+
+        if feedback_value.startswith(FEEDBACK_ERROR_PREFIX):
+            return InstructionException(feedback_value, result)
+
+        return feedback_value
 
 
 class FutureResult(object):
@@ -217,10 +324,7 @@ class ExternalAxes(object):
         -------
         :class:`compas_robots.Configuration`
         """
-        joint_values = [
-            _convert_unit_to_meters_radians(value, type_)
-            for value, type_ in zip(self.values, joint_types)
-        ]
+        joint_values = [_convert_unit_to_meters_radians(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
 
     def to_configuration(self, robot, group=None):
@@ -262,17 +366,16 @@ class ExternalAxes(object):
         """
         if joint_names:
             joint_values = [
-                _convert_unit_to_mm_degrees(
-                    configuration[name], configuration.type_dict[name]
-                )
-                for name in joint_names
+                _convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names
             ]
         else:
             joint_values = [
                 _convert_unit_to_mm_degrees(value, type_)
-                for value, type_ in zip(
-                    configuration.joint_values, configuration.joint_types
-                )
+                for value, type_ in zip(configuration.joint_values, configuration.joint_types)
+            ]
+            joint_values = [
+                _convert_unit_to_mm_degrees(value, type_)
+                for value, type_ in zip(configuration.joint_values, configuration.joint_types)
             ]
         return cls(joint_values)
 
@@ -392,10 +495,7 @@ class RobotJoints(object):
         -------
         :class:`compas_robots.Configuration`
         """
-        joint_values = [
-            _convert_unit_to_meters_radians(value, type_)
-            for value, type_ in zip(self.values, joint_types)
-        ]
+        joint_values = [_convert_unit_to_meters_radians(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
 
     def to_configuration(self, robot, group=None):
@@ -437,17 +537,12 @@ class RobotJoints(object):
         """
         if joint_names:
             joint_values = [
-                _convert_unit_to_mm_degrees(
-                    configuration[name], configuration.type_dict[name]
-                )
-                for name in joint_names
+                _convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names
             ]
         else:
             joint_values = [
                 _convert_unit_to_mm_degrees(value, type_)
-                for value, type_ in zip(
-                    configuration.joint_values, configuration.joint_types
-                )
+                for value, type_ in zip(configuration.joint_values, configuration.joint_types)
             ]
         return cls(joint_values)
 

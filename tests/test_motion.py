@@ -34,23 +34,7 @@ def test_move_to_joints_validation():
 def test_move_to_frame():
     inst = rrc.MoveToFrame(Frame.worldXY(), 100, rrc.Zone.FINE, rrc.Motion.JOINT)
 
-    assert inst.float_values == [
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        100,
-        -1,
-    ]
+    assert inst.float_values == [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 100, -1]
     assert inst.string_values == ["FrameJ"]
 
     inst = rrc.MoveToFrame(Frame.worldXY(), 100, rrc.Zone.FINE, rrc.Motion.LINEAR)
@@ -58,27 +42,9 @@ def test_move_to_frame():
 
 
 def test_move_to_robtarget():
-    inst = rrc.MoveToRobtarget(
-        Frame.worldXY(), [50, 20], 100, rrc.Zone.FINE, rrc.Motion.JOINT
-    )
+    inst = rrc.MoveToRobtarget(Frame.worldXY(), [50, 20], 100, rrc.Zone.FINE, rrc.Motion.JOINT)
 
-    assert inst.float_values == [
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        50,
-        20,
-        0,
-        0,
-        0,
-        0,
-        100,
-        -1,
-    ]
+    assert inst.float_values == [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 50, 20, 0, 0, 0, 0, 100, -1]
     assert inst.string_values == ["J"]
 
 
