@@ -1,10 +1,9 @@
 build
 bump-my-version
 check-manifest >=0.36
-compas_invocations2
+compas_invocations2[mkdocs]
 invoke >=0.14
 pytest
 ruff
-sphinx_compas2_theme
 twine
 wheel
