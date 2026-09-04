@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import print_function
-
 import io
 import re
 from glob import glob
@@ -58,17 +55,16 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: Implementation :: CPython",
-        "Programming Language :: Python :: Implementation :: IronPython",
         "Topic :: Scientific/Engineering",
     ],
     keywords=keywords_list,
+    python_requires=">=3.9",
     install_requires=requirements,
     extras_require={},
     entry_points={},

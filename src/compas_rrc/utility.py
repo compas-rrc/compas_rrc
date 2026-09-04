@@ -269,7 +269,7 @@ class GetFrame(GetRobtarget):
         :class:`compas.geometry.Frame`
             Current frame of the robot.
         """
-        frame, _ext_axes = super(GetFrame, self).parse_feedback(result)
+        frame, _ext_axes = super().parse_feedback(result)
         return frame
 
 

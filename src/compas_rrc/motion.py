@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 
-class Zone(object):
+class Zone:
     """Describes the valid zone data definitions.
 
     There are two types of zones: fine and fly-by.
@@ -117,7 +117,7 @@ class Zone(object):
     """
 
 
-class Motion(object):
+class Motion:
     """Represents valid motion types.
 
     .. autoattribute:: LINEAR
@@ -275,7 +275,7 @@ class MoveToFrame(MoveGeneric):
             Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
             the motion planner has executed the instruction fully.
         """
-        super(MoveToFrame, self).__init__(frame, [], speed, zone, feedback_level)
+        super().__init__(frame, [], speed, zone, feedback_level)
         instruction = "MoveTo"
         self.instruction = INSTRUCTION_PREFIX + instruction
         self.string_values = ["FrameJ"] if motion_type == Motion.JOINT else ["FrameL"]
@@ -334,9 +334,7 @@ class MoveToRobtarget(MoveGeneric):
             Use  :attr:`FeedbackLevel.DONE` and :attr:`Zone.FINE` together to make sure
             the motion planner has executed the instruction fully.
         """
-        super(MoveToRobtarget, self).__init__(
-            frame, ext_axes, speed, zone, feedback_level
-        )
+        super().__init__(frame, ext_axes, speed, zone, feedback_level)
         instruction = "MoveTo"
         self.instruction = INSTRUCTION_PREFIX + instruction
         self.string_values = ["J"] if motion_type == Motion.JOINT else ["L"]

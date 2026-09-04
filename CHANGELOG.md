@@ -11,7 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Bumped minimum supported Python version to 3.9.
+
 ### Removed
+
+* Removed support for IronPython 2.7. The library now requires CPython 3.9 or newer.
+* Removed the `compas_rrc.__install` plugin used by `python -m compas_rhino.install`. Install into Rhino 8 with `pip` instead.
 
 
 ## [2.0.0] 2024-03-28

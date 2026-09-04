@@ -46,7 +46,7 @@ Main features
 * Supports commanding multiple controllers in coordination
 * Open up the Python world for ABB robots
 
-**COMPAS RRC** runs on Python 3.x as well as IronPython 2.7.
+**COMPAS RRC** requires Python 3.9 or newer.
 
 Requirements
 ------------

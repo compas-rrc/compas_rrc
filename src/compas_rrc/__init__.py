@@ -77,8 +77,6 @@ output values::
 
 """
 
-from __future__ import absolute_import
-
 from compas_rrc.__version__ import (
     __author__,
     __author_email__,
@@ -125,7 +123,6 @@ from compas_rrc.utility import (
 )
 from compas_rrc.watch import ReadWatch, StartWatch, StopWatch
 
-__all_plugins__ = ["compas_rrc.__install"]
 __all__ = [
     "__url__",
     "__version__",
