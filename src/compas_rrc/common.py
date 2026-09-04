@@ -224,7 +224,7 @@ class ExternalAxes:
 
         Parameters
         ----------
-        robot : :class:`compas_fab.robots.Robot`
+        robot : :obj:`object`
             The robot to be configured.
         group : :obj:`str`
             The name of the group of joints to be included in the ``Configuration``. Optional.
@@ -270,7 +270,7 @@ class ExternalAxes:
         ----------
         configuration : :class:`compas_robots.Configuration`
             The configuration from which to create the ``ExternalAxes`` instance.
-        robot : :class:`compas_fab.robots.Robot`
+        robot : :obj:`object`
             The robot to be configured.  Optional.
         group : :obj:`str`
             The name of the group of joints to be included in the ``ExternalAxes``. Optional.
@@ -386,7 +386,7 @@ class RobotJoints:
 
         Parameters
         ----------
-        robot : :class:`compas_fab.robots.Robot`
+        robot : :obj:`object`
             The robot to be configured.
         group : :obj:`str`
             The name of the group of joints to be included in the ``Configuration``. Optional.
@@ -432,7 +432,7 @@ class RobotJoints:
         ----------
         configuration : :class:`compas_robots.Configuration`
             The configuration from which to create the ``ExternalAxes`` instance.
-        robot : :class:`compas_fab.robots.Robot`
+        robot : :obj:`object`
             The robot to be configured.  Optional.
         group : :obj:`str`
             The name of the group of joints to be included in the ``ExternalAxes``. Optional.

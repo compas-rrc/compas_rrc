@@ -1,7 +1,6 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.message import Instruction
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
@@ -132,7 +131,7 @@ class Motion:
     This type of motion can be faster than LINEAR motion."""
 
 
-class MoveToJoints(ROSmsg):
+class MoveToJoints(Instruction):
     """Move to joints is a call that moves the robot and the external axes with axes values.
 
     Examples
@@ -196,7 +195,7 @@ class MoveToJoints(ROSmsg):
         self.float_values = list(joints) + joints_pad + list(ext_axes) + ext_axes_pad + [speed, zone]
 
 
-class MoveGeneric(ROSmsg):
+class MoveGeneric(Instruction):
     def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         if speed <= 0:
             raise ValueError("Speed must be higher than zero. Current value={}".format(speed))

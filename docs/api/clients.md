@@ -1,4 +1,4 @@
-# Clients
+# Clients and messages
 
 ## ::: compas_rrc.RosClient
 
@@ -13,3 +13,7 @@
 ## ::: compas_rrc.InstructionException
 
 ## ::: compas_rrc.TimeoutException
+
+## ::: compas_rrc.Instruction
+
+## ::: compas_rrc.RobotMessage

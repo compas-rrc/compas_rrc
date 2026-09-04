@@ -2,16 +2,143 @@ import threading
 import time
 
 import roslibpy
-from compas_fab.backends import RosClient
+from compas_eve import Message
+from compas_eve import Publisher
+from compas_eve import Subscriber
+from compas_eve import Topic
+from compas_eve import Transport
+from compas_eve.ros import RosTransport
 
 from .common import CLIENT_PROTOCOL_VERSION
 from .common import FutureResult
 from .common import InstructionException
+from .message import RobotMessage
 
 __all__ = ["RosClient", "AbbClient"]
 
 
 FEEDBACK_ERROR_PREFIX = "Done FError "
+
+PROTOCOL_VERSION_TOPIC = "protocol_version"
+"""Topic on which the driver announces its protocol version, relative to the namespace."""
+
+PROTOCOL_VERSION_TIMEOUT = 10
+"""Seconds to wait for the driver to announce its protocol version."""
+
+
+class RosClient(RosTransport):
+    """Connection to a ROS bridge, for use with :class:`AbbClient`.
+
+    This is a ``compas_eve`` ROS transport that also exposes the handful of
+    ``roslibpy.Ros`` methods RRC scripts have always called, so existing code
+    keeps working unchanged.
+
+    Parameters
+    ----------
+    host : :obj:`str`
+        Host name of the ROS bridge. Defaults to ``localhost``.
+    port : :obj:`int`
+        Port of the ROS bridge. Defaults to ``9090``.
+    connect_timeout : :obj:`float`
+        Seconds to wait for the connection to be established.
+
+    Examples
+    --------
+    ::
+
+        ros = rrc.RosClient()
+        ros.run()
+
+        abb = rrc.AbbClient(ros, '/rob1')
+
+        ros.close()
+
+    Notes
+    -----
+    The connection is established when the client is constructed rather than
+    when :meth:`run` is called, because that is how ``compas_eve`` transports
+    work. :meth:`run` is kept as a no-op so that existing scripts, which call
+    it right after constructing the client, keep working.
+    """
+
+    def run(self, timeout=None):
+        """Kept for backwards compatibility. The connection is already established."""
+
+    def terminate(self):
+        """Terminate the connection. :meth:`close` already does this."""
+        if self.client.is_connected:
+            self.client.terminate()
+
+    def on_ready(self, callback):
+        """Invoke a callback when the connection is ready."""
+        self.client.on_ready(callback)
+
+    def get_params(self):
+        """Retrieve the list of parameters on the ROS parameter server."""
+        return self.client.get_params()
+
+    @property
+    def is_connected(self):
+        """:obj:`bool`: Indicates whether the connection is open."""
+        return self.client.is_connected
+
+
+class _AttachedRosTransport(RosTransport):
+    """A :class:`compas_eve.ros.RosTransport` bound to a connection someone else owns.
+
+    ``RosTransport`` always creates and connects its own ``roslibpy.Ros``, which
+    is what :class:`RosClient` wants. This variant reuses a connection that
+    already exists, so a script holding a ``roslibpy.Ros`` -- including anything
+    deriving from it -- can hand it to :class:`AbbClient` the way it used to.
+
+    The attributes below mirror ``RosTransport.__init__`` minus the connect
+    step; keep them in sync when upgrading ``compas_eve``.
+    """
+
+    def __init__(self, client):
+        Transport.__init__(self)
+        self.host = getattr(client, "host", None)
+        self.port = getattr(client, "port", None)
+        self.client = client
+        self._publishers = {}
+        self._subscribers = {}
+        self._topic_configs = {}
+        self._subscriptions = {}
+        self._subscription_handlers = {}
+        self._local_callbacks = {}
+        self._advertised_topics = set()
+
+
+def _as_transport(client):
+    """Return a ``compas_eve`` transport for whatever the caller passed in."""
+    if isinstance(client, Transport):
+        return client
+
+    if isinstance(client, roslibpy.Ros):
+        return _AttachedRosTransport(client)
+
+    raise TypeError("Expected a compas_eve transport or a roslibpy client, got: {!r}".format(client))
+
+
+def _robot_message_topic(transport, name, **ros_options):
+    """Build the topic carrying RRC robot messages.
+
+    ROS moves the payload in the driver's own message type and needs its name
+    plus the queue settings the driver expects. Every other transport carries
+    the payload itself and decodes it into a :class:`RobotMessage`.
+    """
+    if isinstance(transport, RosTransport):
+        return Topic(name, RobotMessage.ROS_MSG_TYPE, **ros_options)
+
+    return Topic(name, RobotMessage)
+
+
+def _protocol_version_topic(transport, name):
+    """Build the topic on which the driver announces its protocol version."""
+    if isinstance(transport, RosTransport):
+        return Topic(name, "std_msgs/String", queue_size=1)
+
+    return Topic(name, Message)
 
 
 def _get_key(message):
@@ -104,52 +231,106 @@ class AbbClient:
 
     """
 
-    def __init__(self, ros, namespace="/rob1"):
+    def __init__(self, transport, namespace="/rob1"):
         """Initialize a new robot client instance.
 
         Parameters
         ----------
-        ros : :class:`RosClient`
-            Instance of a ROS connection.
+        transport : :class:`compas_eve.Transport` or :class:`roslibpy.Ros`
+            Connection over which to talk to the driver. Use :class:`RosClient`
+            for ROS, or any other ``compas_eve`` transport, such as
+            ``compas_eve.mqtt.MqttTransport``, to reach a driver over MQTT.
         namespace : :obj:`str`
-            Namespace to allow multiple robots to be controlled through the same ROS instance.
+            Namespace to allow multiple robots to be controlled through the same connection.
             Optional. If not specified, it will use namespace ``/rob1``.
         """
-        self.ros = ros
+        self.transport = _as_transport(transport)
+        self.ros = self.transport
         self.counter = SequenceCounter()
         if not namespace.endswith("/"):
             namespace += "/"
+        self.namespace = namespace
         self._version_checked = False
-        self._server_protocol_check = dict(
-            event=threading.Event(),
-            param=roslibpy.Param(ros, namespace + "protocol_version"),
-            version=None,
+        self._server_protocol_check = dict(event=threading.Event(), version=None, error=None)
+
+        self._publisher = Publisher(
+            _robot_message_topic(self.transport, namespace + "robot_command", queue_size=None),
+            transport=self.transport,
         )
-        self.ros.on_ready(self.version_check)
-        self.topic = roslibpy.Topic(
-            ros,
-            namespace + "robot_command",
-            "compas_rrc_driver/RobotMessage",
-            queue_size=None,
+        self._subscriber = Subscriber(
+            _robot_message_topic(self.transport, namespace + "robot_response", queue_size=0),
+            callback=self.feedback_callback,
+            transport=self.transport,
         )
-        self.feedback = roslibpy.Topic(
-            ros,
-            namespace + "robot_response",
-            "compas_rrc_driver/RobotMessage",
-            queue_size=0,
-        )
-        self.feedback.subscribe(self.feedback_callback)
-        self.topic.advertise()
+        self._subscriber.subscribe()
+        self._publisher.advertise()
         self.futures = {}
 
-        self.ros.on("closing", self._disconnect_topics)
+        threading.Thread(target=self.version_check, daemon=True).start()
 
     def version_check(self):
-        """Check if the protocol version on the server matches the protocol version on the client."""
-        self._server_protocol_check["version"] = self._server_protocol_check["param"].get()
+        """Check if the protocol version on the server matches the protocol version on the client.
+
+        This runs on a background thread, so any failure is captured and
+        re-raised from :meth:`ensure_protocol_version`, where the caller can see it.
+        """
+        try:
+            version = self._read_announced_protocol_version()
+
+            if version is None:
+                version = self._read_protocol_version_parameter()
+
+            self._server_protocol_check["version"] = version
+        except Exception as exception:  # noqa: BLE001
+            self._server_protocol_check["error"] = exception
+        finally:
+            self._server_protocol_check["event"].set()
+
+    def _read_announced_protocol_version(self):
+        """Read the protocol version the driver announces on a retained topic.
+
+        The driver publishes its protocol version on ``<namespace>/protocol_version``,
+        latched on ROS and retained on MQTT, so a client that connects at any
+        point still receives it. This is the only mechanism that works on every
+        transport.
+        """
+        received = []
+        announced = threading.Event()
+
+        def _on_version(message):
+            received.append(message["data"])
+            announced.set()
+
+        subscriber = Subscriber(
+            _protocol_version_topic(self.transport, self.namespace + PROTOCOL_VERSION_TOPIC),
+            callback=_on_version,
+            transport=self.transport,
+        )
+        subscriber.subscribe()
+
+        try:
+            if not announced.wait(PROTOCOL_VERSION_TIMEOUT):
+                return None
+            return int(received[0])
+        finally:
+            subscriber.unsubscribe()
+
+    def _read_protocol_version_parameter(self):
+        """Read the protocol version from the ROS parameter server.
+
+        Drivers that do not yet announce their version on a topic only expose it
+        as a ROS parameter, so this is used as a fallback. It is not available on
+        transports other than ROS.
+        """
+        if not isinstance(self.transport, RosTransport):
+            raise Exception("The driver did not announce its protocol version on {}{} within {} seconds.".format(self.namespace, PROTOCOL_VERSION_TOPIC, PROTOCOL_VERSION_TIMEOUT))
+
+        client = self.transport.client
+        version = roslibpy.Param(client, self.namespace + PROTOCOL_VERSION_TOPIC).get()
+
         # No version is usually caused by wrong namespace in the connection, check that and raise correct error
-        if self._server_protocol_check["version"] is None:
-            params = self.ros.get_params()
+        if version is None:
+            params = client.get_params()
 
             detected_namespaces = set()
             tentative_namespaces = set()
@@ -163,7 +344,7 @@ class AbbClient:
 
             raise Exception("Cannot find the specified namespace. Detected namespaces={}".format(sorted(detected_namespaces)))
 
-        self._server_protocol_check["event"].set()
+        return version
 
     def ensure_protocol_version(self):
         """Ensure protocol version on the server matches the protocol version on the client."""
@@ -171,18 +352,28 @@ class AbbClient:
             return
 
         if not self._server_protocol_check["version"]:
-            if not self._server_protocol_check["event"].wait(10):
+            # The check itself waits up to PROTOCOL_VERSION_TIMEOUT for the
+            # announcement before falling back, so allow for both steps here.
+            if not self._server_protocol_check["event"].wait(2 * PROTOCOL_VERSION_TIMEOUT):
                 raise Exception("Could not yet retrieve server protocol version")
+
+        if self._server_protocol_check["error"]:
+            raise self._server_protocol_check["error"]
 
         if self._server_protocol_check["version"] != CLIENT_PROTOCOL_VERSION:
             raise Exception("Protocol version mismatch. Server={}, Client={}".format(self._server_protocol_check["version"], CLIENT_PROTOCOL_VERSION))
 
         self._version_checked = True
 
-    def _disconnect_topics(self):
-        self.topic.unadvertise()
-        self.feedback.unsubscribe()
+    def close(self):
+        """Stop publishing and listening on the robot topics."""
+        self._publisher.unadvertise()
+        self._subscriber.unsubscribe()
         time.sleep(0.5)
+
+    def _disconnect_topics(self):
+        """Deprecated alias of :meth:`close`."""
+        self.close()
 
     def send(self, instruction):
         """Sends an instruction to the robot without waiting.
@@ -198,8 +389,8 @@ class AbbClient:
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.Instruction`
+            Instruction to send to the robot.
 
         Returns
         -------
@@ -243,7 +434,7 @@ class AbbClient:
             parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
             self.futures[key] = dict(result=result, parser=parser)
 
-        self.topic.publish(roslibpy.Message(instruction.msg))
+        self._publisher.publish(instruction.msg)
 
         return result
 
@@ -257,8 +448,8 @@ class AbbClient:
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.Instruction`
+            Instruction to send to the robot.
         timeout : :obj:`int`
             Timeout in seconds to wait before raising an exception. Optional.
 
@@ -290,8 +481,8 @@ class AbbClient:
 
         Parameters
         ----------
-        instruction : :class:`compas_fab.backends.ros.messages.ROSmsg`
-            ROS Message representing the instruction to send.
+        instruction : :class:`compas_rrc.Instruction`
+            Instruction to send to the robot.
         callback
             Python function to be invoked every time a new value is made available.
 
@@ -308,7 +499,7 @@ class AbbClient:
         parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
         self.futures[key] = dict(callback=callback, parser=parser)
 
-        self.topic.publish(roslibpy.Message(instruction.msg))
+        self._publisher.publish(instruction.msg)
 
     def feedback_callback(self, message):
         """Internal method."""

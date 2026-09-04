@@ -4,6 +4,7 @@
 
 * [COMPAS](https://compas.dev/compas)
 * [COMPAS FAB](https://compas.dev/compas_fab)
+* [COMPAS EVE](https://compas.dev/compas_eve)
 * [COMPAS SLICER](https://compas.dev/compas_slicer/)
 * [COMPAS Forum](https://forum.compas-framework.org/)
 

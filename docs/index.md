@@ -8,7 +8,7 @@ Online control for ABB robots over a simple-to-use Python interface.
 
 * Provides a simple way to interact with ABB robots
 * Supports futures and blocking calls
-* Builds on top of COMPAS FAB
+* Works over ROS or MQTT, on top of COMPAS EVE
 * Supports all RAPID instructions as well as custom procedures
 * Supports EGM activation/deactivation
 * Supports multi-move up to 4 robots
@@ -20,7 +20,7 @@ Online control for ABB robots over a simple-to-use Python interface.
 ## Requirements
 
 `COMPAS RRC` is part of the `COMPAS` framework and it requires the core library
-and the robotic fabrication package `COMPAS FAB`.
+and the event infrastructure package `COMPAS EVE`.
 
 ## Installation
 

@@ -1,7 +1,6 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.message import Instruction
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
@@ -12,7 +11,7 @@ __all__ = [
 ]
 
 
-class ReadWatch(ROSmsg):
+class ReadWatch(Instruction):
     """Read Watch is a call that requests the value of the watch in the robot code.
 
     Examples
@@ -49,7 +48,7 @@ class ReadWatch(ROSmsg):
         return result
 
 
-class StartWatch(ROSmsg):
+class StartWatch(Instruction):
     """Start Watch is a call that starts the watch in the robot code.
 
     Examples
@@ -80,7 +79,7 @@ class StartWatch(ROSmsg):
         self.float_values = []
 
 
-class StopWatch(ROSmsg):
+class StopWatch(Instruction):
     """Stop Watch is a call that stops the watch in the robot code.
 
     Examples
