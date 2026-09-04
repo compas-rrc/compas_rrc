@@ -12,7 +12,17 @@ permissions:
   contents: read
 
 jobs:
+  release-change:
+    name: Detect release merge
+    runs-on: ubuntu-latest
+    outputs:
+      is-release: ${{ steps.release.outputs.is-release }}
+    steps:
+      - uses: compas-dev/compas-actions/release-check@v1
+        id: release
+
   build:
+    needs: release-change
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +31,9 @@ jobs:
           extras: dev
 
   deploy:
-    if: github.event_name == 'push'
+    # Release merges are deployed by the release workflow, under their version.
+    needs: release-change
+    if: github.event_name == 'push' && needs.release-change.outputs.is-release != 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write

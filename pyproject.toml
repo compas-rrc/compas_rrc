@@ -120,6 +120,31 @@ search = "v{current_version}"
 replace = "v{new_version}"
 
 [[tool.bumpversion.files]]
-glob = "docker/**/docker-compose.yml"
+filename = "docker/real_controller_one_robot/docker-compose.yml"
+search = "compasrrc/compas_rrc_driver:v{current_version}"
+replace = "compasrrc/compas_rrc_driver:v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "docker/real_controller_two_robots/docker-compose.yml"
+search = "compasrrc/compas_rrc_driver:v{current_version}"
+replace = "compasrrc/compas_rrc_driver:v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "docker/real_multi_controller/docker-compose.yml"
+search = "compasrrc/compas_rrc_driver:v{current_version}"
+replace = "compasrrc/compas_rrc_driver:v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "docker/virtual_controller_one_robot/docker-compose.yml"
+search = "compasrrc/compas_rrc_driver:v{current_version}"
+replace = "compasrrc/compas_rrc_driver:v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "docker/virtual_controller_two_robots/docker-compose.yml"
+search = "compasrrc/compas_rrc_driver:v{current_version}"
+replace = "compasrrc/compas_rrc_driver:v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "docker/virtual_multi_controller/docker-compose.yml"
 search = "compasrrc/compas_rrc_driver:v{current_version}"
 replace = "compasrrc/compas_rrc_driver:v{new_version}"
