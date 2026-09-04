@@ -11,6 +11,9 @@ transport. ROS carries it in the driver's native ``RobotMessage`` type; other
 transports carry the payload themselves and encode it with a codec.
 """
 
+from typing import Any
+from typing import Dict
+
 from compas_eve import Message
 
 __all__ = ["RobotMessage", "Instruction"]
@@ -33,7 +36,7 @@ class RobotMessage(Message):
     ROS_MSG_TYPE = "compas_rrc_driver/RobotMessage"
     """:obj:`str`: Name of the ROS message type used to carry these messages."""
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Any:
         # `Message` keeps every value in `data` and raises `KeyError` for names
         # it does not hold. Attribute lookup has to raise `AttributeError`
         # instead, otherwise `hasattr()` propagates the `KeyError` -- which is
@@ -47,7 +50,7 @@ class RobotMessage(Message):
         except KeyError:
             raise AttributeError(name) from None
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: Any) -> None:
         # `hasattr(type(self), key)` keeps properties working: `Debug` exposes the
         # wrapped instruction through them, and those must not be shadowed by a
         # plain entry in `data`.
@@ -63,11 +66,11 @@ class RobotMessage(Message):
         self.data[key] = value
 
     @property
-    def msg(self):
+    def msg(self) -> Dict[str, Any]:
         """:obj:`dict`: The message payload as a plain dictionary."""
         return self.data
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         args = ", ".join("{}={!r}".format(key, value) for key, value in self.data.items())
         return "{}({})".format(type(self).__name__, args)
 

@@ -1,3 +1,11 @@
+from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Tuple
+from typing import Union
+
 from compas.geometry import Frame
 
 from compas_rrc.common import ExecutionLevel
@@ -44,7 +52,7 @@ class Noop(Instruction):
 
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -55,8 +63,8 @@ class Noop(Instruction):
         self.instruction = INSTRUCTION_PREFIX + "Noop"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
-        self.float_values = []
+        self.string_values: List[str] = []
+        self.float_values: List[float] = []
 
 
 class Debug(Instruction):
@@ -74,7 +82,7 @@ class Debug(Instruction):
 
     """
 
-    def __init__(self, instruction, debug_parser=None):
+    def __init__(self, instruction: Instruction, debug_parser: Optional[Callable[[Any], Any]] = None) -> None:
         """Initialize a new debug instruction wrapping another instruction.
 
         Parameters
@@ -88,49 +96,49 @@ class Debug(Instruction):
         self.debug_parser = debug_parser
 
     @property
-    def msg(self):
+    def msg(self) -> Dict[str, Any]:
         """Raw message."""
         return self._instruction.msg
 
     @property
-    def instruction(self):
+    def instruction(self) -> str:
         """Name of the instruction."""
         return self._instruction.instruction
 
     @property
-    def sequence_id(self):
+    def sequence_id(self) -> int:
         """Sequence identifier."""
         return self._instruction.sequence_id
 
     @sequence_id.setter
-    def sequence_id(self, value):
+    def sequence_id(self, value: int) -> None:
         self._instruction.sequence_id = value
 
     @property
-    def feedback_level(self):
+    def feedback_level(self) -> int:
         """Feedback level."""
         return self._instruction.feedback_level
 
     @feedback_level.setter
-    def feedback_level(self, value):
+    def feedback_level(self, value: int) -> None:
         self._instruction.feedback_level = value
 
     @property
-    def exec_level(self):
+    def exec_level(self) -> int:
         """Execution level."""
         return self._instruction.exec_level
 
     @property
-    def string_values(self):
+    def string_values(self) -> List[str]:
         """List of string values."""
         return self._instruction.string_values
 
     @property
-    def float_values(self):
+    def float_values(self) -> List[float]:
         """List of float values."""
         return self._instruction.float_values
 
-    def parse_feedback(self, result):
+    def parse_feedback(self, result: Union[Dict[str, Any], Any]) -> Any:
         if self.debug_parser:
             return self.debug_parser(result)
         return result
@@ -152,15 +160,15 @@ class GetJoints(Instruction):
 
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Create a new instance of the instruction."""
         self.instruction = INSTRUCTION_PREFIX + "GetJoints"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
-        self.float_values = []
+        self.string_values: List[str] = []
+        self.float_values: List[float] = []
 
-    def parse_feedback(self, result):
+    def parse_feedback(self, result: Union[Dict[str, Any], Any]) -> Tuple[RobotJoints, ExternalAxes]:
         """Parses the result as :class:`RobotJoints` and :class:`ExternalAxes`.
 
         Return
@@ -195,15 +203,15 @@ class GetRobtarget(Instruction):
 
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Create a new instance of the instruction."""
         self.instruction = INSTRUCTION_PREFIX + "GetRobtarget"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
-        self.float_values = []
+        self.string_values: List[str] = []
+        self.float_values: List[float] = []
 
-    def parse_feedback(self, result):
+    def parse_feedback(self, result: Union[Dict[str, Any], Any]) -> Tuple[Frame, ExternalAxes]:
         """Parses the result as a :class:`compas.geometry.Frame` and :class:`ExternalAxes`.
 
         Return
@@ -253,7 +261,7 @@ class GetFrame(GetRobtarget):
 
     """
 
-    def parse_feedback(self, result):
+    def parse_feedback(self, result: Union[Dict[str, Any], Any]) -> Frame:
         """Parses the result as a :class:`compas.geometry.Frame`.
 
         Return
@@ -282,7 +290,7 @@ class SetAcceleration(Instruction):
     .. include:: ../abb-reference.rst
     """
 
-    def __init__(self, acc, ramp, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, acc: float, ramp: float, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -297,7 +305,7 @@ class SetAcceleration(Instruction):
         self.instruction = INSTRUCTION_PREFIX + "SetAcceleration"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
+        self.string_values: List[str] = []
         self.float_values = [acc, ramp]
 
 
@@ -317,7 +325,7 @@ class SetTool(Instruction):
 
     """
 
-    def __init__(self, tool_name, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, tool_name: str, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -331,7 +339,7 @@ class SetTool(Instruction):
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [tool_name]
-        self.float_values = []
+        self.float_values: List[float] = []
 
 
 class SetMaxSpeed(Instruction):
@@ -352,7 +360,7 @@ class SetMaxSpeed(Instruction):
 
     """
 
-    def __init__(self, override, max_tcp, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, override: float, max_tcp: float, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -370,7 +378,7 @@ class SetMaxSpeed(Instruction):
         self.instruction = INSTRUCTION_PREFIX + "SetMaxSpeed"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
+        self.string_values: List[str] = []
         self.float_values = [override, max_tcp]
 
 
@@ -390,7 +398,7 @@ class SetWorkObject(Instruction):
 
     """
 
-    def __init__(self, wobj_name, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, wobj_name: str, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -404,7 +412,7 @@ class SetWorkObject(Instruction):
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [wobj_name]
-        self.float_values = []
+        self.float_values: List[float] = []
 
 
 class Stop(Instruction):
@@ -423,7 +431,7 @@ class Stop(Instruction):
 
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -434,8 +442,8 @@ class Stop(Instruction):
         self.instruction = INSTRUCTION_PREFIX + "Stop"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
-        self.float_values = []
+        self.string_values: List[str] = []
+        self.float_values: List[float] = []
 
 
 class WaitTime(Instruction):
@@ -455,7 +463,7 @@ class WaitTime(Instruction):
 
     """
 
-    def __init__(self, time, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, time: float, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -468,5 +476,5 @@ class WaitTime(Instruction):
         self.instruction = INSTRUCTION_PREFIX + "WaitTime"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
+        self.string_values: List[str] = []
         self.float_values = [time]

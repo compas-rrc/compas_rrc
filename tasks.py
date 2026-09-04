@@ -6,12 +6,21 @@ from compas_invocations2 import mkdocs
 from compas_invocations2 import style
 from compas_invocations2 import tests
 from invoke import Collection
+from invoke import task
+
+
+@task()
+def typecheck(ctx):
+    """Check type annotations with mypy."""
+    ctx.run("mypy")
+
 
 ns = Collection(
     docs.help,
     style.check,
     style.lint,
     style.format,
+    typecheck,
     mkdocs.docs,
     mkdocs.prune_docs,
     tests.test,

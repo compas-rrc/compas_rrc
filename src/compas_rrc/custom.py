@@ -1,3 +1,6 @@
+from typing import List
+from typing import Optional
+
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 from compas_rrc.message import Instruction
@@ -25,12 +28,12 @@ class CustomInstruction(Instruction):
 
     def __init__(
         self,
-        name,
-        string_values=[],
-        float_values=[],
-        feedback_level=FeedbackLevel.NONE,
-        execution_level=ExecutionLevel.ROBOT,
-    ):
+        name: str,
+        string_values: Optional[List[str]] = [],
+        float_values: Optional[List[float]] = [],
+        feedback_level: int = FeedbackLevel.NONE,
+        execution_level: int = ExecutionLevel.ROBOT,
+    ) -> None:
         """Create a new instance of the instruction.
 
         Parameters

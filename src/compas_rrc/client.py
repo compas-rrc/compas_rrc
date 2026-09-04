@@ -1,5 +1,12 @@
 import threading
 import time
+from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Set
+from typing import Union
 
 import roslibpy
 from compas_eve import Message
@@ -12,6 +19,7 @@ from compas_eve.ros import RosTransport
 from .common import CLIENT_PROTOCOL_VERSION
 from .common import FutureResult
 from .common import InstructionException
+from .message import Instruction
 from .message import RobotMessage
 
 __all__ = ["RosClient", "AbbClient"]
@@ -24,6 +32,16 @@ PROTOCOL_VERSION_TOPIC = "protocol_version"
 
 PROTOCOL_VERSION_TIMEOUT = 10
 """Seconds to wait for the driver to announce its protocol version."""
+
+FeedbackMessage = Union[RobotMessage, Dict[str, Any]]
+"""A message received from the driver.
+
+ROS delivers raw dictionaries while other transports decode into a
+:class:`RobotMessage`; both are read the same way, with ``message["key"]``.
+"""
+
+Connection = Union[Transport, roslibpy.Ros]
+"""Anything :class:`AbbClient` can talk over."""
 
 
 class RosClient(RosTransport):
@@ -61,24 +79,24 @@ class RosClient(RosTransport):
     it right after constructing the client, keep working.
     """
 
-    def run(self, timeout=None):
+    def run(self, timeout: Optional[float] = None) -> None:
         """Kept for backwards compatibility. The connection is already established."""
 
-    def terminate(self):
+    def terminate(self) -> None:
         """Terminate the connection. :meth:`close` already does this."""
         if self.client.is_connected:
             self.client.terminate()
 
-    def on_ready(self, callback):
+    def on_ready(self, callback: Callable[[], None]) -> None:
         """Invoke a callback when the connection is ready."""
         self.client.on_ready(callback)
 
-    def get_params(self):
+    def get_params(self) -> List[str]:
         """Retrieve the list of parameters on the ROS parameter server."""
         return self.client.get_params()
 
     @property
-    def is_connected(self):
+    def is_connected(self) -> bool:
         """:obj:`bool`: Indicates whether the connection is open."""
         return self.client.is_connected
 
@@ -95,21 +113,21 @@ class _AttachedRosTransport(RosTransport):
     step; keep them in sync when upgrading ``compas_eve``.
     """
 
-    def __init__(self, client):
+    def __init__(self, client: roslibpy.Ros) -> None:
         Transport.__init__(self)
         self.host = getattr(client, "host", None)
         self.port = getattr(client, "port", None)
         self.client = client
-        self._publishers = {}
-        self._subscribers = {}
-        self._topic_configs = {}
-        self._subscriptions = {}
-        self._subscription_handlers = {}
-        self._local_callbacks = {}
-        self._advertised_topics = set()
+        self._publishers: Dict[str, roslibpy.Topic] = {}
+        self._subscribers: Dict[str, roslibpy.Topic] = {}
+        self._topic_configs: Dict[str, Any] = {}
+        self._subscriptions: Dict[str, Dict[str, Callable]] = {}
+        self._subscription_handlers: Dict[str, Callable] = {}
+        self._local_callbacks: Dict[str, Any] = {}
+        self._advertised_topics: Set[str] = set()
 
 
-def _as_transport(client):
+def _as_transport(client: Connection) -> Transport:
     """Return a ``compas_eve`` transport for whatever the caller passed in."""
     if isinstance(client, Transport):
         return client
@@ -120,7 +138,7 @@ def _as_transport(client):
     raise TypeError("Expected a compas_eve transport or a roslibpy client, got: {!r}".format(client))
 
 
-def _robot_message_topic(transport, name, **ros_options):
+def _robot_message_topic(transport: Transport, name: str, **ros_options: Any) -> Topic:
     """Build the topic carrying RRC robot messages.
 
     ROS moves the payload in the driver's own message type and needs its name
@@ -133,7 +151,7 @@ def _robot_message_topic(transport, name, **ros_options):
     return Topic(name, RobotMessage)
 
 
-def _protocol_version_topic(transport, name):
+def _protocol_version_topic(transport: Transport, name: str) -> Topic:
     """Build the topic on which the driver announces its protocol version."""
     if isinstance(transport, RosTransport):
         return Topic(name, "std_msgs/String", queue_size=1)
@@ -141,11 +159,11 @@ def _protocol_version_topic(transport, name):
     return Topic(name, Message)
 
 
-def _get_key(message):
+def _get_key(message: RobotMessage) -> str:
     return "msg:{}".format(message.sequence_id)
 
 
-def _get_response_key(message):
+def _get_response_key(message: FeedbackMessage) -> str:
     return "msg:{}".format(message["feedback_id"])
 
 
@@ -154,12 +172,12 @@ class SequenceCounter:
 
     ROLLOVER_THRESHOLD = 1000000
 
-    def __init__(self, start=0):
+    def __init__(self, start: int = 0) -> None:
         """Initialize a new counter to given initial value."""
         self._lock = threading.Lock()
         self._value = start
 
-    def increment(self, num=1):
+    def increment(self, num: int = 1) -> int:
         """Atomically increment the counter by ``num`` and
         return the new value.
         """
@@ -170,13 +188,13 @@ class SequenceCounter:
             return self._value
 
     @property
-    def value(self):
+    def value(self) -> int:
         """Current sequence counter."""
         with self._lock:
             return self._value
 
 
-def default_feedback_parser(result):
+def default_feedback_parser(result: FeedbackMessage) -> Union[str, InstructionException]:
     feedback_value = result["feedback"]
 
     if feedback_value.startswith(FEEDBACK_ERROR_PREFIX):
@@ -231,7 +249,7 @@ class AbbClient:
 
     """
 
-    def __init__(self, transport, namespace="/rob1"):
+    def __init__(self, transport: Connection, namespace: str = "/rob1") -> None:
         """Initialize a new robot client instance.
 
         Parameters
@@ -251,7 +269,9 @@ class AbbClient:
             namespace += "/"
         self.namespace = namespace
         self._version_checked = False
-        self._server_protocol_check = dict(event=threading.Event(), version=None, error=None)
+        self._protocol_version_known = threading.Event()
+        self._protocol_version: Optional[int] = None
+        self._protocol_version_error: Optional[Exception] = None
 
         self._publisher = Publisher(
             _robot_message_topic(self.transport, namespace + "robot_command", queue_size=None),
@@ -264,11 +284,11 @@ class AbbClient:
         )
         self._subscriber.subscribe()
         self._publisher.advertise()
-        self.futures = {}
+        self.futures: Dict[str, Dict[str, Any]] = {}
 
         threading.Thread(target=self.version_check, daemon=True).start()
 
-    def version_check(self):
+    def version_check(self) -> None:
         """Check if the protocol version on the server matches the protocol version on the client.
 
         This runs on a background thread, so any failure is captured and
@@ -280,13 +300,13 @@ class AbbClient:
             if version is None:
                 version = self._read_protocol_version_parameter()
 
-            self._server_protocol_check["version"] = version
+            self._protocol_version = version
         except Exception as exception:  # noqa: BLE001
-            self._server_protocol_check["error"] = exception
+            self._protocol_version_error = exception
         finally:
-            self._server_protocol_check["event"].set()
+            self._protocol_version_known.set()
 
-    def _read_announced_protocol_version(self):
+    def _read_announced_protocol_version(self) -> Optional[int]:
         """Read the protocol version the driver announces on a retained topic.
 
         The driver publishes its protocol version on ``<namespace>/protocol_version``,
@@ -297,7 +317,7 @@ class AbbClient:
         received = []
         announced = threading.Event()
 
-        def _on_version(message):
+        def _on_version(message: FeedbackMessage) -> None:
             received.append(message["data"])
             announced.set()
 
@@ -315,7 +335,7 @@ class AbbClient:
         finally:
             subscriber.unsubscribe()
 
-    def _read_protocol_version_parameter(self):
+    def _read_protocol_version_parameter(self) -> int:
         """Read the protocol version from the ROS parameter server.
 
         Drivers that do not yet announce their version on a topic only expose it
@@ -346,36 +366,36 @@ class AbbClient:
 
         return version
 
-    def ensure_protocol_version(self):
+    def ensure_protocol_version(self) -> None:
         """Ensure protocol version on the server matches the protocol version on the client."""
         if self._version_checked:
             return
 
-        if not self._server_protocol_check["version"]:
+        if not self._protocol_version:
             # The check itself waits up to PROTOCOL_VERSION_TIMEOUT for the
             # announcement before falling back, so allow for both steps here.
-            if not self._server_protocol_check["event"].wait(2 * PROTOCOL_VERSION_TIMEOUT):
+            if not self._protocol_version_known.wait(2 * PROTOCOL_VERSION_TIMEOUT):
                 raise Exception("Could not yet retrieve server protocol version")
 
-        if self._server_protocol_check["error"]:
-            raise self._server_protocol_check["error"]
+        if self._protocol_version_error:
+            raise self._protocol_version_error
 
-        if self._server_protocol_check["version"] != CLIENT_PROTOCOL_VERSION:
-            raise Exception("Protocol version mismatch. Server={}, Client={}".format(self._server_protocol_check["version"], CLIENT_PROTOCOL_VERSION))
+        if self._protocol_version != CLIENT_PROTOCOL_VERSION:
+            raise Exception("Protocol version mismatch. Server={}, Client={}".format(self._protocol_version, CLIENT_PROTOCOL_VERSION))
 
         self._version_checked = True
 
-    def close(self):
+    def close(self) -> None:
         """Stop publishing and listening on the robot topics."""
         self._publisher.unadvertise()
         self._subscriber.unsubscribe()
         time.sleep(0.5)
 
-    def _disconnect_topics(self):
+    def _disconnect_topics(self) -> None:
         """Deprecated alias of :meth:`close`."""
         self.close()
 
-    def send(self, instruction):
+    def send(self, instruction: Instruction) -> Optional[FutureResult]:
         """Sends an instruction to the robot without waiting.
 
         Instructions can indicate that feedback is required or not. If
@@ -438,7 +458,7 @@ class AbbClient:
 
         return result
 
-    def send_and_wait(self, instruction, timeout=None):
+    def send_and_wait(self, instruction: Instruction, timeout: Optional[float] = None) -> Any:
         """Send instruction and wait for feedback.
 
         This is a blocking call, it will only return once the robot
@@ -474,9 +494,13 @@ class AbbClient:
             instruction.feedback_level = 1
 
         future = self.send(instruction)
+
+        if future is None:
+            raise InstructionException("Instruction did not produce a future result", instruction)
+
         return future.result(timeout)
 
-    def send_and_subscribe(self, instruction, callback):
+    def send_and_subscribe(self, instruction: Instruction, callback: Callable[[Any], None]) -> None:
         """Send instruction and activate a service on the robot to stream feedback at a regular inverval.
 
         Parameters
@@ -501,17 +525,16 @@ class AbbClient:
 
         self._publisher.publish(instruction.msg)
 
-    def feedback_callback(self, message):
+    def feedback_callback(self, message: FeedbackMessage) -> None:
         """Internal method."""
         response_key = _get_response_key(message)
         future = self.futures.get(response_key, None)
 
         if future:
-            result = message
             if future["parser"]:
-                result = future["parser"](result)
+                result = future["parser"](message)
             else:
-                result = default_feedback_parser(result)
+                result = default_feedback_parser(message)
             if "result" in future:
                 future["result"]._set_result(result)
                 self.futures.pop(response_key)
