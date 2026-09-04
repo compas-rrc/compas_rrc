@@ -7,13 +7,14 @@ graft tests
 prune .github
 
 include .editorconfig
+include mkdocs.yml
 
-include AUTHORS.rst
+include AUTHORS.md
 include CHANGELOG.md
 include CITATION.cff
-include CONTRIBUTING.rst
+include CONTRIBUTING.md
 include LICENSE
-include README.rst
+include README.md
 include requirements.txt
 
 include requirements-dev.txt tasks.py

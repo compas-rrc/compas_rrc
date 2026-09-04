@@ -13,7 +13,7 @@ keywords = ["abb", "compas", "fabrication", "robotics", "ros"]
 authors = [{ name = "ETH Zurich", email = "rrc@arch.ethz.ch" }]
 license = "MIT"
 license-files = ["LICENSE"]
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.9"
 dynamic = ['dependencies', 'optional-dependencies', 'version']
 classifiers = [
@@ -118,12 +118,6 @@ replace = "[{new_version}] {now:%Y-%m-%d}"
 filename = "CITATION.cff"
 search = "v{current_version}"
 replace = "v{new_version}"
-
-[[tool.bumpversion.files]]
-filename = "docs/doc_versions.txt"
-search = "{current_version}"
-replace = """{new_version}
-{current_version}"""
 
 [[tool.bumpversion.files]]
 glob = "docker/**/docker-compose.yml"
