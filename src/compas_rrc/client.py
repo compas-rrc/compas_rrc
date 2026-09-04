@@ -146,9 +146,7 @@ class AbbClient:
 
     def version_check(self):
         """Check if the protocol version on the server matches the protocol version on the client."""
-        self._server_protocol_check["version"] = self._server_protocol_check[
-            "param"
-        ].get()
+        self._server_protocol_check["version"] = self._server_protocol_check["param"].get()
         # No version is usually caused by wrong namespace in the connection, check that and raise correct error
         if self._server_protocol_check["version"] is None:
             params = self.ros.get_params()
@@ -156,20 +154,14 @@ class AbbClient:
             detected_namespaces = set()
             tentative_namespaces = set()
             for param in params:
-                if param.endswith("/robot_state_port") or param.endswith(
-                    "/protocol_version"
-                ):
+                if param.endswith("/robot_state_port") or param.endswith("/protocol_version"):
                     namespace = param[: param.rindex("/")]
                     if namespace not in tentative_namespaces:
                         tentative_namespaces.add(namespace)
                     else:
                         detected_namespaces.add(namespace)
 
-            raise Exception(
-                "Cannot find the specified namespace. Detected namespaces={}".format(
-                    sorted(detected_namespaces)
-                )
-            )
+            raise Exception("Cannot find the specified namespace. Detected namespaces={}".format(sorted(detected_namespaces)))
 
         self._server_protocol_check["event"].set()
 
@@ -183,11 +175,7 @@ class AbbClient:
                 raise Exception("Could not yet retrieve server protocol version")
 
         if self._server_protocol_check["version"] != CLIENT_PROTOCOL_VERSION:
-            raise Exception(
-                "Protocol version mismatch. Server={}, Client={}".format(
-                    self._server_protocol_check["version"], CLIENT_PROTOCOL_VERSION
-                )
-            )
+            raise Exception("Protocol version mismatch. Server={}, Client={}".format(self._server_protocol_check["version"], CLIENT_PROTOCOL_VERSION))
 
         self._version_checked = True
 
@@ -252,11 +240,7 @@ class AbbClient:
 
         if instruction.feedback_level > 0:
             result = FutureResult()
-            parser = (
-                instruction.parse_feedback
-                if hasattr(instruction, "parse_feedback")
-                else None
-            )
+            parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
             self.futures[key] = dict(result=result, parser=parser)
 
         self.topic.publish(roslibpy.Message(instruction.msg))
@@ -321,11 +305,7 @@ class AbbClient:
 
         key = _get_key(instruction)
 
-        parser = (
-            instruction.parse_feedback
-            if hasattr(instruction, "parse_feedback")
-            else None
-        )
+        parser = instruction.parse_feedback if hasattr(instruction, "parse_feedback") else None
         self.futures[key] = dict(callback=callback, parser=parser)
 
         self.topic.publish(roslibpy.Message(instruction.msg))

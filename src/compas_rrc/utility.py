@@ -172,11 +172,7 @@ class GetJoints(ROSmsg):
         robot_joints = [result["float_values"][i] for i in range(0, 6)]
 
         # read external axes
-        external_axes = [
-            result["float_values"][i]
-            for i in range(6, 12)
-            if not is_rapid_none(result["float_values"][i])
-        ]
+        external_axes = [result["float_values"][i] for i in range(6, 12) if not is_rapid_none(result["float_values"][i])]
 
         # write result
         return RobotJoints(*robot_joints), ExternalAxes(*external_axes)
@@ -230,11 +226,7 @@ class GetRobtarget(ROSmsg):
         orientation = [orient_q1, orient_q2, orient_q3, orient_q4]
 
         # read gantry joints
-        external_axes = [
-            result["float_values"][i]
-            for i in range(7, 13)
-            if not is_rapid_none(result["float_values"][i])
-        ]
+        external_axes = [result["float_values"][i] for i in range(7, 13) if not is_rapid_none(result["float_values"][i])]
 
         # write result
 

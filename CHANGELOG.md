@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Bumped minimum supported Python version to 3.9.
+* Moved packaging metadata from `setup.py`/`setup.cfg` to `pyproject.toml`.
+* Moved version configuration from `.bumpversion.cfg` to `[tool.bumpversion]` in `pyproject.toml`.
+* Moved pytest configuration from `pytest.ini` to `[tool.pytest.ini_options]` in `pyproject.toml`.
+* Replaced `black`, `flake8` and `isort` with `ruff`, and `compas_invocations` with `compas_invocations2`.
 
 ### Removed
 

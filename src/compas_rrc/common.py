@@ -215,10 +215,7 @@ class ExternalAxes:
         -------
         :class:`compas_robots.Configuration`
         """
-        joint_values = [
-            _convert_unit_to_meters_radians(value, type_)
-            for value, type_ in zip(self.values, joint_types)
-        ]
+        joint_values = [_convert_unit_to_meters_radians(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
 
     def to_configuration(self, robot, group=None):
@@ -259,19 +256,9 @@ class ExternalAxes:
         :class:`compas_rrc.ExternalAxes`
         """
         if joint_names:
-            joint_values = [
-                _convert_unit_to_mm_degrees(
-                    configuration[name], configuration.type_dict[name]
-                )
-                for name in joint_names
-            ]
+            joint_values = [_convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names]
         else:
-            joint_values = [
-                _convert_unit_to_mm_degrees(value, type_)
-                for value, type_ in zip(
-                    configuration.joint_values, configuration.joint_types
-                )
-            ]
+            joint_values = [_convert_unit_to_mm_degrees(value, type_) for value, type_ in zip(configuration.joint_values, configuration.joint_types)]
         return cls(joint_values)
 
     @classmethod
@@ -390,10 +377,7 @@ class RobotJoints:
         -------
         :class:`compas_robots.Configuration`
         """
-        joint_values = [
-            _convert_unit_to_meters_radians(value, type_)
-            for value, type_ in zip(self.values, joint_types)
-        ]
+        joint_values = [_convert_unit_to_meters_radians(value, type_) for value, type_ in zip(self.values, joint_types)]
         return Configuration(joint_values, joint_types, joint_names)
 
     def to_configuration(self, robot, group=None):
@@ -434,19 +418,9 @@ class RobotJoints:
         :class:`compas_rrc.RobotJoints`
         """
         if joint_names:
-            joint_values = [
-                _convert_unit_to_mm_degrees(
-                    configuration[name], configuration.type_dict[name]
-                )
-                for name in joint_names
-            ]
+            joint_values = [_convert_unit_to_mm_degrees(configuration[name], configuration.type_dict[name]) for name in joint_names]
         else:
-            joint_values = [
-                _convert_unit_to_mm_degrees(value, type_)
-                for value, type_ in zip(
-                    configuration.joint_values, configuration.joint_types
-                )
-            ]
+            joint_values = [_convert_unit_to_mm_degrees(value, type_) for value, type_ in zip(configuration.joint_values, configuration.joint_types)]
         return cls(joint_values)
 
     @classmethod

@@ -156,9 +156,7 @@ class MoveToJoints(ROSmsg):
 
     """
 
-    def __init__(
-        self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE
-    ):
+    def __init__(self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         """Create a new instance of the instruction.
 
         Parameters
@@ -178,9 +176,7 @@ class MoveToJoints(ROSmsg):
             the motion planner has executed the instruction fully.
         """
         if speed <= 0:
-            raise ValueError(
-                "Speed must be higher than zero. Current value={}".format(speed)
-            )
+            raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
         self.instruction = INSTRUCTION_PREFIX + "MoveToJoints"
         self.feedback_level = feedback_level
@@ -197,17 +193,13 @@ class MoveToJoints(ROSmsg):
 
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
         self.string_values = []
-        self.float_values = (
-            list(joints) + joints_pad + list(ext_axes) + ext_axes_pad + [speed, zone]
-        )
+        self.float_values = list(joints) + joints_pad + list(ext_axes) + ext_axes_pad + [speed, zone]
 
 
 class MoveGeneric(ROSmsg):
     def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
         if speed <= 0:
-            raise ValueError(
-                "Speed must be higher than zero. Current value={}".format(speed)
-            )
+            raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
