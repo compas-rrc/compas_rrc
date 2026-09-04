@@ -6,7 +6,6 @@ graft tests
 
 prune .github
 
-include .bumpversion.cfg
 include .editorconfig
 
 include AUTHORS.rst
@@ -17,6 +16,6 @@ include LICENSE
 include README.rst
 include requirements.txt
 
-include requirements-dev.txt tasks.py pytest.ini
+include requirements-dev.txt tasks.py
 
-global-exclude *.py[cod] __pycache__ *.so *.dylib
+global-exclude *.py[cod] __pycache__ *.so *.dylib .DS_Store

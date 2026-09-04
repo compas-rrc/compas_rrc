@@ -1,0 +1,131 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+# ============================================================================
+# Project info
+# ============================================================================
+
+[project]
+name = "compas_rrc"
+description = "COMPAS RRC: Library for ABB Robots"
+keywords = ["abb", "compas", "fabrication", "robotics", "ros"]
+authors = [{ name = "ETH Zurich", email = "rrc@arch.ethz.ch" }]
+license = "MIT"
+license-files = ["LICENSE"]
+readme = "README.rst"
+requires-python = ">=3.9"
+dynamic = ['dependencies', 'optional-dependencies', 'version']
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/compas-rrc/compas_rrc"
+Documentation = "https://compas-rrc.github.io/compas_rrc"
+Repository = "https://github.com/compas-rrc/compas_rrc"
+Changelog = "https://github.com/compas-rrc/compas_rrc/blob/main/CHANGELOG.md"
+Issues = "https://github.com/compas-rrc/compas_rrc/issues"
+Forum = "https://forum.compas-framework.org/c/compas-rrc/"
+
+# ============================================================================
+# setuptools config
+# ============================================================================
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "compas_rrc.__version__.__version__" }
+dependencies = { file = "requirements.txt" }
+optional-dependencies = { dev = { file = "requirements-dev.txt" } }
+
+# ============================================================================
+# Linting and formatting
+# ============================================================================
+
+[tool.ruff]
+line-length = 179
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["I001"]
+"tests/*" = ["I001", "E501"]
+"tasks.py" = ["I001"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = ["compas_rrc"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+# ============================================================================
+# Testing
+# ============================================================================
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests", "src/compas_rrc"]
+python_files = ["test_*.py", "*_test.py", "tests.py"]
+addopts = ["-ra", "--strict-markers", "--doctest-modules", "--doctest-glob=*.rst", "--tb=short"]
+doctest_optionflags = "NORMALIZE_WHITESPACE IGNORE_EXCEPTION_DETAIL ALLOW_UNICODE ALLOW_BYTES"
+
+# ============================================================================
+# Versioning
+# ============================================================================
+
+[tool.bumpversion]
+current_version = "2.0.0"
+message = "Bump version to {new_version}"
+commit = true
+tag = true
+
+[[tool.bumpversion.files]]
+filename = "src/compas_rrc/__version__.py"
+search = "__version__ = \"{current_version}\""
+replace = "__version__ = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = "Unreleased"
+replace = "[{new_version}] {now:%Y-%m-%d}"
+
+[[tool.bumpversion.files]]
+filename = "CITATION.cff"
+search = "v{current_version}"
+replace = "v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "docs/doc_versions.txt"
+search = "{current_version}"
+replace = """{new_version}
+{current_version}"""
+
+[[tool.bumpversion.files]]
+glob = "docker/**/docker-compose.yml"
+search = "compasrrc/compas_rrc_driver:v{current_version}"
+replace = "compasrrc/compas_rrc_driver:v{new_version}"

@@ -63,9 +63,7 @@ def test_robot_joints():
         [0, 0, 0, 0, 0, 0, 0],
         ["a", "b", "c", "d", "e", "f", "g"],
     )
-    rj = rrc.RobotJoints.from_configuration_primitive(
-        config, ["b", "c", "d", "e", "f", "g"]
-    )
+    rj = rrc.RobotJoints.from_configuration_primitive(config, ["b", "c", "d", "e", "f", "g"])
     assert allclose(rj.values, [360, 180, 90, 60, 45, 30])
 
     j = rrc.RobotJoints(30, 10, 0)
@@ -112,9 +110,7 @@ def test_external_axes():
         [0, 0, 0, 0, 0, 0, 0],
         ["a", "b", "c", "d", "e", "f", "g"],
     )
-    rj = rrc.ExternalAxes.from_configuration_primitive(
-        config, ["b", "c", "d", "e", "f", "g"]
-    )
+    rj = rrc.ExternalAxes.from_configuration_primitive(config, ["b", "c", "d", "e", "f", "g"])
     assert allclose(rj.values, [360, 180, 90, 60, 45, 30])
 
     j = rrc.RobotJoints(30, 10, 0)
