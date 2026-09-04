@@ -1,3 +1,7 @@
+from typing import Any
+from typing import Dict
+from typing import Union
+
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 from compas_rrc.message import Instruction
@@ -33,7 +37,7 @@ class SetDigital(Instruction):
 
     """
 
-    def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, io_name: str, value: int, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -72,7 +76,7 @@ class SetAnalog(Instruction):
 
     """
 
-    def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, io_name: str, value: float, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -109,7 +113,7 @@ class SetGroup(Instruction):
 
     """
 
-    def __init__(self, io_name, value, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, io_name: str, value: int, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -145,7 +149,7 @@ class PulseDigital(Instruction):
 
     """
 
-    def __init__(self, io_name, pulse_time, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, io_name: str, pulse_time: float, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -180,7 +184,7 @@ class ReadAnalog(Instruction):
 
     """
 
-    def __init__(self, io_name):
+    def __init__(self, io_name: str) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -193,7 +197,7 @@ class ReadAnalog(Instruction):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
-    def parse_feedback(self, result):
+    def parse_feedback(self, result: Union[Dict[str, Any], Any]) -> float:
         """Parses the result as a :obj:`float`.
 
         Return
@@ -222,7 +226,7 @@ class ReadDigital(Instruction):
 
     """
 
-    def __init__(self, io_name):
+    def __init__(self, io_name: str) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -235,7 +239,7 @@ class ReadDigital(Instruction):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
-    def parse_feedback(self, result):
+    def parse_feedback(self, result: Union[Dict[str, Any], Any]) -> int:
         """Parses the result as a :obj:`int`.
 
         Return
@@ -265,7 +269,7 @@ class ReadGroup(Instruction):
 
     """
 
-    def __init__(self, io_name):
+    def __init__(self, io_name: str) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -278,7 +282,7 @@ class ReadGroup(Instruction):
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [io_name]
 
-    def parse_feedback(self, result):
+    def parse_feedback(self, result: Union[Dict[str, Any], Any]) -> int:
         """Parses the result as a :obj:`int`.
 
         Return

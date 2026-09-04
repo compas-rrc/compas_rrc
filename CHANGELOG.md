@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `compas_rrc.Instruction` and `compas_rrc.RobotMessage`, a thin transport-agnostic message base built on `compas_eve.Message`.
 * `AbbClient` now accepts any `compas_eve` transport, so instructions can be carried over MQTT or in memory as well as ROS.
+* Added type hints throughout the package, a `py.typed` marker so they reach consumers, and an `invoke typecheck` task running `mypy` in CI.
 
 ### Changed
 
@@ -26,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `compas_rrc.RosClient` is now a `compas_eve` ROS transport owned by this package. It keeps the `run`, `close`, `terminate`, `on_ready` and `get_params` methods, so existing scripts are unaffected, but it connects when constructed rather than when `run` is called; `run` is now a no-op.
 * The protocol version is now read from a `<namespace>/protocol_version` topic, latched on ROS and retained on MQTT, so the check works on every transport. Drivers that only expose it as a ROS parameter are still supported through a fallback.
 * Renamed the first argument of `AbbClient` from `ros` to `transport`, and replaced `AbbClient._disconnect_topics` with a public `AbbClient.close`.
+* The `eax_a` to `eax_f` and `rax_1` to `rax_6` accessors are documented as returning `None` when the axis is not set, which is what they have always done.
+* Replaced the private `AbbClient._server_protocol_check` dictionary with explicit attributes.
 * Migrated all GitHub Actions workflows from the split `compas-dev/compas-actions.*` repositories to the unified `compas-dev/compas-actions`.
 * Releases are now prepared by the `prepare release` workflow, which opens a reviewable `release/vX.Y.Z` pull request, instead of pushing a tag by hand.
 * Publishing to PyPI now uses a Trusted Publisher over OIDC instead of a stored API token.

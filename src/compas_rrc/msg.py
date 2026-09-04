@@ -1,3 +1,5 @@
+from typing import List
+
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 from compas_rrc.message import Instruction
@@ -23,7 +25,7 @@ class PrintText(Instruction):
 
     """
 
-    def __init__(self, text, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, text: str, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -39,4 +41,4 @@ class PrintText(Instruction):
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
         self.string_values = [text]
-        self.float_values = []
+        self.float_values: List[float] = []

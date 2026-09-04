@@ -34,7 +34,7 @@ jobs:
       - uses: compas-dev/compas-actions/ci@v1
         with:
           python-version: ${{ matrix.python }}
-          invoke-tasks: lint test
+          invoke-tasks: lint typecheck test
 
   prepare:
     needs: [release, build]

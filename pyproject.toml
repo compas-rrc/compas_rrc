@@ -54,6 +54,9 @@ zip-safe = false
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+compas_rrc = ["py.typed"]
+
 [tool.setuptools.dynamic]
 version = { attr = "compas_rrc.__version__.__version__" }
 dependencies = { file = "requirements.txt" }
@@ -82,6 +85,15 @@ known-first-party = ["compas_rrc"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+# ============================================================================
+# Type checking
+# ============================================================================
+
+[tool.mypy]
+files = ["src/compas_rrc"]
+python_version = "3.10"
+ignore_missing_imports = true
 
 # ============================================================================
 # Testing

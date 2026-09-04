@@ -2,6 +2,7 @@ graft images
 graft docker
 graft docs
 graft src
+include src/compas_rrc/py.typed
 graft tests
 
 prune .github

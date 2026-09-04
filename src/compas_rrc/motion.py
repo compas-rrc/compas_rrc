@@ -1,3 +1,9 @@
+from typing import List
+from typing import Optional
+from typing import Sequence
+
+from compas.geometry import Frame
+
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 from compas_rrc.message import Instruction
@@ -155,7 +161,14 @@ class MoveToJoints(Instruction):
 
     """
 
-    def __init__(self, joints, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
+    def __init__(
+        self,
+        joints: Sequence[float],
+        ext_axes: Sequence[float],
+        speed: float,
+        zone: int,
+        feedback_level: int = FeedbackLevel.NONE,
+    ) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -191,12 +204,19 @@ class MoveToJoints(Instruction):
             raise ValueError("Only up to 6 external axes are supported")
 
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
-        self.string_values = []
+        self.string_values: List[str] = []
         self.float_values = list(joints) + joints_pad + list(ext_axes) + ext_axes_pad + [speed, zone]
 
 
 class MoveGeneric(Instruction):
-    def __init__(self, frame, ext_axes, speed, zone, feedback_level=FeedbackLevel.NONE):
+    def __init__(
+        self,
+        frame: Frame,
+        ext_axes: Optional[Sequence[float]],
+        speed: float,
+        zone: int,
+        feedback_level: int = FeedbackLevel.NONE,
+    ) -> None:
         if speed <= 0:
             raise ValueError("Speed must be higher than zero. Current value={}".format(speed))
 
@@ -211,7 +231,7 @@ class MoveGeneric(Instruction):
             raise ValueError("Only up to 6 external axes are supported")
         ext_axes_pad = [0.0] * (6 - len(ext_axes))
 
-        self.string_values = []
+        self.string_values: List[str] = []
         self.float_values = pos + rot + list(ext_axes) + ext_axes_pad + [speed, zone]
 
 
@@ -242,12 +262,12 @@ class MoveToFrame(MoveGeneric):
 
     def __init__(
         self,
-        frame,
-        speed,
-        zone,
-        motion_type=Motion.JOINT,
-        feedback_level=FeedbackLevel.NONE,
-    ):
+        frame: Frame,
+        speed: float,
+        zone: int,
+        motion_type: str = Motion.JOINT,
+        feedback_level: int = FeedbackLevel.NONE,
+    ) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -298,13 +318,13 @@ class MoveToRobtarget(MoveGeneric):
 
     def __init__(
         self,
-        frame,
-        ext_axes,
-        speed,
-        zone,
-        motion_type=Motion.JOINT,
-        feedback_level=FeedbackLevel.NONE,
-    ):
+        frame: Frame,
+        ext_axes: Optional[Sequence[float]],
+        speed: float,
+        zone: int,
+        motion_type: str = Motion.JOINT,
+        feedback_level: int = FeedbackLevel.NONE,
+    ) -> None:
         """Create a new instance of the instruction.
 
         Parameters

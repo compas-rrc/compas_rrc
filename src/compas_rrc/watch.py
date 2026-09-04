@@ -1,3 +1,8 @@
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Union
+
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
 from compas_rrc.message import Instruction
@@ -27,15 +32,15 @@ class ReadWatch(Instruction):
 
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Create a new instance of the instruction."""
         self.instruction = INSTRUCTION_PREFIX + "ReadWatch"
         self.feedback_level = FeedbackLevel.DONE
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
-        self.float_values = []
+        self.string_values: List[str] = []
+        self.float_values: List[float] = []
 
-    def parse_feedback(self, result):
+    def parse_feedback(self, result: Union[Dict[str, Any], Any]) -> float:
         """Parses the result as a :obj:`float` (seconds).
 
         Return
@@ -64,7 +69,7 @@ class StartWatch(Instruction):
 
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -75,8 +80,8 @@ class StartWatch(Instruction):
         self.instruction = INSTRUCTION_PREFIX + "StartWatch"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
-        self.float_values = []
+        self.string_values: List[str] = []
+        self.float_values: List[float] = []
 
 
 class StopWatch(Instruction):
@@ -95,7 +100,7 @@ class StopWatch(Instruction):
 
     """
 
-    def __init__(self, feedback_level=FeedbackLevel.NONE):
+    def __init__(self, feedback_level: int = FeedbackLevel.NONE) -> None:
         """Create a new instance of the instruction.
 
         Parameters
@@ -106,5 +111,5 @@ class StopWatch(Instruction):
         self.instruction = INSTRUCTION_PREFIX + "StopWatch"
         self.feedback_level = feedback_level
         self.exec_level = ExecutionLevel.ROBOT
-        self.string_values = []
-        self.float_values = []
+        self.string_values: List[str] = []
+        self.float_values: List[float] = []
