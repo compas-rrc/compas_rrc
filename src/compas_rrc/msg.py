@@ -1,14 +1,13 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.message import Instruction
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
 __all__ = ["PrintText"]
 
 
-class PrintText(ROSmsg):
+class PrintText(Instruction):
     """Print text is a call that prints a single line of text on the robot panel.
 
     Examples

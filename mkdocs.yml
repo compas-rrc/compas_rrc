@@ -89,7 +89,7 @@ plugins:
             - https://docs.python.org/3/objects.inv
             - https://compas.dev/compas/latest/objects.inv
             - https://compas.dev/compas_robots/latest/objects.inv
-            - https://compas.dev/compas_fab/latest/objects.inv
+            - https://compas.dev/compas_eve/latest/objects.inv
           options:
             allow_inspection: true
             backlinks: tree
@@ -107,7 +107,7 @@ plugins:
             merge_init_into_class: true
             modernize_annotations: true
             parameter_headings: false
-            preload_modules: [mkdocstrings, compas, compas_fab]
+            preload_modules: [mkdocstrings, compas, compas_eve]
             relative_crossrefs: true
             scoped_crossrefs: true
             separate_signature: true
@@ -139,7 +139,7 @@ nav:
   - Concepts: concepts.md
   - API Reference:
       - api/index.md
-      - Clients: api/clients.md
+      - Clients and messages: api/clients.md
       - Instructions: api/instructions.md
       - Custom instructions: api/custom_instructions.md
   - Architecture: architecture.md

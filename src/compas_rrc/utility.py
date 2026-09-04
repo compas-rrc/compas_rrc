@@ -1,10 +1,10 @@
 from compas.geometry import Frame
-from compas_fab.backends.ros.messages import ROSmsg
 
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import ExternalAxes
 from compas_rrc.common import FeedbackLevel
 from compas_rrc.common import RobotJoints
+from compas_rrc.message import Instruction
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
@@ -28,7 +28,7 @@ def is_rapid_none(val):
     return int(val) == 8999999488
 
 
-class Noop(ROSmsg):
+class Noop(Instruction):
     """No-op is a call without any effect. But like all other instructions it makes a roundtrip from the user code to the robot and back.
 
     Examples
@@ -59,7 +59,7 @@ class Noop(ROSmsg):
         self.float_values = []
 
 
-class Debug(ROSmsg):
+class Debug(Instruction):
     """Activate debug mode on any instruction by wrapping it.
 
     Examples
@@ -79,8 +79,8 @@ class Debug(ROSmsg):
 
         Parameters
         ----------
-        instruction : :class:`ROSmsg`
-            Any instruction inheriting from ROS message.
+        instruction : :class:`Instruction`
+            Any instruction.
         debug_parser : callable
             Function to be used for parsing the feedback. Optional.
         """
@@ -136,7 +136,7 @@ class Debug(ROSmsg):
         return result
 
 
-class GetJoints(ROSmsg):
+class GetJoints(Instruction):
     """Get joints is a call that requests the joint values (:class:`RobotJoints`) and the external axes (:class:`ExternalAxes`) of the robot.
 
     Examples
@@ -178,7 +178,7 @@ class GetJoints(ROSmsg):
         return RobotJoints(*robot_joints), ExternalAxes(*external_axes)
 
 
-class GetRobtarget(ROSmsg):
+class GetRobtarget(Instruction):
     """Instruction to request the current robtarget defined as frame (:class:`compas.geometry.Frame`)
     and external axes (:class:`ExternalAxes`) of the robot.
 
@@ -265,7 +265,7 @@ class GetFrame(GetRobtarget):
         return frame
 
 
-class SetAcceleration(ROSmsg):
+class SetAcceleration(Instruction):
     """Set acceleration is a call that sets the acc- and deceleration of the robot.
 
     Examples
@@ -301,7 +301,7 @@ class SetAcceleration(ROSmsg):
         self.float_values = [acc, ramp]
 
 
-class SetTool(ROSmsg):
+class SetTool(Instruction):
     """Set tool is a call that sets a predefined tool in the robot as active.
 
     Examples
@@ -334,7 +334,7 @@ class SetTool(ROSmsg):
         self.float_values = []
 
 
-class SetMaxSpeed(ROSmsg):
+class SetMaxSpeed(Instruction):
     """Set max speed is a call that sets the override and maximal tool center point (TCP) speed from the robot.
 
     Examples
@@ -374,7 +374,7 @@ class SetMaxSpeed(ROSmsg):
         self.float_values = [override, max_tcp]
 
 
-class SetWorkObject(ROSmsg):
+class SetWorkObject(Instruction):
     """Set work object is a call that sets a predefined work object in the robot as active.
 
     Examples
@@ -407,7 +407,7 @@ class SetWorkObject(ROSmsg):
         self.float_values = []
 
 
-class Stop(ROSmsg):
+class Stop(Instruction):
     """Stop is a function to stop the associated motion task of the robot.
 
     Examples
@@ -438,7 +438,7 @@ class Stop(ROSmsg):
         self.float_values = []
 
 
-class WaitTime(ROSmsg):
+class WaitTime(Instruction):
     """Wait time is a call that will wait on the robot task for a certain time.
 
     Examples

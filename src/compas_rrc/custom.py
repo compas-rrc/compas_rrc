@@ -1,12 +1,11 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.message import Instruction
 
 __all__ = ["CustomInstruction"]
 
 
-class CustomInstruction(ROSmsg):
+class CustomInstruction(Instruction):
     """Custom instruction is a call that invokes a custom RAPID instruction. The name has to match a ``RAPID`` procedure.
 
     Examples

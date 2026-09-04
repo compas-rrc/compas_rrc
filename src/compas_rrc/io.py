@@ -1,7 +1,6 @@
-from compas_fab.backends.ros.messages import ROSmsg
-
 from compas_rrc.common import ExecutionLevel
 from compas_rrc.common import FeedbackLevel
+from compas_rrc.message import Instruction
 
 INSTRUCTION_PREFIX = "r_RRC_"
 
@@ -16,7 +15,7 @@ __all__ = [
 ]
 
 
-class SetDigital(ROSmsg):
+class SetDigital(Instruction):
     """Set digital is a call that sets the value of an digital output signal (:obj:`int`, 0 or 1).
 
     Examples
@@ -55,7 +54,7 @@ class SetDigital(ROSmsg):
         self.float_values = [value]
 
 
-class SetAnalog(ROSmsg):
+class SetAnalog(Instruction):
     """Set analog is a call that sets the value of an analog output signal (:obj:`float`).
     Minimum and maximum values are given by the signal configuration in the robot.
 
@@ -92,7 +91,7 @@ class SetAnalog(ROSmsg):
         self.float_values = [value]
 
 
-class SetGroup(ROSmsg):
+class SetGroup(Instruction):
     """Set group is a call that sets the value of an digital group output signal (:obj:`int`).
     Minimum and maximum values are given by the signal configuration in the robot.
 
@@ -129,7 +128,7 @@ class SetGroup(ROSmsg):
         self.float_values = [value]
 
 
-class PulseDigital(ROSmsg):
+class PulseDigital(Instruction):
     """Pulse digital is a call that sets the value to HIGH of an digital output signal for a certain time.
 
     Examples
@@ -165,7 +164,7 @@ class PulseDigital(ROSmsg):
         self.float_values = [pulse_time]
 
 
-class ReadAnalog(ROSmsg):
+class ReadAnalog(Instruction):
     """Read analog is a call that requests the value of an analog input signal.
 
     Examples
@@ -207,7 +206,7 @@ class ReadAnalog(ROSmsg):
         return result
 
 
-class ReadDigital(ROSmsg):
+class ReadDigital(Instruction):
     """Read digital is a call that requests the value of a digital input signal.
 
     Examples
@@ -250,7 +249,7 @@ class ReadDigital(ROSmsg):
         return result
 
 
-class ReadGroup(ROSmsg):
+class ReadGroup(Instruction):
     """Read group is a call that requests the value of a digital group input signal.
 
     Examples

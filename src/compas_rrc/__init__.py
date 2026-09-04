@@ -26,6 +26,7 @@ from compas_rrc.common import (
     TimeoutException,
 )
 from compas_rrc.custom import CustomInstruction
+from compas_rrc.message import Instruction, RobotMessage
 from compas_rrc.io import (
     PulseDigital,
     ReadAnalog,
@@ -69,6 +70,8 @@ __all__ = [
     "RobotJoints",
     "RosClient",
     "AbbClient",
+    "Instruction",
+    "RobotMessage",
     "SetDigital",
     "SetAnalog",
     "SetGroup",

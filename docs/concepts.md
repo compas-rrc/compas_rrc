@@ -22,6 +22,46 @@ four different ways of communication:
 
 The corresponding classes are documented in [Clients](api/clients.md).
 
+## Transports
+
+`COMPAS RRC` does not talk to ROS directly. Instructions are
+[`compas_eve`](https://compas.dev/compas_eve) messages, and
+[`AbbClient`][compas_rrc.AbbClient] publishes them over a `compas_eve`
+*transport*. ROS is the transport used in practice, but it is not the only one
+the client can use.
+
+=== "ROS"
+
+    ```python
+    import compas_rrc as rrc
+
+    ros = rrc.RosClient()
+    ros.run()
+
+    abb = rrc.AbbClient(ros, '/rob1')
+    ```
+
+=== "MQTT"
+
+    ```python
+    import compas_rrc as rrc
+    from compas_eve.mqtt import MqttTransport
+
+    transport = MqttTransport('broker.example.com')
+
+    abb = rrc.AbbClient(transport, '/rob1')
+    ```
+
+!!! note
+
+    Choosing a transport on the Python side only settles one half of the
+    connection. The driver on the other end has to speak the same one, and
+    `compas_rrc_driver` is a ROS node.
+
+[`RosClient`][compas_rrc.RosClient] is a `compas_eve` ROS transport that also
+exposes the `roslibpy` methods RRC scripts have always called, so existing code
+keeps working unchanged.
+
 ## Robot joints and external axes
 
 The following example shows how to retrieve, update and send the robot joints
