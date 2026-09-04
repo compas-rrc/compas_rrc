@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import os
 
 from compas_invocations import build
@@ -21,15 +19,9 @@ ns = Collection(
     build.prepare_changelog,
     build.clean,
     build.release,
-    build.build_ghuser_components,
 )
 ns.configure(
     {
         "base_folder": os.path.dirname(__file__),
-        "ghuser": {
-            "source_dir": "src/compas_rrc/ghpython/components",
-            "target_dir": "src/compas_rrc/ghpython/components/ghuser",
-            "prefix": "COMPAS RRC: ",
-        },
     }
 )

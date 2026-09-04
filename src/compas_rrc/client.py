@@ -22,7 +22,7 @@ def _get_response_key(message):
     return "msg:{}".format(message["feedback_id"])
 
 
-class SequenceCounter(object):
+class SequenceCounter:
     """An atomic, thread-safe sequence increament counter."""
 
     ROLLOVER_THRESHOLD = 1000000
@@ -58,7 +58,7 @@ def default_feedback_parser(result):
     return feedback_value
 
 
-class AbbClient(object):
+class AbbClient:
     """Client used to communicate with ABB robots via ROS.
 
     This client handles all communication over ROS topics, and implements

@@ -31,7 +31,7 @@ def _convert_unit_to_mm_degrees(value, type_):
     return value * 1000.0
 
 
-class FeedbackLevel(object):
+class FeedbackLevel:
     """Represents default valid feedback levels.
 
     .. autoattribute:: NONE
@@ -47,7 +47,7 @@ class FeedbackLevel(object):
     """
 
 
-class ExecutionLevel(object):
+class ExecutionLevel:
     """Defines the execution level of an instruction.
 
     .. autoattribute:: ROBOT
@@ -65,9 +65,7 @@ class InstructionException(Exception):
     """Exception caused during/after the execution of an instruction."""
 
     def __init__(self, message, result):
-        super(InstructionException, self).__init__(
-            "{}, RRC Reply={}".format(message, result)
-        )
+        super().__init__("{}, RRC Reply={}".format(message, result))
         self.result = result
 
 
@@ -77,7 +75,7 @@ class TimeoutException(Exception):
     pass
 
 
-class FutureResult(object):
+class FutureResult:
     """Represents a future result value.
 
     Futures are the result of asynchronous operations
@@ -111,7 +109,7 @@ class FutureResult(object):
         self.event.set()
 
 
-class ExternalAxes(object):
+class ExternalAxes:
     """Represents a configuration for external axes."""
 
     def __init__(self, *values):
@@ -299,7 +297,7 @@ class ExternalAxes(object):
         return cls.from_configuration_primitive(configuration, joint_names)
 
 
-class RobotJoints(object):
+class RobotJoints:
     """Represents a configuration for robot joints"""
 
     def __init__(self, *values):
